@@ -18,7 +18,7 @@ export const Hero = () => {
           </div>
           
           <span className="inline-block text-sm uppercase tracking-wider text-rich-gold animate-fade-up animate-delay-1 font-mono">
-            > Digital Solutions for Modern Businesses_
+            {'>'} Digital Solutions for Modern Businesses_
           </span>
           
           <h1 className="text-4xl md:text-6xl font-bold leading-tight animate-fade-up animate-delay-2">
@@ -35,14 +35,14 @@ export const Hero = () => {
               size="lg"
               className="bg-rich-gold hover:bg-rich-gold/90 text-rich-black font-mono"
             >
-              > Get Started
+              {'>'} Get Started
             </Button>
             <Button
               variant="outline"
               size="lg"
               className="border-rich-gold text-rich-gold hover:bg-rich-gold/10 font-mono"
             >
-              > View Portfolio
+              {'>'} View Portfolio
             </Button>
           </div>
         </div>

@@ -36,7 +36,7 @@ export const Services = () => {
             Our <span className="text-gradient">Services</span>
           </h2>
           <p className="text-gray-400 max-w-2xl mx-auto font-mono">
-            > Comprehensive digital solutions to help your business thrive in the modern world_
+            {'>'} Comprehensive digital solutions to help your business thrive in the modern world_
           </p>
         </div>
 
