@@ -6,7 +6,6 @@ import { FolderPortfolioContent } from "./FolderPortfolioContent";
 import { FolderAboutContent } from "./FolderAboutContent";
 import { FolderPricingContent } from "./FolderPricingContent";
 import { FolderOfferContent } from "./FolderOfferContent";
-import { FolderWorkTogetherContent } from "./FolderWorkTogetherContent";
 
 interface FolderProps {
   title: string;
@@ -44,8 +43,6 @@ export const Folder = ({ title, color = "#FDE1D3" }: FolderProps) => {
         return <FolderPricingContent onClose={handleClose} />;
       case "What Does Revo Offer?":
         return <FolderOfferContent onClose={handleClose} />;
-      case "Let's Work Together":
-        return <FolderWorkTogetherContent onClose={handleClose} />;
       default:
         return (
           <p className="text-rich-gold/80 font-mono">
