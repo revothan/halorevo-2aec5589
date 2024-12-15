@@ -35,7 +35,7 @@ export const SplashScreen = ({ onComplete }: { onComplete: () => void }) => {
       <div className="glass-card p-8 max-w-md w-full mx-4">
         <div className="flex items-center gap-2 mb-6">
           <Terminal className="w-5 h-5 text-rich-gold" />
-          <span className="font-mono text-rich-gold">system.boot</span>
+          <span className="font-mono text-rich-gold">Hello! Welcome to HaloRevo</span>
         </div>
         
         <div className="space-y-3">
