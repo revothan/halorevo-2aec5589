@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { Terminal } from "lucide-react";
 import { TypingAnimation } from "./TypingAnimation";
@@ -14,11 +13,11 @@ export const Hero = ({ showContent = true }: HeroProps) => {
   const [openFolder, setOpenFolder] = useState<string | null>(null);
 
   const folders = [
-    { title: "About Me", position: { top: "20%", left: "15%" } },
-    { title: "Let's Work Together", position: { top: "30%", left: "75%" } },
-    { title: "What Does Revo Offer?", position: { top: "60%", left: "20%" } },
-    { title: "My Portfolio", position: { top: "45%", left: "65%" } },
-    { title: "Pricing", position: { top: "70%", left: "70%" } },
+    { title: "About Me", position: { top: "35%", left: "15%" } },
+    { title: "Let's Work Together", position: { top: "40%", left: "75%" } },
+    { title: "What Does Revo Offer?", position: { top: "65%", left: "20%" } },
+    { title: "My Portfolio", position: { top: "55%", left: "65%" } },
+    { title: "Pricing", position: { top: "75%", left: "70%" } },
   ];
 
   const getFolderContent = (title: string) => {
