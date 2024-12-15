@@ -25,9 +25,13 @@ export default {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         rich: {
-          black: "#0A0A0A",
-          gray: "#2A2A2A",
-          gold: "#C4A484",
+          black: "#1E1E1E", // VS Code default dark theme background
+          gray: "#2D2D2D", // Slightly lighter background for contrast
+          gold: "#D4D4D4", // VS Code default text color
+          purple: "#C586C0", // For keywords
+          blue: "#569CD6", // For functions
+          green: "#4EC9B0", // For types
+          yellow: "#DCDCAA", // For function calls
         },
         primary: {
           DEFAULT: "hsl(var(--primary))",

@@ -4,35 +4,35 @@
 
 @layer base {
   :root {
-    --background: 0 0% 3.9%;
-    --foreground: 0 0% 98%;
+    --background: 0 0% 12%;
+    --foreground: 0 0% 83%;
 
-    --card: 0 0% 3.9%;
-    --card-foreground: 0 0% 98%;
+    --card: 0 0% 12%;
+    --card-foreground: 0 0% 83%;
 
-    --popover: 0 0% 3.9%;
-    --popover-foreground: 0 0% 98%;
+    --popover: 0 0% 12%;
+    --popover-foreground: 0 0% 83%;
 
-    --primary: 0 0% 98%;
-    --primary-foreground: 0 0% 9%;
+    --primary: 0 0% 83%;
+    --primary-foreground: 0 0% 12%;
 
-    --secondary: 0 0% 14.9%;
-    --secondary-foreground: 0 0% 98%;
+    --secondary: 0 0% 17%;
+    --secondary-foreground: 0 0% 83%;
 
-    --muted: 0 0% 14.9%;
+    --muted: 0 0% 17%;
     --muted-foreground: 0 0% 63.9%;
 
-    --accent: 0 0% 14.9%;
-    --accent-foreground: 0 0% 98%;
+    --accent: 0 0% 17%;
+    --accent-foreground: 0 0% 83%;
 
     --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
+    --destructive-foreground: 0 0% 83%;
 
-    --border: 0 0% 14.9%;
-    --input: 0 0% 14.9%;
-    --ring: 0 0% 83.9%;
+    --border: 0 0% 17%;
+    --input: 0 0% 17%;
+    --ring: 0 0% 83%;
 
-    --radius: 0.75rem;
+    --radius: 0.5rem;
   }
 }
 
@@ -47,41 +47,9 @@
 }
 
 .glass-card {
-  @apply bg-black/20 backdrop-blur-sm border border-white/10 rounded-lg;
+  @apply bg-rich-black/95 backdrop-blur-sm border border-rich-gray/20 rounded-lg;
 }
 
 .text-gradient {
-  @apply bg-clip-text text-transparent bg-gradient-to-r from-rich-gold via-white to-rich-gold;
-}
-
-.animate-delay-1 {
-  animation-delay: 0.1s;
-}
-
-.animate-delay-2 {
-  animation-delay: 0.2s;
-}
-
-.animate-delay-3 {
-  animation-delay: 0.3s;
-}
-
-/* Window-specific styles */
-.window-controls button {
-  @apply transition-colors duration-200;
-}
-
-.window-title {
-  @apply font-mono tracking-wide;
-}
-
-/* Terminal-like cursor animation */
-@keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
-}
-
-.cursor-blink::after {
-  content: '_';
-  animation: blink 1s infinite;
+  @apply bg-clip-text text-transparent bg-gradient-to-r from-rich-purple via-rich-blue to-rich-green;
 }

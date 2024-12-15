@@ -11,13 +11,13 @@ export const Hero = () => {
         <div className="max-w-3xl mx-auto text-center space-y-8">
           {/* Terminal-like header */}
           <div className="glass-card p-4 mb-8 inline-block">
-            <div className="flex items-center gap-2 text-rich-gold">
+            <div className="flex items-center gap-2 text-rich-yellow">
               <Terminal className="w-5 h-5" />
               <span className="font-mono">$ init portfolio.exe</span>
             </div>
           </div>
           
-          <span className="inline-block text-sm uppercase tracking-wider text-rich-gold animate-fade-up animate-delay-1 font-mono">
+          <span className="inline-block text-sm uppercase tracking-wider text-rich-blue animate-fade-up animate-delay-1 font-mono">
             {'>'} Digital Solutions for Modern Businesses_
           </span>
           
@@ -26,21 +26,21 @@ export const Hero = () => {
             <span className="text-gradient"> Digital Transformation</span>
           </h1>
           
-          <p className="text-lg md:text-xl text-gray-300 animate-fade-up animate-delay-3 font-mono">
+          <p className="text-lg md:text-xl text-rich-gold/80 animate-fade-up animate-delay-3 font-mono">
             Websites & Automations That Work for You
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-fade-up animate-delay-3">
             <Button
               size="lg"
-              className="bg-rich-gold hover:bg-rich-gold/90 text-rich-black font-mono"
+              className="bg-rich-purple hover:bg-rich-purple/90 text-rich-black font-mono"
             >
               {'>'} Get Started
             </Button>
             <Button
               variant="outline"
               size="lg"
-              className="border-rich-gold text-rich-gold hover:bg-rich-gold/10 font-mono"
+              className="border-rich-blue text-rich-blue hover:bg-rich-blue/10 font-mono"
             >
               {'>'} View Portfolio
             </Button>
