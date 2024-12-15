@@ -65,3 +65,23 @@
 .animate-delay-3 {
   animation-delay: 0.3s;
 }
+
+/* Window-specific styles */
+.window-controls button {
+  @apply transition-colors duration-200;
+}
+
+.window-title {
+  @apply font-mono tracking-wide;
+}
+
+/* Terminal-like cursor animation */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.cursor-blink::after {
+  content: '_';
+  animation: blink 1s infinite;
+}

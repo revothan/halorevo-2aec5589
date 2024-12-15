@@ -26,12 +26,17 @@ export const Services = () => {
     <section className="py-24 px-4 bg-rich-black">
       <div className="container mx-auto">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+          <div className="glass-card p-4 mb-8 inline-block">
+            <div className="flex items-center gap-2 text-rich-gold font-mono">
+              <Code className="w-5 h-5" />
+              <span>$ list services</span>
+            </div>
+          </div>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4 font-mono">
             Our <span className="text-gradient">Services</span>
           </h2>
-          <p className="text-gray-400 max-w-2xl mx-auto">
-            Comprehensive digital solutions to help your business thrive in the
-            modern world.
+          <p className="text-gray-400 max-w-2xl mx-auto font-mono">
+            > Comprehensive digital solutions to help your business thrive in the modern world_
           </p>
         </div>
 
@@ -44,8 +49,8 @@ export const Services = () => {
               <div className="w-12 h-12 rounded-lg bg-rich-gold/10 flex items-center justify-center mb-4 group-hover:bg-rich-gold/20 transition-colors">
                 <service.icon className="w-6 h-6 text-rich-gold" />
               </div>
-              <h3 className="text-xl font-semibold mb-2">{service.title}</h3>
-              <p className="text-gray-400">{service.description}</p>
+              <h3 className="text-xl font-semibold mb-2 font-mono">{service.title}</h3>
+              <p className="text-gray-400 font-mono">{service.description}</p>
             </div>
           ))}
         </div>
