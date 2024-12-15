@@ -17,27 +17,27 @@ export const Hero = ({ showContent = true }: HeroProps) => {
     {
       title: "About Me",
       content: "Hi! I'm Halo Revo, a web developer passionate about creating amazing digital experiences.",
-      position: "top-[45%] left-[10%]"
+      position: "top-[15%] left-[15%]"
     },
     {
       title: "Let's Work Together",
       content: "Ready to start a project? Let's collaborate and bring your ideas to life!",
-      position: "top-[45%] right-[15%]"
+      position: "bottom-[35%] left-[45%]"
     },
     {
       title: "What Does Revo Offer?",
       content: "I offer web development, automation solutions, and digital transformation services.",
-      position: "bottom-[15%] left-[15%]"
+      position: "top-[15%] left-[35%]"
     },
     {
       title: "My Portfolio",
       content: "Check out some of my recent projects and success stories.",
-      position: "bottom-[15%] right-[10%]"
+      position: "top-[15%] right-[15%]"
     },
     {
       title: "Pricing",
       content: "Flexible pricing options tailored to your needs and budget.",
-      position: "bottom-[20%] left-[45%]"
+      position: "bottom-[15%] right-[15%]"
     }
   ];
 
