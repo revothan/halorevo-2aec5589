@@ -5,11 +5,14 @@ import { Terminal, Check, X } from "lucide-react";
 export const SplashScreen = ({ onComplete }: { onComplete: () => void }) => {
   const [currentStep, setCurrentStep] = useState(0);
   const steps = [
-    "Initializing quantum flux capacitor...",
-    "Downloading more RAM...",
-    "Convincing AI not to take over the world...",
-    "Loading digital caffeine...",
-    "Starting awesome mode...",
+    "Teaching AI to make coffee...",
+    "Reticulating splines...",
+    "Bribing pixels to align properly...",
+    "Convincing bugs they're actually features...",
+    "Downloading more RGB for your screen...",
+    "Feeding hamsters powering the server...",
+    "Generating witty loading messages...",
+    "Warming up the flux capacitor...",
   ];
 
   useEffect(() => {
