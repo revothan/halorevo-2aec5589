@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { FolderWindow } from "./FolderWindow";
 import { FolderPortfolioContent } from "./FolderPortfolioContent";
 import { FolderAboutContent } from "./FolderAboutContent";
+import { FolderPricingContent } from "./FolderPricingContent";
 
 interface FolderProps {
   title: string;
@@ -37,6 +38,8 @@ export const Folder = ({ title, color = "#FDE1D3" }: FolderProps) => {
         return <FolderAboutContent onClose={handleClose} />;
       case "My Portfolio":
         return <FolderPortfolioContent onClose={handleClose} />;
+      case "Pricing":
+        return <FolderPricingContent onClose={handleClose} />;
       default:
         return (
           <p className="text-rich-gold/80 font-mono">
