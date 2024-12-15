@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { Terminal } from "lucide-react";
+import { TypingAnimation } from "./TypingAnimation";
 
 export const Hero = () => {
   return (
@@ -21,10 +22,10 @@ export const Hero = () => {
             {'>'} Digital Solutions for Modern Businesses_
           </span>
           
-          <h1 className="text-4xl md:text-6xl font-bold leading-tight animate-fade-up animate-delay-2">
-            Your Partner in
-            <span className="text-gradient"> Digital Transformation</span>
-          </h1>
+          <TypingAnimation
+            texts={["Hey, Vancouver!", "This is Halo Revo."]}
+            className="text-4xl md:text-6xl font-bold leading-tight"
+          />
           
           <p className="text-lg md:text-xl text-rich-gold/80 animate-fade-up animate-delay-3 font-mono">
             Websites & Automations That Work for You
