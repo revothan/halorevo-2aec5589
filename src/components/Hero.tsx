@@ -9,19 +9,11 @@ interface HeroProps {
 
 export const Hero = ({ showContent = true }: HeroProps) => {
   return (
-    <section className="min-h-[90vh] flex items-center justify-center px-4 relative overflow-hidden">
+    <section className="min-h-[90vh] flex items-center justify-center px-4 relative overflow-hidden cursor-[url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAnSURBVHgBY2RgYPj/n+E/AxbACFPACFPEgAVgVYRLATZ5rArwuQQA+OgPOzQqoj4AAAAASUVORK5CYII='),auto]">
       <div className="absolute inset-0 bg-gradient-to-b from-rich-black to-rich-gray opacity-50" />
       
       <div className="container mx-auto relative z-10">
         <div className="max-w-3xl mx-auto text-center space-y-8">
-          {/* Terminal-like header */}
-          <div className="glass-card p-4 mb-8 inline-block">
-            <div className="flex items-center gap-2 text-rich-yellow">
-              <Terminal className="w-5 h-5" />
-              <span className="font-mono">$ init portfolio.exe</span>
-            </div>
-          </div>
-          
           <span className="inline-block text-sm uppercase tracking-wider text-rich-blue animate-fade-up animate-delay-1 font-mono">
             {'>'} Digital Solutions for Modern Businesses_
           </span>
@@ -36,22 +28,6 @@ export const Hero = ({ showContent = true }: HeroProps) => {
           <p className="text-lg md:text-xl text-rich-gold/80 animate-fade-up animate-delay-3 font-mono">
             Websites & Automations That Work for You
           </p>
-          
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-fade-up animate-delay-3">
-            <Button
-              size="lg"
-              className="bg-rich-purple hover:bg-rich-purple/90 text-rich-black font-mono"
-            >
-              {'>'} Get Started
-            </Button>
-            <Button
-              variant="outline"
-              size="lg"
-              className="border-rich-blue text-rich-blue hover:bg-rich-blue/10 font-mono"
-            >
-              {'>'} View Portfolio
-            </Button>
-          </div>
         </div>
       </div>
       
