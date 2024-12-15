@@ -22,6 +22,15 @@ export const FolderOfferContent = ({ onClose }: FolderOfferContentProps) => {
     show: { opacity: 1, y: 0 }
   };
 
+  const handleWorkTogether = () => {
+    onClose();
+    // Find and click the "Pricing" folder
+    const pricingFolder = document.querySelector('[data-folder="Pricing"]');
+    if (pricingFolder) {
+      (pricingFolder as HTMLElement).click();
+    }
+  };
+
   return (
     <motion.div
       variants={container}
@@ -108,7 +117,7 @@ export const FolderOfferContent = ({ onClose }: FolderOfferContentProps) => {
           With every project, I focus on delivering solutions that are not only functional but also help you achieve your goals faster. Ready to make your digital dreams come true?
         </p>
         <Button 
-          onClick={onClose}
+          onClick={handleWorkTogether}
           className="bg-rich-purple hover:bg-rich-purple/90 text-white font-semibold px-8 py-6 text-lg"
         >
           LET'S WORK TOGETHER
