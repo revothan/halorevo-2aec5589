@@ -33,6 +33,15 @@ export const FolderPortfolioContent = ({ onClose }: FolderPortfolioContentProps)
           creating a seamless and user-friendly experience for users to set up custom chatbot solutions.
         </p>
         
+        <Button
+          variant="outline"
+          className="w-full font-mono group"
+          onClick={() => window.open('https://menyapa.live/', '_blank')}
+        >
+          Visit Menyapa.Live
+          <ExternalLink className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+        </Button>
+        
         <div className="space-y-2">
           <h4 className="font-bold text-rich-blue">Key Contributions:</h4>
           <ul className="list-disc list-inside space-y-2 text-rich-gold/80 font-mono">
@@ -98,6 +107,15 @@ export const FolderPortfolioContent = ({ onClose }: FolderPortfolioContentProps)
           the website's backend processes and implementing <span className="text-rich-purple">automation solutions</span> to 
           streamline marketing efforts and boost sales.
         </p>
+
+        <Button
+          variant="outline"
+          className="w-full font-mono group"
+          onClick={() => window.open('https://www.bazadance.com/', '_blank')}
+        >
+          Visit Baza Dance Studios
+          <ExternalLink className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+        </Button>
         
         <div className="space-y-2">
           <h4 className="font-bold text-rich-blue">Key Achievements:</h4>
