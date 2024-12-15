@@ -102,7 +102,7 @@ export const FolderPricingContent = ({ onClose }: FolderPricingContentProps) => 
             }}
           >
             <MessageSquare className="w-5 h-5 transition-transform group-hover:scale-110" />
-            Let's Work Together
+            GET STARTED
           </Button>
           <p className="text-sm text-rich-gold/60 italic">
             (Because success is more fun when we do it together.)
