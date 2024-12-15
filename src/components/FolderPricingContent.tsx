@@ -46,7 +46,7 @@ export const FolderPricingContent = ({ onClose }: FolderPricingContentProps) => 
             <Globe className="w-6 h-6" />
             <h3 className="text-xl font-bold">Website Creation</h3>
           </div>
-          <p className="text-2xl font-bold text-rich-gold">$1,000</p>
+          <p className="text-2xl font-bold text-rich-gold">$1,500</p>
           <p className="text-rich-gold/80">
             From sleek portfolios to robust e-commerce stores, I'll craft a website that doesn't just look amazing but actually works like a dream. Think of it as your 24/7 digital salesperson (minus the awkward small talk).
           </p>
@@ -58,7 +58,7 @@ export const FolderPricingContent = ({ onClose }: FolderPricingContentProps) => 
             <Zap className="w-6 h-6" />
             <h3 className="text-xl font-bold">Automation Services</h3>
           </div>
-          <p className="text-2xl font-bold text-rich-gold">$1,000</p>
+          <p className="text-2xl font-bold text-rich-gold">$1,500</p>
           <p className="text-rich-gold/80">
             Tired of copy-pasting and juggling a gazillion tabs? Let me automate your workflows so you can focus on what really matters—like sipping coffee while your business runs itself.
           </p>
