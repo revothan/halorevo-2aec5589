@@ -17,12 +17,12 @@ export const Hero = ({ showContent = true }: HeroProps) => {
     {
       title: "About Me",
       content: "Hi! I'm Halo Revo, a web developer passionate about creating amazing digital experiences.",
-      position: "top-[15%] left-[10%]"
+      position: "top-[45%] left-[10%]"
     },
     {
       title: "Let's Work Together",
       content: "Ready to start a project? Let's collaborate and bring your ideas to life!",
-      position: "top-[15%] right-[15%]"
+      position: "top-[45%] right-[15%]"
     },
     {
       title: "What Does Revo Offer?",
