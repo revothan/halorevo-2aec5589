@@ -2,12 +2,42 @@ import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { Terminal } from "lucide-react";
 import { TypingAnimation } from "./TypingAnimation";
+import { Folder } from "./Folder";
+import { FolderWindow } from "./FolderWindow";
+import { useState } from "react";
 
 interface HeroProps {
   showContent?: boolean;
 }
 
 export const Hero = ({ showContent = true }: HeroProps) => {
+  const [openFolder, setOpenFolder] = useState<string | null>(null);
+
+  const folders = [
+    { title: "About Me", position: { top: "20%", left: "15%" } },
+    { title: "Let's Work Together", position: { top: "30%", left: "75%" } },
+    { title: "What Does Revo Offer?", position: { top: "60%", left: "20%" } },
+    { title: "My Portfolio", position: { top: "45%", left: "65%" } },
+    { title: "Pricing", position: { top: "70%", left: "70%" } },
+  ];
+
+  const getFolderContent = (title: string) => {
+    switch (title) {
+      case "About Me":
+        return "Hi! I'm Revo, a passionate developer...";
+      case "Let's Work Together":
+        return "Ready to start your next project?";
+      case "What Does Revo Offer?":
+        return "Web Development, Automation, and more...";
+      case "My Portfolio":
+        return "Check out my latest projects...";
+      case "Pricing":
+        return "Flexible pricing options for your needs...";
+      default:
+        return "Content coming soon...";
+    }
+  };
+
   return (
     <section className="min-h-[90vh] flex items-center justify-center px-4 relative overflow-hidden cursor-[url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAnSURBVHgBY2RgYPj/n+E/AxbACFPACFPEgAVgVYRLATZ5rArwuQQA+OgPOzQqoj4AAAAASUVORK5CYII='),auto]">
       <div className="absolute inset-0 bg-gradient-to-b from-rich-black to-rich-gray opacity-50" />
@@ -30,6 +60,27 @@ export const Hero = ({ showContent = true }: HeroProps) => {
           </p>
         </div>
       </div>
+
+      {/* Scattered Folders */}
+      {folders.map((folder) => (
+        <Folder
+          key={folder.title}
+          title={folder.title}
+          position={folder.position}
+          onClick={() => setOpenFolder(folder.title)}
+        />
+      ))}
+
+      {/* Folder Windows */}
+      <FolderWindow
+        title={openFolder || ""}
+        isOpen={!!openFolder}
+        onClose={() => setOpenFolder(null)}
+      >
+        <p className="text-rich-gold/80 font-mono">
+          {openFolder ? getFolderContent(openFolder) : ""}
+        </p>
+      </FolderWindow>
     </section>
   );
 };
