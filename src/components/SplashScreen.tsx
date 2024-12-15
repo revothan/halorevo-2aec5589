@@ -6,12 +6,7 @@ export const SplashScreen = ({ onComplete }: { onComplete: () => void }) => {
   const [currentStep, setCurrentStep] = useState(0);
   const steps = [
     "Teaching AI to make coffee...",
-    "Reticulating splines...",
-    "Bribing pixels to align properly...",
     "Convincing bugs they're actually features...",
-    "Downloading more RGB for your screen...",
-    "Feeding hamsters powering the server...",
-    "Generating witty loading messages...",
     "Warming up the flux capacitor...",
   ];
 
