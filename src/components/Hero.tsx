@@ -3,7 +3,11 @@ import { motion } from "framer-motion";
 import { Terminal } from "lucide-react";
 import { TypingAnimation } from "./TypingAnimation";
 
-export const Hero = () => {
+interface HeroProps {
+  showContent?: boolean;
+}
+
+export const Hero = ({ showContent = true }: HeroProps) => {
   return (
     <section className="min-h-[90vh] flex items-center justify-center px-4 relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-rich-black to-rich-gray opacity-50" />
@@ -22,10 +26,12 @@ export const Hero = () => {
             {'>'} Digital Solutions for Modern Businesses_
           </span>
           
-          <TypingAnimation
-            texts={["Hey, Vancouver!", "This is Halo Revo."]}
-            className="text-4xl md:text-6xl font-bold leading-tight"
-          />
+          {showContent && (
+            <TypingAnimation
+              texts={["Hey, Vancouver!", "This is Halo Revo."]}
+              className="text-4xl md:text-6xl font-bold leading-tight"
+            />
+          )}
           
           <p className="text-lg md:text-xl text-rich-gold/80 animate-fade-up animate-delay-3 font-mono">
             Websites & Automations That Work for You

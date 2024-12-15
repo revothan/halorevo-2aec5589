@@ -40,7 +40,7 @@ const Index = () => {
           
           {/* Content */}
           <div className="overflow-y-auto">
-            <Hero />
+            <Hero showContent={!showSplash} />
             <Services />
           </div>
         </div>
