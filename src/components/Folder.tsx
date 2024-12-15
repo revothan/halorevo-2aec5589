@@ -47,8 +47,8 @@ export const Folder = ({ title, color = "#FDE1D3" }: FolderProps) => {
           >
             {[
               { year: "2004", text: "Born. Clearly destined for greatness." },
-              { year: "2006", text: "Learned to code. Why? To hack my way to infinite lives in video games. Spoiler alert: It didn't work." },
-              { year: "2015", text: "Founded Designerku. Yes, a high-schooler running a design business. I even wore glasses to look more professional (even though I didn't need them)." },
+              { year: "2010", text: "Learned to code. Why? To hack my way to infinite lives in video games. Spoiler alert: It didn't work." },
+              { year: "2018", text: "Founded Designerku. Yes, a high-schooler running a design business. I even wore glasses to look more professional (even though I didn't need them)." },
               { year: "2022-2024", text: "Studied Computer Science at Columbia College. Became that person who codes at coffee shops." },
               { year: "2022", text: "Worked as Marketing Coordinator at Baza Dance Studios, Vancouver. Fun fact: I can sell dance classes like it's nobody's business, but my two left feet are staying off the dance floor." },
               { year: "2023", text: "Launched Halo Revo—where I combined my marketing and tech skills into one unstoppable automation machine." }
