@@ -18,9 +18,9 @@ export const TypingAnimation = ({ texts, className = "" }: TypingAnimationProps)
         setCurrentWords(words.slice(0, currentWords.length + 1));
       }, 300); // Adjust timing as needed
       return () => clearTimeout(timeout);
-    } else if (currentTextIndex < texts.length - 1) {
+    } else {
       const timeout = setTimeout(() => {
-        setCurrentTextIndex(currentTextIndex + 1);
+        setCurrentTextIndex((prevIndex) => (prevIndex + 1) % texts.length); // Loop back to start
         setCurrentWords([]);
       }, 2000); // Wait before starting next text
       return () => clearTimeout(timeout);
