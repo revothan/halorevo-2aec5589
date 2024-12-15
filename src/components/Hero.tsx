@@ -13,11 +13,11 @@ export const Hero = ({ showContent = true }: HeroProps) => {
   const [openFolder, setOpenFolder] = useState<string | null>(null);
 
   const folders = [
-    { title: "About Me", position: { top: "35%", left: "15%" } },
-    { title: "Let's Work Together", position: { top: "40%", left: "75%" } },
-    { title: "What Does Revo Offer?", position: { top: "65%", left: "20%" } },
-    { title: "My Portfolio", position: { top: "55%", left: "65%" } },
-    { title: "Pricing", position: { top: "75%", left: "70%" } },
+    { title: "About Me", position: { top: "45%", left: "15%" } },
+    { title: "Let's Work Together", position: { top: "50%", left: "75%" } },
+    { title: "What Does Revo Offer?", position: { top: "75%", left: "20%" } },
+    { title: "My Portfolio", position: { top: "65%", left: "65%" } },
+    { title: "Pricing", position: { top: "85%", left: "70%" } },
   ];
 
   const getFolderContent = (title: string) => {
