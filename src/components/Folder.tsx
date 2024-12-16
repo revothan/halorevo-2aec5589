@@ -4,7 +4,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { FolderWindow } from "./FolderWindow";
 import { FolderPortfolioContent } from "./FolderPortfolioContent";
 import { FolderAboutContent } from "./FolderAboutContent";
-import { FolderPricingContent } from "./FolderPricingContent";
 import { FolderOfferContent } from "./FolderOfferContent";
 import { FolderWorkTogetherContent } from "./FolderWorkTogetherContent";
 
@@ -18,11 +17,11 @@ export const Folder = ({ title, color = "#FDE1D3" }: FolderProps) => {
 
   const handleClose = () => {
     setIsOpen(false);
-    // Find the "Pricing" folder and trigger its click if we're in the Portfolio
+    // Find the "What Does Revo Offer?" folder and trigger its click if we're in the Portfolio
     if (title === "My Portfolio") {
-      const pricingFolder = document.querySelector('[data-folder="Pricing"]');
-      if (pricingFolder) {
-        (pricingFolder as HTMLElement).click();
+      const offerFolder = document.querySelector('[data-folder="What Does Revo Offer?"]');
+      if (offerFolder) {
+        (offerFolder as HTMLElement).click();
       }
     }
     // Find the "My Portfolio" folder and trigger its click if we're in About Me
@@ -40,8 +39,6 @@ export const Folder = ({ title, color = "#FDE1D3" }: FolderProps) => {
         return <FolderAboutContent onClose={handleClose} />;
       case "My Portfolio":
         return <FolderPortfolioContent onClose={handleClose} />;
-      case "Pricing":
-        return <FolderPricingContent onClose={handleClose} />;
       case "What Does Revo Offer?":
         return <FolderOfferContent onClose={handleClose} />;
       case "Let's Work Together":
