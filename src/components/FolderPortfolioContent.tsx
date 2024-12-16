@@ -165,7 +165,7 @@ export const FolderPortfolioContent = ({ onClose }: FolderPortfolioContentProps)
           onClick={onClose}
           className="w-full font-mono group"
         >
-          Check out my pricing
+          What Does Revo Offer?
           <ExternalLink className="w-4 h-4 transition-transform group-hover:translate-x-1" />
         </Button>
       </motion.div>

@@ -13,8 +13,7 @@ export const Hero = ({ showContent = true }: HeroProps) => {
     { title: "About Me", color: "#F2FCE2" },
     { title: "Let's Work Together", color: "#FEF7CD" },
     { title: "What Does Revo Offer?", color: "#FEC6A1" },
-    { title: "My Portfolio", color: "#E5DEFF" },
-    { title: "Pricing", color: "#FFDEE2" }
+    { title: "My Portfolio", color: "#E5DEFF" }
   ];
 
   return (
@@ -44,7 +43,7 @@ export const Hero = ({ showContent = true }: HeroProps) => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.5 }}
-          className="mt-16 grid grid-cols-2 md:grid-cols-5 gap-4 justify-items-center"
+          className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-4 justify-items-center"
         >
           {folders.map((folder) => (
             <Folder key={folder.title} {...folder} />
