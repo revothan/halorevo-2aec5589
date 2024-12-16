@@ -24,10 +24,10 @@ export const FolderOfferContent = ({ onClose }: FolderOfferContentProps) => {
 
   const handleWorkTogether = () => {
     onClose();
-    // Find and click the "Pricing" folder
-    const pricingFolder = document.querySelector('[data-folder="Pricing"]');
-    if (pricingFolder) {
-      (pricingFolder as HTMLElement).click();
+    // Find and click the "Let's Work Together" folder
+    const workTogetherFolder = document.querySelector('[data-folder="Let\'s Work Together"]');
+    if (workTogetherFolder) {
+      (workTogetherFolder as HTMLElement).click();
     }
   };
 
