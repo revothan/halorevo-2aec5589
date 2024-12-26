@@ -1,55 +1,99 @@
+import React from "react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import { Terminal } from "lucide-react";
+import { Terminal, ArrowRight, Code, Workflow, Sparkles } from "lucide-react";
 import { TypingAnimation } from "./TypingAnimation";
-import { Folder } from "./Folder";
+import Portfolio3DCarousel from "./Portfolio3DCarousel";
 
 interface HeroProps {
   showContent?: boolean;
 }
 
 export const Hero = ({ showContent = true }: HeroProps) => {
-  const folders = [
-    { title: "About Me", color: "#F2FCE2" },
-    { title: "Let's Work Together", color: "#FEF7CD" },
-    { title: "What Does Revo Offer?", color: "#FEC6A1" },
-    { title: "My Portfolio", color: "#E5DEFF" }
+  const features = [
+    { icon: Code, text: "Custom Web Development" },
+    { icon: Workflow, text: "Business Automation" },
+    { icon: Sparkles, text: "Digital Innovation" },
   ];
 
   return (
-    <section className="min-h-[90vh] flex flex-col items-center justify-center px-4 relative overflow-hidden cursor-[url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAnSURBVHgBY2RgYPj/n+E/AxbACFPACFPEgAVgVYRLATZ5rArwuQQA+OgPOzQqoj4AAAAASUVORK5CYII='),auto]">
-      <div className="absolute inset-0 bg-gradient-to-b from-rich-black to-rich-gray opacity-50" />
-      
-      <div className="container mx-auto relative z-10">
-        <div className="max-w-3xl mx-auto text-center space-y-8">
-          <span className="inline-block text-sm uppercase tracking-wider text-rich-blue animate-fade-up animate-delay-1 font-mono">
-            {'>'} Digital Solutions for Modern Businesses_
-          </span>
-          
-          {showContent && (
-            <TypingAnimation
-              texts={["Hey, Vancouver!", "This is Halo Revo."]}
-              className="text-4xl md:text-6xl font-bold leading-tight"
-            />
-          )}
-          
-          <p className="text-lg md:text-xl text-rich-gold/80 animate-fade-up animate-delay-3 font-mono">
-            Websites & Automations That Work for You
-          </p>
-        </div>
+    <section className="min-h-screen bg-gradient-to-b from-rich-black to-rich-gray relative">
+      {/* Background Grid Pattern */}
+      <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center opacity-10" />
 
-        {/* Folders Section */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.5 }}
-          className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-4 justify-items-center"
-        >
-          {folders.map((folder) => (
-            <Folder key={folder.title} {...folder} />
-          ))}
-        </motion.div>
+      <div className="container mx-auto px-4 py-16 relative">
+        <div className="grid lg:grid-cols-2 gap-12 items-center min-h-[80vh]">
+          {/* Left Column - Main Content */}
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6 }}
+            className="space-y-8"
+          >
+            <div className="inline-flex items-center gap-2 bg-rich-blue/10 px-4 py-2 rounded-full">
+              <Terminal className="w-4 h-4 text-rich-blue" />
+              <span className="text-sm font-mono text-rich-blue">
+                Vancouver's Digital Solutions Expert
+              </span>
+            </div>
+
+            {showContent && (
+              <>
+                <h1 className="text-5xl lg:text-6xl font-bold leading-tight">
+                  Transform Your <br />
+                  <span className="text-rich-gold">Digital Presence</span>
+                </h1>
+
+                <p className="text-xl text-gray-300 max-w-lg">
+                  Elevate your business with custom websites and automation
+                  solutions that drive growth and enhance efficiency.
+                </p>
+
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <Button className="bg-rich-blue hover:bg-rich-blue/90 text-white px-8 py-6 rounded-lg font-medium inline-flex items-center gap-2">
+                    Start Your Project
+                    <ArrowRight className="w-4 h-4" />
+                  </Button>
+                  <Button
+                    variant="outline"
+                    className="border-rich-gold/30 text-rich-gold hover:bg-rich-gold/10 px-8 py-6 rounded-lg"
+                  >
+                    View Portfolio
+                  </Button>
+                </div>
+
+                {/* Features List */}
+                <div className="grid sm:grid-cols-3 gap-6 pt-8 border-t border-white/10">
+                  {features.map(({ icon: Icon, text }) => (
+                    <div key={text} className="flex items-center gap-3">
+                      <div className="p-2 rounded-lg bg-rich-blue/10">
+                        <Icon className="w-5 h-5 text-rich-blue" />
+                      </div>
+                      <span className="text-sm text-gray-300">{text}</span>
+                    </div>
+                  ))}
+                </div>
+              </>
+            )}
+          </motion.div>
+
+          {/* Right Column - 3D Portfolio Carousel */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3, duration: 0.6 }}
+            className="relative"
+          >
+            <div className="absolute -inset-4 bg-gradient-to-r from-rich-blue to-rich-gold opacity-10 blur-xl rounded-xl" />
+            <div className="relative">
+              <Portfolio3DCarousel />
+            </div>
+          </motion.div>
+        </div>
       </div>
     </section>
   );
 };
+
+export default Hero;
+
