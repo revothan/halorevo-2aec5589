@@ -30,7 +30,7 @@ export const SplashScreen = ({ onComplete }: { onComplete: () => void }) => {
         const next = prev + 1;
         return next <= 100 ? next : 100;
       });
-    }, 30);
+    }, 20); // Durasi lebih cepat
 
     const stepInterval = setInterval(() => {
       setCurrentStep((prev) => {
@@ -41,7 +41,7 @@ export const SplashScreen = ({ onComplete }: { onComplete: () => void }) => {
         }
         return prev + 1;
       });
-    }, 1200);
+    }, 800); // Durasi lebih cepat
 
     return () => {
       clearInterval(progressInterval);
@@ -101,7 +101,7 @@ export const SplashScreen = ({ onComplete }: { onComplete: () => void }) => {
               className="h-full bg-gradient-to-r from-rich-gold via-blue-500 to-rich-gold"
               initial={{ width: "0%" }}
               animate={{ width: `${loadingProgress}%` }}
-              transition={{ duration: 0.3 }}
+              transition={{ duration: 0.2 }} // Transisi lebih cepat
             />
           </div>
           <div className="mt-2 text-right font-mono text-sm text-rich-gold/60">
@@ -141,7 +141,7 @@ export const SplashScreen = ({ onComplete }: { onComplete: () => void }) => {
                       <motion.div
                         animate={{ rotate: 360 }}
                         transition={{
-                          duration: 2,
+                          duration: 1.5, // Lebih cepat dari sebelumnya
                           repeat: Infinity,
                           ease: "linear",
                         }}
@@ -175,4 +175,3 @@ export const SplashScreen = ({ onComplete }: { onComplete: () => void }) => {
 };
 
 export default SplashScreen;
-
