@@ -49,9 +49,9 @@ FeatureCard.displayName = "FeatureCard";
 const Pricing = () => {
   const [monthlyVisits, setMonthlyVisits] = useState(1000);
   const [tempVisits, setTempVisits] = useState(1000);
-  const [selectedFeatures, setSelectedFeatures] = useState(new Set());
+  const [selectedFeatures, setSelectedFeatures] = useState<Set<string>>(new Set());
 
-  const features = useMemo(
+  const features: Feature[] = useMemo(
     () => [
       {
         id: "ecommerce",
@@ -118,13 +118,10 @@ const Pricing = () => {
 
   const calculatePrice = useMemo(() => {
     const visitPrice = Math.floor(monthlyVisits / 1000) * 50;
-    const featurePrice = Array.from(selectedFeatures).reduce(
-      (total, featureId) => {
-        const feature = features.find((f) => f.id === featureId);
-        return total + (feature?.basePrice || 0);
-      },
-      0,
-    );
+    const featurePrice = Array.from(selectedFeatures).reduce((total: number, featureId: string) => {
+      const feature = features.find((f) => f.id === featureId);
+      return total + (feature?.basePrice || 0);
+    }, 0);
 
     return visitPrice + featurePrice;
   }, [monthlyVisits, selectedFeatures, features]);
