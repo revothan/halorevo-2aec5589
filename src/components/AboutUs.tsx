@@ -118,7 +118,7 @@ const AboutUs = () => {
               <div className="absolute -inset-4 bg-gradient-to-r from-rich-blue to-rich-gold opacity-30 blur-xl rounded-xl" />
               <div className="relative aspect-video rounded-xl overflow-hidden">
                 <img
-                  src="/api/placeholder/800/450"
+                  src="https://ucarecdn.com/77c3b2c2-98f4-4b50-a36d-2b0a4e930635/-/preview/1000x565/"
                   alt="Our Team at Work"
                   className="w-full h-full object-cover"
                 />
@@ -127,7 +127,7 @@ const AboutUs = () => {
             </div>
 
             {/* Stats Overlay */}
-            <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 w-[90%]">
+            <div className="absolute -bottom-11 left-1/2 -translate-x-1/2 w-[90%]">
               <div className="bg-rich-gray/80 backdrop-blur-sm rounded-xl p-6 border border-white/10">
                 <div className="grid grid-cols-3 gap-4">
                   {stats.map(({ label, value, icon: Icon }) => (
