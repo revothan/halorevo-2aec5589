@@ -107,6 +107,8 @@ const Portfolio3DCarousel = () => {
                 src={item.image}
                 alt={item.title}
                 className="w-full h-full object-cover rounded-xl"
+                loading="lazy"
+                decoding="async"
               />
               <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
                 <h3 className="text-lg font-bold">{item.title}</h3>
