@@ -13,11 +13,26 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
+// Define step type for better type safety
+interface Step {
+  id: number;
+  title: string;
+  description: string;
+  icon: React.ElementType;
+  color: string;
+  borderColor: string;
+  features: string[];
+  stats: {
+    label: string;
+    value: string;
+  };
+}
+
 const HowItWorks = () => {
   const [activeStep, setActiveStep] = useState(0);
   const { scrollY } = useScroll();
 
-  const steps = [
+  const steps: Step[] = [
     {
       id: 1,
       title: "Discovery & Planning",
@@ -153,7 +168,7 @@ const HowItWorks = () => {
       </div>
 
       {/* Right Column - Active Step Details */}
-      <StepDetails step={steps[activeStep]} />
+      {steps[activeStep] && <StepDetails step={steps[activeStep]} />}
     </div>
   );
 
@@ -216,7 +231,7 @@ const HowItWorks = () => {
               }}
               className="overflow-hidden"
             >
-              <StepDetails step={step} />
+              {isActive && <StepDetails step={step} />}
             </motion.div>
           </motion.div>
         );
@@ -225,7 +240,7 @@ const HowItWorks = () => {
   );
 
   // Reusable Step Details Component
-  const StepDetails = ({ step }) => (
+  const StepDetails = ({ step }: { step: Step }) => (
     <div className="p-6 space-y-6">
       {/* Statistics */}
       <div className="p-4 bg-rich-black/30 rounded-lg">

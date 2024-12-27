@@ -66,8 +66,32 @@ const faqs = [
   },
 ];
 
+interface Question {
+  question: string;
+  answer: string;
+}
+
+interface Category {
+  category: string;
+  questions: Question[];
+}
+
+interface FAQItemProps {
+  item: Question;
+  index: number;
+  isActive: boolean;
+  onToggle: (index: number) => void;
+}
+
+interface CategorySectionProps {
+  category: Category;
+  categoryIndex: number;
+  activeIndex: number | null;
+  onToggle: (index: number) => void;
+}
+
 // Memoized FAQ Item Component
-const FAQItem = memo(({ item, index, isActive, onToggle }) => {
+const FAQItem: React.FC<FAQItemProps> = memo(({ item, index, isActive, onToggle }) => {
   const prefersReducedMotion = window.matchMedia(
     "(prefers-reduced-motion: reduce)",
   ).matches;
@@ -121,7 +145,7 @@ const FAQItem = memo(({ item, index, isActive, onToggle }) => {
 FAQItem.displayName = "FAQItem";
 
 // Memoized Category Component
-const CategorySection = memo(
+const CategorySection: React.FC<CategorySectionProps> = memo(
   ({ category, categoryIndex, activeIndex, onToggle }) => (
     <div>
       <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
@@ -149,9 +173,9 @@ const CategorySection = memo(
 CategorySection.displayName = "CategorySection";
 
 const QnASection = () => {
-  const [activeIndex, setActiveIndex] = useState(null);
+  const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
-  const handleToggle = useCallback((index) => {
+  const handleToggle = useCallback((index: number) => {
     setActiveIndex((prev) => (prev === index ? null : index));
   }, []);
 
