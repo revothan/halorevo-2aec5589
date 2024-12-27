@@ -1,6 +1,8 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Zap, ArrowRight, Clock, Settings, Shield, Check } from "lucide-react";
+import { ArrowRight } from "lucide-react";
+import PricingFeatureCard from "./pricing/PricingFeatureCard";
+import PricingVisitsSlider from "./pricing/PricingVisitsSlider";
 
 interface Feature {
   id: string;
@@ -8,43 +10,6 @@ interface Feature {
   basePrice: number;
   description: string;
 }
-
-interface FeatureCardProps {
-  feature: Feature;
-  isSelected: boolean;
-  onToggle: (featureId: string) => void;
-}
-
-const FeatureCard: React.FC<FeatureCardProps> = React.memo(({ feature, isSelected, onToggle }) => (
-  <div
-    onClick={() => onToggle(feature.id)}
-    className={`
-      p-4 rounded-lg cursor-pointer transition-colors
-      ${
-        isSelected
-          ? "bg-rich-blue/20 border-2 border-rich-blue"
-          : "bg-rich-gray/20 border border-white/10 hover:bg-rich-gray/30"
-      }
-    `}
-  >
-    <div className="flex items-center justify-between mb-2">
-      <h4 className="font-bold">{feature.name}</h4>
-      <div
-        className={`w-6 h-6 rounded-full flex items-center justify-center ${
-          isSelected ? "bg-rich-blue" : "bg-rich-gray/40"
-        }`}
-      >
-        <Check className="w-4 h-4" />
-      </div>
-    </div>
-    <p className="text-sm text-gray-400">{feature.description}</p>
-    <div className="text-sm text-rich-gold mt-2">
-      +${feature.basePrice}/month
-    </div>
-  </div>
-));
-
-FeatureCard.displayName = "FeatureCard";
 
 const Pricing = () => {
   const [monthlyVisits, setMonthlyVisits] = useState(1000);
@@ -96,7 +61,7 @@ const Pricing = () => {
         description: "Detailed visitor insights and reporting",
       },
     ],
-    [],
+    []
   );
 
   useEffect(() => {
@@ -146,30 +111,12 @@ const Pricing = () => {
 
         <div className="max-w-4xl mx-auto bg-rich-gray/30 border border-white/10 rounded-xl backdrop-blur-sm p-8">
           <div className="mb-12">
-            <div className="mb-12">
-              <h3 className="text-xl font-bold mb-4">
-                Expected Monthly Visits
-              </h3>
-              <div className="mb-2">
-                <input
-                  type="range"
-                  min="1000"
-                  max="100000"
-                  step="1000"
-                  value={tempVisits}
-                  onChange={(e) => setTempVisits(Number(e.target.value))}
-                  className="w-full h-2 bg-rich-blue/20 rounded-lg appearance-none cursor-pointer accent-rich-blue"
-                />
-                <div className="text-right text-gray-400 mt-2">
-                  {tempVisits.toLocaleString()} visits/month
-                </div>
-              </div>
-            </div>
+            <PricingVisitsSlider value={tempVisits} onChange={setTempVisits} />
 
             <h3 className="text-xl font-bold mb-4">Choose Your Features</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {features.map((feature) => (
-                <FeatureCard
+                <PricingFeatureCard
                   key={feature.id}
                   feature={feature}
                   isSelected={selectedFeatures.has(feature.id)}
