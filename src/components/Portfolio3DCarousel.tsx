@@ -17,31 +17,22 @@ const Portfolio3DCarousel = () => {
     {
       id: 1,
       title: "E-commerce Platform",
-      image: "/api/placeholder/400/300",
+      image:
+        "https://iuzxsfayrskqvsajweib.supabase.co/storage/v1/object/public/images_promo/E-commerce.gif",
       category: "Web Development",
     },
     {
       id: 2,
       title: "Business Dashboard",
-      image: "/api/placeholder/400/300",
+      image:
+        "https://iuzxsfayrskqvsajweib.supabase.co/storage/v1/object/public/images_promo/Analytics.gif",
       category: "Analytics",
     },
     {
       id: 3,
-      title: "Mobile App",
-      image: "/api/placeholder/400/300",
-      category: "App Development",
-    },
-    {
-      id: 4,
-      title: "Portfolio Website",
-      image: "/api/placeholder/400/300",
-      category: "Web Design",
-    },
-    {
-      id: 5,
       title: "AI Integration",
-      image: "/api/placeholder/400/300",
+      image:
+        "https://iuzxsfayrskqvsajweib.supabase.co/storage/v1/object/public/images_promo/AI%20chatbot.gif",
       category: "AI Solutions",
     },
   ];
