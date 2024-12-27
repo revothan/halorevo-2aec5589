@@ -2,7 +2,20 @@ import React, { useState, useMemo, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Zap, ArrowRight, Clock, Settings, Shield, Check } from "lucide-react";
 
-const FeatureCard = React.memo(({ feature, isSelected, onToggle }) => (
+interface Feature {
+  id: string;
+  name: string;
+  basePrice: number;
+  description: string;
+}
+
+interface FeatureCardProps {
+  feature: Feature;
+  isSelected: boolean;
+  onToggle: (featureId: string) => void;
+}
+
+const FeatureCard: React.FC<FeatureCardProps> = React.memo(({ feature, isSelected, onToggle }) => (
   <div
     onClick={() => onToggle(feature.id)}
     className={`
@@ -30,6 +43,8 @@ const FeatureCard = React.memo(({ feature, isSelected, onToggle }) => (
     </div>
   </div>
 ));
+
+FeatureCard.displayName = "FeatureCard";
 
 const Pricing = () => {
   const [monthlyVisits, setMonthlyVisits] = useState(1000);
@@ -89,7 +104,7 @@ const Pricing = () => {
     return () => clearTimeout(timeout);
   }, [tempVisits]);
 
-  const toggleFeature = (featureId) => {
+  const toggleFeature = (featureId: string) => {
     setSelectedFeatures((prev) => {
       const newFeatures = new Set(prev);
       if (newFeatures.has(featureId)) {
