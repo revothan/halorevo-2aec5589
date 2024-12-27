@@ -117,11 +117,15 @@ const AboutUs = () => {
             <div className="relative">
               <div className="absolute -inset-4 bg-gradient-to-r from-rich-blue to-rich-gold opacity-30 blur-xl rounded-xl" />
               <div className="relative aspect-video rounded-xl overflow-hidden">
-                <img
-                  src="https://ucarecdn.com/77c3b2c2-98f4-4b50-a36d-2b0a4e930635/-/preview/1000x565/"
-                  alt="Our Team at Work"
-                  className="w-full h-full object-cover"
-                />
+
+              <img
+                src="https://ucarecdn.com/77c3b2c2-98f4-4b50-a36d-2b0a4e930635/-/preview/1000x565/"
+                alt="Our Team at Work"
+                className="w-full h-full object-cover"
+                loading="lazy"
+                decoding="async"
+              />
+
                 <div className="absolute inset-0 bg-gradient-to-t from-rich-black/80 to-transparent" />
               </div>
             </div>
@@ -232,3 +236,4 @@ const AboutUs = () => {
 };
 
 export default AboutUs;
+
