@@ -1,235 +1,205 @@
-import React from "react";
-import { motion } from "framer-motion";
+import React, { useState, useMemo, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import {
-  Check,
-  Zap,
-  ArrowRight,
-  Clock,
-  Settings,
-  Sparkles,
-  Shield,
-  Rocket,
-} from "lucide-react";
+import { Zap, ArrowRight, Clock, Settings, Shield, Check } from "lucide-react";
 
-const PricingSection = () => {
-  const plans = [
-    {
-      name: "Standard",
-      price: 750,
-      description:
-        "Perfect for businesses ready to scale their digital presence",
-      features: [
-        "1 Request at a Time",
-        "Unlimited Revisions",
-        "48-Hour Turnaround Time",
-        "Dedicated Project Manager",
-        "Premium Design Assets",
-        "Source Code Included",
-        "Mobile-First Development",
-        "SEO Optimization",
-        "Regular Maintenance Updates",
-      ],
-      setupFee: 500,
-      icon: Rocket,
-      color: "from-blue-500 to-purple-500",
-    },
-    {
-      name: "Pro",
-      price: 1000,
-      description:
-        "Ideal for businesses needing faster delivery and more flexibility",
-      features: [
-        "2 Parallel Requests",
-        "Priority Support",
-        "24-Hour Turnaround Time",
-        "Dedicated Project Manager",
-        "Premium Design Assets",
-        "Source Code Included",
-        "Mobile-First Development",
-        "Advanced SEO Optimization",
-        "Priority Maintenance",
-        "API Integration Support",
-        "Performance Optimization",
-        "Technical Consultation",
-      ],
-      setupFee: 500,
-      icon: Sparkles,
-      color: "from-rich-gold to-amber-500",
-      popular: true,
-    },
-  ];
+const FeatureCard = React.memo(({ feature, isSelected, onToggle }) => (
+  <div
+    onClick={() => onToggle(feature.id)}
+    className={`
+      p-4 rounded-lg cursor-pointer transition-colors
+      ${
+        isSelected
+          ? "bg-rich-blue/20 border-2 border-rich-blue"
+          : "bg-rich-gray/20 border border-white/10 hover:bg-rich-gray/30"
+      }
+    `}
+  >
+    <div className="flex items-center justify-between mb-2">
+      <h4 className="font-bold">{feature.name}</h4>
+      <div
+        className={`w-6 h-6 rounded-full flex items-center justify-center ${
+          isSelected ? "bg-rich-blue" : "bg-rich-gray/40"
+        }`}
+      >
+        <Check className="w-4 h-4" />
+      </div>
+    </div>
+    <p className="text-sm text-gray-400">{feature.description}</p>
+    <div className="text-sm text-rich-gold mt-2">
+      +${feature.basePrice}/month
+    </div>
+  </div>
+));
+
+const Pricing = () => {
+  const [monthlyVisits, setMonthlyVisits] = useState(1000);
+  const [tempVisits, setTempVisits] = useState(1000);
+  const [selectedFeatures, setSelectedFeatures] = useState(new Set());
+
+  const features = useMemo(
+    () => [
+      {
+        id: "ecommerce",
+        name: "E-commerce",
+        basePrice: 200,
+        description: "Full shopping cart and payment processing",
+      },
+      {
+        id: "blog",
+        name: "Blog System",
+        basePrice: 30,
+        description: "Content management and commenting",
+      },
+      {
+        id: "automation",
+        name: "Automation",
+        basePrice: 100,
+        description: "Workflow and task automation",
+      },
+      {
+        id: "ai",
+        name: "AI Integration",
+        basePrice: 300,
+        description: "Smart features and AI-powered tools",
+      },
+      {
+        id: "customer_service",
+        name: "Customer Service",
+        basePrice: 100,
+        description: "Chat support and ticket system",
+      },
+      {
+        id: "booking",
+        name: "Booking System",
+        basePrice: 180,
+        description: "Appointment and reservation management",
+      },
+      {
+        id: "analytics",
+        name: "Advanced Analytics",
+        basePrice: 120,
+        description: "Detailed visitor insights and reporting",
+      },
+    ],
+    [],
+  );
+
+  useEffect(() => {
+    const timeout = setTimeout(() => setMonthlyVisits(tempVisits), 300);
+    return () => clearTimeout(timeout);
+  }, [tempVisits]);
+
+  const toggleFeature = (featureId) => {
+    setSelectedFeatures((prev) => {
+      const newFeatures = new Set(prev);
+      if (newFeatures.has(featureId)) {
+        newFeatures.delete(featureId);
+      } else {
+        newFeatures.add(featureId);
+      }
+      return newFeatures;
+    });
+  };
+
+  const calculatePrice = useMemo(() => {
+    const visitPrice = Math.floor(monthlyVisits / 1000) * 50;
+    const featurePrice = Array.from(selectedFeatures).reduce(
+      (total, featureId) => {
+        const feature = features.find((f) => f.id === featureId);
+        return total + (feature?.basePrice || 0);
+      },
+      0,
+    );
+
+    return visitPrice + featurePrice;
+  }, [monthlyVisits, selectedFeatures, features]);
 
   return (
     <section className="min-h-screen bg-gradient-to-b from-rich-black to-rich-gray py-20 relative overflow-hidden">
-      {/* Background Elements */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute -top-1/2 -right-1/2 w-full h-full bg-gradient-to-b from-rich-blue/20 to-transparent rounded-full blur-3xl" />
         <div className="absolute -bottom-1/2 -left-1/2 w-full h-full bg-gradient-to-t from-rich-gold/20 to-transparent rounded-full blur-3xl" />
       </div>
 
       <div className="container mx-auto px-4 relative z-10">
-        {/* Header */}
         <div className="text-center mb-16">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="inline-flex items-center gap-2 bg-rich-blue/10 px-4 py-2 rounded-full mb-6"
-          >
-            <Zap className="w-4 h-4 text-rich-blue" />
-            <span className="text-sm font-mono text-rich-blue">
-              Simple Pricing
-            </span>
-          </motion.div>
+          <h2 className="text-4xl md:text-5xl font-bold mb-6">
+            Build Your <span className="text-rich-gold">Custom Solution</span>
+          </h2>
+          <p className="text-gray-400 max-w-2xl mx-auto mb-8">
+            Tailor your website package based on your expected traffic and
+            needed features. Scale up or down anytime as your business grows.
+          </p>
+        </div>
 
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-4xl md:text-5xl font-bold mb-6"
-          >
-            Choose Your <span className="text-rich-gold">Growth Plan</span>
-          </motion.h2>
-
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-gray-400 max-w-2xl mx-auto mb-8"
-          >
-            Flexible plans designed to help your business grow. Start, pause, or
-            cancel anytime. All plans include a one-time setup fee of $500 to
-            ensure proper onboarding and system setup.
-          </motion.p>
-
-          {/* Value Props */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-3xl mx-auto mb-12"
-          >
-            {[
-              { icon: Clock, text: "Pause or Cancel Anytime" },
-              { icon: Settings, text: "Seamless Integration" },
-              { icon: Shield, text: "100% Satisfaction Guaranteed" },
-            ].map(({ icon: Icon, text }) => (
-              <div
-                key={text}
-                className="flex items-center gap-3 justify-center"
-              >
-                <div className="p-2 rounded-lg bg-rich-blue/10">
-                  <Icon className="w-4 h-4 text-rich-blue" />
+        <div className="max-w-4xl mx-auto bg-rich-gray/30 border border-white/10 rounded-xl backdrop-blur-sm p-8">
+          <div className="mb-12">
+            <div className="mb-12">
+              <h3 className="text-xl font-bold mb-4">
+                Expected Monthly Visits
+              </h3>
+              <div className="mb-2">
+                <input
+                  type="range"
+                  min="1000"
+                  max="100000"
+                  step="1000"
+                  value={tempVisits}
+                  onChange={(e) => setTempVisits(Number(e.target.value))}
+                  className="w-full h-2 bg-rich-blue/20 rounded-lg appearance-none cursor-pointer accent-rich-blue"
+                />
+                <div className="text-right text-gray-400 mt-2">
+                  {tempVisits.toLocaleString()} visits/month
                 </div>
-                <span className="text-sm text-gray-400">{text}</span>
               </div>
-            ))}
-          </motion.div>
+            </div>
+
+            <h3 className="text-xl font-bold mb-4">Choose Your Features</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {features.map((feature) => (
+                <FeatureCard
+                  key={feature.id}
+                  feature={feature}
+                  isSelected={selectedFeatures.has(feature.id)}
+                  onToggle={toggleFeature}
+                />
+              ))}
+            </div>
+          </div>
+
+          <div className="text-center p-6 bg-rich-gray/40 rounded-lg">
+            <div className="mb-4">
+              <div className="text-sm text-gray-400 mb-2">
+                Estimated Monthly Price
+              </div>
+              <div className="text-4xl font-bold text-white">
+                ${calculatePrice}
+                <span className="text-lg text-gray-400">/month</span>
+              </div>
+              <div className="text-sm text-gray-400 mt-2">
+                One-time setup fee: $500
+              </div>
+            </div>
+
+            <Button
+              className="w-full md:w-auto py-6 px-8 rounded-lg font-medium inline-flex items-center justify-center gap-2
+                bg-gradient-to-r from-rich-gold to-amber-500 text-rich-black hover:brightness-110"
+            >
+              Get Started
+              <ArrowRight className="w-4 h-4" />
+            </Button>
+          </div>
         </div>
 
-        {/* Pricing Cards */}
-        <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-          {plans.map((plan, index) => {
-            const Icon = plan.icon;
-
-            return (
-              <motion.div
-                key={plan.name}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.2 + index * 0.1 }}
-                className={`
-                  relative rounded-xl backdrop-blur-sm
-                  ${plan.popular ? "bg-rich-gray/40 border-2 border-rich-gold/30" : "bg-rich-gray/30 border border-white/10"}
-                `}
-              >
-                {plan.popular && (
-                  <div className="absolute -top-4 left-1/2 -translate-x-1/2">
-                    <div className="bg-gradient-to-r from-rich-gold to-amber-500 text-rich-black px-4 py-1 rounded-full text-sm font-medium">
-                      Most Popular
-                    </div>
-                  </div>
-                )}
-
-                <div className="p-8">
-                  {/* Plan Header */}
-                  <div className="flex items-start justify-between mb-6">
-                    <div>
-                      <h3 className="text-2xl font-bold text-white mb-2">
-                        {plan.name}
-                      </h3>
-                      <p className="text-sm text-gray-400">
-                        {plan.description}
-                      </p>
-                    </div>
-                    <div
-                      className={`p-3 rounded-xl bg-gradient-to-br ${plan.color}`}
-                    >
-                      <Icon className="w-6 h-6 text-white" />
-                    </div>
-                  </div>
-
-                  {/* Pricing */}
-                  <div className="mb-6">
-                    <div className="flex items-baseline gap-2">
-                      <span className="text-4xl font-bold text-white">
-                        ${plan.price}
-                      </span>
-                      <span className="text-gray-400">/month</span>
-                    </div>
-                    <div className="text-sm text-gray-400 mt-2">
-                      One-time setup fee: ${plan.setupFee}
-                    </div>
-                  </div>
-
-                  {/* Features */}
-                  <div className="space-y-4 mb-8">
-                    {plan.features.map((feature) => (
-                      <div key={feature} className="flex items-center gap-3">
-                        <div className="flex-shrink-0">
-                          <Check className="w-5 h-5 text-rich-gold" />
-                        </div>
-                        <span className="text-gray-300">{feature}</span>
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* CTA Button */}
-                  <Button
-                    className={`
-                      w-full py-6 rounded-lg font-medium inline-flex items-center justify-center gap-2
-                      ${
-                        plan.popular
-                          ? "bg-gradient-to-r from-rich-gold to-amber-500 text-rich-black hover:brightness-110"
-                          : "bg-rich-blue hover:bg-rich-blue/90 text-white"
-                      }
-                    `}
-                  >
-                    Get Started
-                    <ArrowRight className="w-4 h-4" />
-                  </Button>
-                </div>
-              </motion.div>
-            );
-          })}
-        </div>
-
-        {/* Money-Back Guarantee */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.5 }}
-          className="text-center mt-12"
-        >
+        <div className="text-center mt-12">
           <p className="text-gray-400 text-sm">
             14-day money-back guarantee • No long-term contracts • Cancel
             anytime
           </p>
-        </motion.div>
+        </div>
       </div>
     </section>
   );
 };
 
-export default PricingSection;
+export default Pricing;

@@ -1,6 +1,6 @@
 import React, { useState, useCallback, memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown, MessageSquare, Zap } from "lucide-react";
+import { ChevronDown, Zap } from "lucide-react";
 
 // Separate FAQ data outside component to prevent recreation
 const faqs = [
@@ -67,42 +67,56 @@ const faqs = [
 ];
 
 // Memoized FAQ Item Component
-const FAQItem = memo(({ item, index, isActive, onToggle }) => (
-  <div
-    className={`rounded-xl border ${
-      isActive
-        ? "bg-rich-gray/40 border-rich-gold/30"
-        : "bg-rich-gray/20 border-white/10"
-    }`}
-  >
-    <button
-      onClick={() => onToggle(index)}
-      className="w-full text-left p-4 flex items-center justify-between"
+const FAQItem = memo(({ item, index, isActive, onToggle }) => {
+  const prefersReducedMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)",
+  ).matches;
+
+  const animationProps = prefersReducedMotion
+    ? {}
+    : {
+        initial: { scaleY: 0 },
+        animate: { scaleY: 1 },
+        exit: { scaleY: 0 },
+        transition: { duration: 0.2, ease: "easeInOut" },
+      };
+
+  return (
+    <div
+      className={`rounded-xl border ${
+        isActive
+          ? "bg-rich-gray/40 border-rich-gold/30"
+          : "bg-rich-gray/20 border-white/10"
+      }`}
     >
-      <span
-        className={`font-medium ${isActive ? "text-rich-gold" : "text-white"}`}
+      <button
+        onClick={() => onToggle(index)}
+        className="w-full text-left p-4 flex items-center justify-between"
       >
-        {item.question}
-      </span>
-      <ChevronDown
-        className={`w-4 h-4 ${isActive ? "text-rich-gold" : "text-gray-400"}`}
-      />
-    </button>
-    <AnimatePresence>
-      {isActive && (
-        <motion.div
-          initial={{ height: 0 }}
-          animate={{ height: "auto" }}
-          exit={{ height: 0 }}
-          transition={{ duration: 0.2, ease: "easeInOut" }}
-          className="overflow-hidden"
+        <span
+          className={`font-medium ${
+            isActive ? "text-rich-gold" : "text-white"
+          }`}
         >
-          <p className="px-4 pb-4 text-gray-400">{item.answer}</p>
-        </motion.div>
-      )}
-    </AnimatePresence>
-  </div>
-));
+          {item.question}
+        </span>
+        <ChevronDown
+          className={`w-4 h-4 ${isActive ? "text-rich-gold" : "text-gray-400"}`}
+        />
+      </button>
+      <AnimatePresence>
+        {isActive && (
+          <motion.div
+            {...animationProps}
+            className="overflow-hidden origin-top"
+          >
+            <p className="px-4 pb-4 text-gray-400">{item.answer}</p>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+});
 
 FAQItem.displayName = "FAQItem";
 

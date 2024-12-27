@@ -107,19 +107,19 @@ const Footer = () => {
                   <div className="flex items-center gap-3 text-gray-400">
                     <Mail className="w-5 h-5 text-rich-gold" />
                     <a
-                      href="mailto:contact@halorevo.com"
+                      href="mailto:halorevo.info@gmail.com"
                       className="hover:text-rich-gold transition-colors"
                     >
-                      contact@halorevo.com
+                      halorevo.info@gmail.com
                     </a>
                   </div>
                   <div className="flex items-center gap-3 text-gray-400">
                     <Phone className="w-5 h-5 text-rich-gold" />
                     <a
-                      href="tel:+1234567890"
+                      href="tel:+2369780464"
                       className="hover:text-rich-gold transition-colors"
                     >
-                      (123) 456-7890
+                      (236) 978-0464
                     </a>
                   </div>
                 </div>
