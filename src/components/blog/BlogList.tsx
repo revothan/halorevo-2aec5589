@@ -53,7 +53,8 @@ export function BlogList() {
           )
         `)
         .eq("published", true)
-        .order("published_at", { ascending: false });
+        .order("published_at", { ascending: false, nullsLast: true })
+        .order("created_at", { ascending: false });
 
       if (error) throw error;
       return data as Post[];
