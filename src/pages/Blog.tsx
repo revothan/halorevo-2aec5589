@@ -16,7 +16,7 @@ const Blog = () => {
         </div>
         {/* Content */}
         <div className="flex-1 overflow-y-auto">
-          <div className="px-6 pt-32 pb-12 md:px-16 lg:px-24">
+          <div className="px-6 pt-36 pb-12 md:px-16 lg:px-24">
             <motion.div
               className="mb-12"
               initial={{ opacity: 0, y: 20 }}
@@ -49,4 +49,3 @@ const Blog = () => {
 };
 
 export default Blog;
-
