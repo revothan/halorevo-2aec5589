@@ -8,6 +8,7 @@ import { Loader2 } from "lucide-react";
 
 // Lazy load route components
 const Index = lazy(() => import("./pages/Index"));
+const Blog = lazy(() => import("./pages/Blog"));
 
 const LoadingSpinner = () => (
   <div className="min-h-screen flex items-center justify-center">
@@ -18,8 +19,8 @@ const LoadingSpinner = () => (
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 60 * 1000, // Cache data for 1 minute
-      gcTime: 5 * 60 * 1000, // Keep unused data in cache for 5 minutes
+      staleTime: 60 * 1000,
+      gcTime: 5 * 60 * 1000,
     },
   },
 });
@@ -33,6 +34,7 @@ const App = () => (
         <Suspense fallback={<LoadingSpinner />}>
           <Routes>
             <Route path="/" element={<Index />} />
+            <Route path="/blog" element={<Blog />} />
           </Routes>
         </Suspense>
       </BrowserRouter>
