@@ -1,27 +1,10 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useForm } from "react-hook-form";
 import { useSessionContext } from "@supabase/auth-helpers-react";
 import { useToast } from "@/components/ui/use-toast";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Switch } from "@/components/ui/switch";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { format } from "date-fns";
-
-interface PostFormData {
-  title: string;
-  content: string;
-  excerpt: string;
-  featured_image: string;
-  category_id: string;
-  published: boolean;
-  slug: string;
-}
+import { BlogEditorForm, PostFormData } from "@/components/blog/BlogEditorForm";
 
 const AdminBlogEditor = () => {
   const { id } = useParams();
@@ -34,20 +17,9 @@ const AdminBlogEditor = () => {
   useEffect(() => {
     if (!session?.user) {
       navigate("/login");
+      return;
     }
   }, [session, navigate]);
-
-  const form = useForm<PostFormData>({
-    defaultValues: {
-      title: "",
-      content: "",
-      excerpt: "",
-      featured_image: "",
-      category_id: "",
-      published: false,
-      slug: "",
-    },
-  });
 
   // Fetch categories for the dropdown
   const { data: categories } = useQuery({
@@ -62,32 +34,20 @@ const AdminBlogEditor = () => {
   });
 
   // Fetch existing post data if editing
-  useEffect(() => {
-    const fetchPost = async () => {
-      if (!id) return;
-
+  const { data: existingPost } = useQuery({
+    queryKey: ["post", id],
+    queryFn: async () => {
+      if (!id) return null;
       const { data, error } = await supabase
         .from("posts")
         .select("*")
         .eq("id", id)
         .single();
-
-      if (error) {
-        toast({
-          title: "Error",
-          description: "Failed to fetch post data",
-          variant: "destructive",
-        });
-        return;
-      }
-
-      if (data) {
-        form.reset(data);
-      }
-    };
-
-    fetchPost();
-  }, [id, form, toast]);
+      if (error) throw error;
+      return data;
+    },
+    enabled: !!id,
+  });
 
   const onSubmit = async (data: PostFormData) => {
     if (!session?.user?.id) {
@@ -108,7 +68,6 @@ const AdminBlogEditor = () => {
       };
 
       if (id) {
-        // Update existing post
         const { error } = await supabase
           .from("posts")
           .update(postData)
@@ -121,7 +80,6 @@ const AdminBlogEditor = () => {
           description: "Post updated successfully",
         });
       } else {
-        // Create new post
         const { error } = await supabase
           .from("posts")
           .insert([postData]);
@@ -135,11 +93,11 @@ const AdminBlogEditor = () => {
       }
 
       navigate("/blog");
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error saving post:", error);
       toast({
         title: "Error",
-        description: "Failed to save post",
+        description: error.message || "Failed to save post",
         variant: "destructive",
       });
     } finally {
@@ -154,135 +112,13 @@ const AdminBlogEditor = () => {
           {id ? "Edit Post" : "Create New Post"}
         </h1>
 
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            <FormField
-              control={form.control}
-              name="title"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Title</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Post title" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="slug"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Slug</FormLabel>
-                  <FormControl>
-                    <Input placeholder="post-url-slug" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="excerpt"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Excerpt</FormLabel>
-                  <FormControl>
-                    <Textarea placeholder="Brief description" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="content"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Content</FormLabel>
-                  <FormControl>
-                    <Textarea placeholder="Post content" className="min-h-[200px]" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="featured_image"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Featured Image URL</FormLabel>
-                  <FormControl>
-                    <Input placeholder="https://example.com/image.jpg" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="category_id"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Category</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select a category" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {categories?.map((category) => (
-                        <SelectItem key={category.id} value={category.id}>
-                          {category.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="published"
-              render={({ field }) => (
-                <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
-                  <div className="space-y-0.5">
-                    <FormLabel className="text-base">Published</FormLabel>
-                  </div>
-                  <FormControl>
-                    <Switch
-                      checked={field.value}
-                      onCheckedChange={field.onChange}
-                    />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-
-            <div className="flex justify-end space-x-4">
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => navigate("/blog")}
-              >
-                Cancel
-              </Button>
-              <Button type="submit" disabled={isSubmitting}>
-                {isSubmitting ? "Saving..." : "Save Post"}
-              </Button>
-            </div>
-          </form>
-        </Form>
+        <BlogEditorForm
+          initialData={existingPost}
+          onSubmit={onSubmit}
+          isSubmitting={isSubmitting}
+          onCancel={() => navigate("/blog")}
+          categories={categories}
+        />
       </div>
     </div>
   );
