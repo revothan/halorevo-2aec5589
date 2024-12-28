@@ -13,6 +13,7 @@ interface Post {
   excerpt: string;
   featured_image: string;
   published_at: string;
+  created_at: string;
   categories: {
     name: string;
   };
@@ -46,6 +47,7 @@ export function BlogList() {
           excerpt,
           featured_image,
           published_at,
+          created_at,
           categories:category_id (
             name
           )
@@ -74,7 +76,8 @@ export function BlogList() {
     );
   }
 
-  const formatPostDate = (dateString: string | null) => {
+  const formatPostDate = (post: Post) => {
+    const dateString = post.published_at || post.created_at;
     if (!dateString) return "";
     const date = parseISO(dateString);
     return format(date, "MMMM d, yyyy");
@@ -112,7 +115,7 @@ export function BlogList() {
               <CardTitle className="text-xl text-rich-gold">{post.title}</CardTitle>
               <CardDescription className="flex items-center gap-2 text-rich-gold/70">
                 <CalendarDays className="w-4 h-4" />
-                {formatPostDate(post.published_at)}
+                {formatPostDate(post)}
               </CardDescription>
             </CardHeader>
             <CardContent>
