@@ -18,7 +18,7 @@ const Navbar = () => {
               variant="ghost"
               className="text-rich-gold/70 hover:text-rich-gold hover:bg-rich-gray/50"
             >
-              Blogz
+              Blog
             </Button>
           </Link>
         ) : (
