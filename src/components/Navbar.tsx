@@ -1,19 +1,30 @@
 import { Minus, Square, X } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 
 const Navbar = () => {
+  const location = useLocation();
+  const isHome = location.pathname === "/";
+
   return (
     <div className="flex items-center justify-between bg-rich-gray px-4 py-2 border-b border-rich-gray/30">
       <div className="text-sm text-rich-gold/70 font-mono">
-        halo-revo.exe
+        {isHome ? "halo-revo.exe" : "halo-revo-blog.exe"}
       </div>
       <div className="flex items-center gap-4">
-        <Link to="/blog">
-          <Button variant="ghost" className="text-rich-gold/70 hover:text-rich-gold">
-            Blog
-          </Button>
-        </Link>
+        {isHome ? (
+          <Link to="/blog">
+            <Button variant="ghost" className="text-rich-gold/70 hover:text-rich-gold hover:bg-rich-gray/50">
+              Blog
+            </Button>
+          </Link>
+        ) : (
+          <Link to="/">
+            <Button variant="ghost" className="text-rich-gold/70 hover:text-rich-gold hover:bg-rich-gray/50">
+              Home
+            </Button>
+          </Link>
+        )}
         <div className="flex gap-2">
           <button className="p-1 hover:bg-rich-gray/50 rounded">
             <Minus className="w-4 h-4 text-rich-gold/70" />
