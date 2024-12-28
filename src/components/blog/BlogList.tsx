@@ -3,7 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { CalendarDays, ChevronRight, Plus } from "lucide-react";
-import { format } from "date-fns";
+import { format, parseISO } from "date-fns";
 import { Link } from "react-router-dom";
 import { useSessionContext } from "@supabase/auth-helpers-react";
 
@@ -13,6 +13,7 @@ interface Post {
   excerpt: string;
   featured_image: string;
   published_at: string;
+  created_at: string;
   categories: {
     name: string;
   };
@@ -46,6 +47,7 @@ export function BlogList() {
           excerpt,
           featured_image,
           published_at,
+          created_at,
           categories:category_id (
             name
           )
@@ -73,6 +75,13 @@ export function BlogList() {
       </div>
     );
   }
+
+  const formatPostDate = (post: Post) => {
+    const dateString = post.published_at || post.created_at;
+    if (!dateString) return "";
+    const date = parseISO(dateString);
+    return format(date, "MMMM d, yyyy");
+  };
 
   return (
     <div className="space-y-8">
@@ -106,7 +115,7 @@ export function BlogList() {
               <CardTitle className="text-xl text-rich-gold">{post.title}</CardTitle>
               <CardDescription className="flex items-center gap-2 text-rich-gold/70">
                 <CalendarDays className="w-4 h-4" />
-                {format(new Date(post.published_at), "MMMM d, yyyy")}
+                {formatPostDate(post)}
               </CardDescription>
             </CardHeader>
             <CardContent>
