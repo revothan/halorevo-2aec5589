@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { CalendarDays, ChevronLeft } from "lucide-react";
 import { format } from "date-fns";
 import { useSessionContext } from "@supabase/auth-helpers-react";
+import ReactMarkdown from 'react-markdown';
 
 const BlogPost = () => {
   const { id } = useParams();
@@ -111,7 +112,7 @@ const BlogPost = () => {
           </header>
 
           <div className="prose prose-invert prose-gold max-w-none">
-            {post.content}
+            <ReactMarkdown>{post.content}</ReactMarkdown>
           </div>
         </article>
       </div>
