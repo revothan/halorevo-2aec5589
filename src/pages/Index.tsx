@@ -15,21 +15,18 @@ const Index = () => {
       animate={{ opacity: 1 }}
       className="bg-rich-black min-h-screen p-4 md:p-8"
     >
-      <div className="max-w-7xl mx-auto glass-card border border-rich-gray/30 relative flex flex-col h-[calc(100vh-4rem)]">
+      <div className="max-w-7xl mx-auto glass-card border border-rich-gray/30 relative">
         <div className="sticky top-0 z-50">
           <Navbar />
         </div>
-        {/* Content */}
-        <div className="flex-1 overflow-y-auto">
-          <div className="h-full">
-            <Hero />
-            <PorfolioSection />
-            <HowItWorks />
-            <PricingSection />
-            <QnASection />
-            <AboutUs />
-            <Footer />
-          </div>
+        <div>
+          <Hero />
+          <PorfolioSection />
+          <HowItWorks />
+          <PricingSection />
+          <QnASection />
+          <AboutUs />
+          <Footer />
         </div>
       </div>
     </motion.main>
@@ -37,4 +34,3 @@ const Index = () => {
 };
 
 export default Index;
-
