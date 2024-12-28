@@ -111,7 +111,7 @@ const BlogPost = () => {
             </div>
           </header>
 
-          <div className="prose prose-invert prose-gold max-w-none">
+          <div className="prose prose-invert prose-headings:text-rich-gold prose-h1:text-3xl prose-h2:text-2xl prose-h3:text-xl prose-p:text-rich-gold/90 prose-a:text-rich-purple hover:prose-a:text-rich-purple/80 prose-strong:text-rich-gold prose-ul:text-rich-gold/90 prose-ol:text-rich-gold/90 prose-li:marker:text-rich-purple max-w-none">
             <ReactMarkdown>{post.content}</ReactMarkdown>
           </div>
         </article>
