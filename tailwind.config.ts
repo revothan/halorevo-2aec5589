@@ -25,13 +25,13 @@ export default {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         rich: {
-          black: "#1E1E1E", // VS Code default dark theme background
-          gray: "#2D2D2D", // Slightly lighter background for contrast
-          gold: "#D4D4D4", // VS Code default text color
-          purple: "#C586C0", // For keywords
-          blue: "#569CD6", // For functions
-          green: "#4EC9B0", // For types
-          yellow: "#DCDCAA", // For function calls
+          black: "#1E1E1E",
+          gray: "#2D2D2D",
+          gold: "#D4D4D4",
+          purple: "#C586C0",
+          blue: "#569CD6",
+          green: "#4EC9B0",
+          yellow: "#DCDCAA",
         },
         primary: {
           DEFAULT: "hsl(var(--primary))",
@@ -60,6 +60,39 @@ export default {
         card: {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
+        },
+      },
+      typography: {
+        DEFAULT: {
+          css: {
+            maxWidth: 'none',
+            color: '#D4D4D4',
+            h1: {
+              color: '#D4D4D4',
+            },
+            h2: {
+              color: '#D4D4D4',
+            },
+            h3: {
+              color: '#D4D4D4',
+            },
+            strong: {
+              color: '#D4D4D4',
+            },
+            a: {
+              color: '#C586C0',
+              '&:hover': {
+                color: '#C586C0',
+              },
+            },
+            code: {
+              color: '#4EC9B0',
+            },
+            blockquote: {
+              color: '#D4D4D4',
+              borderLeftColor: '#2D2D2D',
+            },
+          },
         },
       },
       keyframes: {
@@ -103,5 +136,5 @@ export default {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [require("tailwindcss-animate"), require("@tailwindcss/typography")],
 } satisfies Config;
