@@ -14,13 +14,19 @@ const Navbar = () => {
       <div className="flex items-center gap-4">
         {isHome ? (
           <Link to="/blog">
-            <Button variant="ghost" className="text-rich-gold/70 hover:text-rich-gold hover:bg-rich-gray/50">
-              Blog
+            <Button
+              variant="ghost"
+              className="text-rich-gold/70 hover:text-rich-gold hover:bg-rich-gray/50"
+            >
+              Blogz
             </Button>
           </Link>
         ) : (
           <Link to="/">
-            <Button variant="ghost" className="text-rich-gold/70 hover:text-rich-gold hover:bg-rich-gray/50">
+            <Button
+              variant="ghost"
+              className="text-rich-gold/70 hover:text-rich-gold hover:bg-rich-gray/50"
+            >
               Home
             </Button>
           </Link>
@@ -42,3 +48,4 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
