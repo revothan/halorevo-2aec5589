@@ -13,23 +13,43 @@ const Navbar = () => {
       </div>
       <div className="flex items-center gap-4">
         {isHome ? (
-          <Link to="/blog">
-            <Button
-              variant="ghost"
-              className="text-rich-gold/70 hover:text-rich-gold hover:bg-rich-gray/50"
-            >
-              Blog
-            </Button>
-          </Link>
+          <>
+            <Link to="/blog">
+              <Button
+                variant="ghost"
+                className="text-rich-gold/70 hover:text-rich-gold hover:bg-rich-gray/50"
+              >
+                Blog
+              </Button>
+            </Link>
+            <Link to="/bug-report">
+              <Button
+                variant="ghost"
+                className="text-rich-gold/70 hover:text-rich-gold hover:bg-rich-gray/50"
+              >
+                Report Bug
+              </Button>
+            </Link>
+          </>
         ) : (
-          <Link to="/">
-            <Button
-              variant="ghost"
-              className="text-rich-gold/70 hover:text-rich-gold hover:bg-rich-gray/50"
-            >
-              Home
-            </Button>
-          </Link>
+          <>
+            <Link to="/">
+              <Button
+                variant="ghost"
+                className="text-rich-gold/70 hover:text-rich-gold hover:bg-rich-gray/50"
+              >
+                Home
+              </Button>
+            </Link>
+            <Link to="/bug-report">
+              <Button
+                variant="ghost"
+                className="text-rich-gold/70 hover:text-rich-gold hover:bg-rich-gray/50"
+              >
+                Report Bug
+              </Button>
+            </Link>
+          </>
         )}
         <div className="flex gap-2">
           <button className="p-1 hover:bg-rich-gray/50 rounded">
@@ -48,4 +68,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-
