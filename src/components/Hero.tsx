@@ -1,9 +1,10 @@
-import React from "react";
+import React, { Suspense, lazy } from "react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { Terminal, ArrowRight, Code, Workflow, Sparkles } from "lucide-react";
 import { TypingAnimation } from "./TypingAnimation";
-import Portfolio3DCarousel from "./Portfolio3DCarousel";
+
+const Portfolio3DCarousel = lazy(() => import("./Portfolio3DCarousel"));
 
 interface HeroProps {
   showContent?: boolean;
@@ -86,7 +87,9 @@ export const Hero = ({ showContent = true }: HeroProps) => {
           >
             <div className="absolute -inset-4 bg-gradient-to-r from-rich-blue to-rich-gold opacity-10 blur-xl rounded-xl" />
             <div className="relative">
-              <Portfolio3DCarousel />
+              <Suspense fallback={<div className="h-96 animate-pulse bg-rich-gray/20 rounded-xl" />}>
+                <Portfolio3DCarousel />
+              </Suspense>
             </div>
           </motion.div>
         </div>
@@ -96,4 +99,3 @@ export const Hero = ({ showContent = true }: HeroProps) => {
 };
 
 export default Hero;
-
