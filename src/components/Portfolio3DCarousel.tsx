@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, memo } from "react";
 import { motion } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
@@ -8,6 +8,36 @@ interface PortfolioItem {
   image: string;
   category: string;
 }
+
+const PortfolioCarouselItem = memo(({ item, position }: { item: PortfolioItem; position: any }) => (
+  <motion.div
+    className="absolute w-full h-full"
+    initial={false}
+    animate={position}
+    transition={{
+      type: "spring",
+      stiffness: 100,
+      damping: 20,
+    }}
+  >
+    <div className="relative w-full h-full group">
+      <div className="absolute inset-0 bg-gradient-to-b from-rich-black/20 to-rich-black/80 rounded-xl" />
+      <img
+        src={item.image}
+        alt={item.title}
+        className="w-full h-full object-cover rounded-xl"
+        loading="lazy"
+        decoding="async"
+      />
+      <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
+        <h3 className="text-lg font-bold">{item.title}</h3>
+        <p className="text-sm text-rich-gold">{item.category}</p>
+      </div>
+    </div>
+  </motion.div>
+));
+
+PortfolioCarouselItem.displayName = "PortfolioCarouselItem";
 
 const Portfolio3DCarousel = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -55,7 +85,7 @@ const Portfolio3DCarousel = () => {
     }
 
     const rotationY = relativeIndex * (360 / portfolioItems.length);
-    const translateZ = 250; // Radius of the carousel
+    const translateZ = 250;
 
     return {
       rotateY: rotationY,
@@ -73,7 +103,7 @@ const Portfolio3DCarousel = () => {
   const handlePrev = () => {
     setIsAutoPlaying(false);
     setCurrentIndex(
-      (prev) => (prev - 1 + portfolioItems.length) % portfolioItems.length,
+      (prev) => (prev - 1 + portfolioItems.length) % portfolioItems.length
     );
   };
 
@@ -81,36 +111,14 @@ const Portfolio3DCarousel = () => {
     <div className="relative w-full h-96 perspective-1000">
       <div className="relative w-full h-full transform-style-3d">
         {portfolioItems.map((item, index) => (
-          <motion.div
+          <PortfolioCarouselItem
             key={item.id}
-            className="absolute w-full h-full"
-            initial={false}
-            animate={calculatePosition(index)}
-            transition={{
-              type: "spring",
-              stiffness: 100,
-              damping: 20,
-            }}
-          >
-            <div className="relative w-full h-full group">
-              <div className="absolute inset-0 bg-gradient-to-b from-rich-black/20 to-rich-black/80 rounded-xl" />
-              <img
-                src={item.image}
-                alt={item.title}
-                className="w-full h-full object-cover rounded-xl"
-                loading="lazy"
-                decoding="async"
-              />
-              <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
-                <h3 className="text-lg font-bold">{item.title}</h3>
-                <p className="text-sm text-rich-gold">{item.category}</p>
-              </div>
-            </div>
-          </motion.div>
+            item={item}
+            position={calculatePosition(index)}
+          />
         ))}
       </div>
 
-      {/* Navigation Buttons */}
       <button
         onClick={handlePrev}
         className="absolute left-4 top-1/2 -translate-y-1/2 p-2 bg-rich-black/50 rounded-full hover:bg-rich-black/80 transition-colors"
@@ -127,4 +135,4 @@ const Portfolio3DCarousel = () => {
   );
 };
 
-export default Portfolio3DCarousel;
+export default memo(Portfolio3DCarousel);
