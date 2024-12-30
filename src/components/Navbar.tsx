@@ -34,6 +34,16 @@ const Navbar = () => {
                 </Button>
               </Link>
             )}
+            {!session && (
+              <Link to="/login">
+                <Button
+                  variant="ghost"
+                  className="text-rich-gold/70 hover:text-rich-gold hover:bg-rich-gray/50"
+                >
+                  Log In
+                </Button>
+              </Link>
+            )}
           </>
         ) : (
           <>
@@ -52,6 +62,16 @@ const Navbar = () => {
                   className="text-rich-gold/70 hover:text-rich-gold hover:bg-rich-gray/50"
                 >
                   Report Bug
+                </Button>
+              </Link>
+            )}
+            {!session && (
+              <Link to="/login">
+                <Button
+                  variant="ghost"
+                  className="text-rich-gold/70 hover:text-rich-gold hover:bg-rich-gray/50"
+                >
+                  Log In
                 </Button>
               </Link>
             )}
