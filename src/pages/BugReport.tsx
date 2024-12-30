@@ -1,7 +1,7 @@
 import { useSession } from "@supabase/auth-helpers-react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
@@ -27,6 +27,7 @@ interface BugReportForm {
 const BugReport = () => {
   const session = useSession();
   const navigate = useNavigate();
+  const location = useLocation();
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -37,11 +38,13 @@ const BugReport = () => {
     },
   });
 
-  // Redirect to login if not authenticated
-  if (!session) {
-    navigate("/login");
-    return null;
-  }
+  useEffect(() => {
+    if (!session) {
+      navigate("/login", { state: { from: location } });
+    }
+  }, [session, navigate, location]);
+
+  if (!session) return null;
 
   const onSubmit = async (data: BugReportForm) => {
     try {
