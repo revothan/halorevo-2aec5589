@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { Terminal, ArrowRight, Code, Workflow, Sparkles } from "lucide-react";
 import { TypingAnimation } from "./TypingAnimation";
+import { Link } from "react-router-dom";
 
 const Portfolio3DCarousel = lazy(() => import("./Portfolio3DCarousel"));
 
@@ -51,9 +52,14 @@ export const Hero = ({ showContent = true }: HeroProps) => {
                 </p>
 
                 <div className="flex flex-col sm:flex-row gap-4">
-                  <Button className="bg-rich-blue hover:bg-rich-blue/90 text-white px-8 py-6 rounded-lg font-medium inline-flex items-center gap-2">
-                    Start Your Project
-                    <ArrowRight className="w-4 h-4" />
+                  <Button
+                    asChild
+                    className="bg-rich-purple hover:bg-rich-purple/90 text-white px-8 py-6 rounded-lg font-medium inline-flex items-center gap-2"
+                  >
+                    <Link to="/free-trial">
+                      Get Your Free Website Redesign
+                      <ArrowRight className="w-4 h-4" />
+                    </Link>
                   </Button>
                   <Button
                     variant="outline"

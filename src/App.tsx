@@ -15,6 +15,7 @@ const BlogPost = lazy(() => import("./pages/BlogPost"));
 const Login = lazy(() => import("./pages/Login"));
 const AdminBlogEditor = lazy(() => import("./pages/AdminBlogEditor"));
 const BugReport = lazy(() => import("./pages/BugReport"));
+const FreeTrial = lazy(() => import("./pages/FreeTrial")); // Add new route
 
 const LoadingSpinner = () => (
   <div className="min-h-screen flex items-center justify-center">
@@ -48,6 +49,7 @@ const App = () => {
                   <Route path="/admin/blog/new" element={<AdminBlogEditor />} />
                   <Route path="/admin/blog/edit/:id" element={<AdminBlogEditor />} />
                   <Route path="/bug-report" element={<BugReport />} />
+                  <Route path="/free-trial" element={<FreeTrial />} />
                 </Routes>
               </Suspense>
               <Toaster />
