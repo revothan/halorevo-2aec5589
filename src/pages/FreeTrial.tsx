@@ -1,15 +1,17 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { Rocket, ArrowRight, Globe, Building2, Sparkles } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
+import { StepOne } from "@/components/free-trial/StepOne";
+import { StepTwo } from "@/components/free-trial/StepTwo";
+import { StepThree } from "@/components/free-trial/StepThree";
+import { freeTrialSchema, type FreeTrialFormData } from "@/lib/validations/free-trial";
 
 const steps = [
   {
@@ -33,25 +35,32 @@ const FreeTrial = () => {
   const [step, setStep] = React.useState(0);
   const { toast } = useToast();
   const navigate = useNavigate();
-  const form = useForm({
+  
+  const form = useForm<FreeTrialFormData>({
+    resolver: zodResolver(freeTrialSchema),
     defaultValues: {
       email: "",
       password: "",
       confirmPassword: "",
       currentWebsite: "",
+      currentLikes: "",
+      improvements: "",
       businessName: "",
       industry: "",
       goals: "",
     },
   });
 
-  const onSubmit = async (data: any) => {
-    if (step < steps.length - 1) {
-      setStep(step + 1);
-      return;
-    }
-
+  const onSubmit = async (data: FreeTrialFormData) => {
     try {
+      if (step < steps.length - 1) {
+        const result = await form.trigger(Object.keys(form.getValues()) as Array<keyof FreeTrialFormData>);
+        if (result) {
+          setStep(step + 1);
+        }
+        return;
+      }
+
       const { error } = await supabase.auth.signUp({
         email: data.email,
         password: data.password,
@@ -73,6 +82,8 @@ const FreeTrial = () => {
       });
     }
   };
+
+  // ... keep existing code (JSX for the form layout, including the header and features grid)
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-rich-black to-rich-gray relative p-4">
@@ -138,115 +149,9 @@ const FreeTrial = () => {
             </CardHeader>
             <CardContent>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                {step === 0 && (
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    className="space-y-4"
-                  >
-                    <div>
-                      <Label htmlFor="email">Email</Label>
-                      <Input
-                        id="email"
-                        type="email"
-                        placeholder="your@email.com"
-                        {...form.register("email", { required: true })}
-                      />
-                    </div>
-                    <div>
-                      <Label htmlFor="password">Password</Label>
-                      <Input
-                        id="password"
-                        type="password"
-                        {...form.register("password", { required: true })}
-                      />
-                    </div>
-                    <div>
-                      <Label htmlFor="confirmPassword">Confirm Password</Label>
-                      <Input
-                        id="confirmPassword"
-                        type="password"
-                        {...form.register("confirmPassword", { required: true })}
-                      />
-                    </div>
-                  </motion.div>
-                )}
-
-                {step === 1 && (
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    className="space-y-4"
-                  >
-                    <div>
-                      <Label htmlFor="currentWebsite">Current Website URL</Label>
-                      <div className="flex items-center space-x-2">
-                        <Globe className="w-5 h-5 text-rich-purple" />
-                        <Input
-                          id="currentWebsite"
-                          type="url"
-                          placeholder="https://your-website.com"
-                          {...form.register("currentWebsite", { required: true })}
-                        />
-                      </div>
-                    </div>
-                    <div>
-                      <Label>What do you like about your current website?</Label>
-                      <Textarea
-                        placeholder="Share your thoughts..."
-                        className="h-24"
-                        {...form.register("currentLikes")}
-                      />
-                    </div>
-                    <div>
-                      <Label>What would you like to improve?</Label>
-                      <Textarea
-                        placeholder="Tell us your pain points..."
-                        className="h-24"
-                        {...form.register("improvements")}
-                      />
-                    </div>
-                  </motion.div>
-                )}
-
-                {step === 2 && (
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    className="space-y-4"
-                  >
-                    <div>
-                      <Label htmlFor="businessName">Business Name</Label>
-                      <div className="flex items-center space-x-2">
-                        <Building2 className="w-5 h-5 text-rich-purple" />
-                        <Input
-                          id="businessName"
-                          {...form.register("businessName", { required: true })}
-                        />
-                      </div>
-                    </div>
-                    <div>
-                      <Label htmlFor="industry">Industry</Label>
-                      <Input
-                        id="industry"
-                        placeholder="e.g., E-commerce, Healthcare, Technology"
-                        {...form.register("industry", { required: true })}
-                      />
-                    </div>
-                    <div>
-                      <Label htmlFor="goals">Business Goals</Label>
-                      <div className="flex items-start space-x-2">
-                        <Sparkles className="w-5 h-5 text-rich-purple mt-2" />
-                        <Textarea
-                          id="goals"
-                          placeholder="What are your main business objectives?"
-                          className="h-24"
-                          {...form.register("goals", { required: true })}
-                        />
-                      </div>
-                    </div>
-                  </motion.div>
-                )}
+                {step === 0 && <StepOne form={form} />}
+                {step === 1 && <StepTwo form={form} />}
+                {step === 2 && <StepThree form={form} />}
 
                 <Button
                   type="submit"
