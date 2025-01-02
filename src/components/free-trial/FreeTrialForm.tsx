@@ -19,25 +19,15 @@ import { StepThree } from "./StepThree";
 import { FormProgress } from "./FormProgress";
 import { freeTrialSchema, type FreeTrialFormData } from "@/lib/validations/free-trial";
 
-const steps = [
-  {
-    id: "signup",
-    title: "Create Your Account",
-    description: "Start your journey to a better website",
-  },
-  {
-    id: "website",
-    title: "Current Website Details",
-    description: "Tell us about your existing website",
-  },
-  {
-    id: "business",
-    title: "Business Information",
-    description: "Help us understand your business better",
-  },
-];
+interface FreeTrialFormProps {
+  steps: {
+    id: string;
+    title: string;
+    description: string;
+  }[];
+}
 
-export const FreeTrialForm = () => {
+export const FreeTrialForm = ({ steps }: FreeTrialFormProps) => {
   const [step, setStep] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
@@ -115,38 +105,41 @@ export const FreeTrialForm = () => {
   };
 
   return (
-    <motion.div
-      key={step}
-      initial={{ opacity: 0, x: 20 }}
-      animate={{ opacity: 1, x: 0 }}
-      exit={{ opacity: 0, x: -20 }}
-      className="max-w-xl mx-auto"
-    >
-      <Card className="glass-card border-rich-purple/20">
-        <CardHeader>
-          <CardTitle>{steps[step].title}</CardTitle>
-          <CardDescription>{steps[step].description}</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            {step === 0 && <StepOne form={form} />}
-            {step === 1 && <StepTwo form={form} />}
-            {step === 2 && <StepThree form={form} />}
+    <>
+      <FormProgress steps={steps} currentStep={step} />
+      <motion.div
+        key={step}
+        initial={{ opacity: 0, x: 20 }}
+        animate={{ opacity: 1, x: 0 }}
+        exit={{ opacity: 0, x: -20 }}
+        className="max-w-xl mx-auto"
+      >
+        <Card className="glass-card border-rich-purple/20">
+          <CardHeader>
+            <CardTitle>{steps[step].title}</CardTitle>
+            <CardDescription>{steps[step].description}</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+              {step === 0 && <StepOne form={form} />}
+              {step === 1 && <StepTwo form={form} />}
+              {step === 2 && <StepThree form={form} />}
 
-            <Button
-              type="submit"
-              className="w-full bg-rich-purple hover:bg-rich-purple/90"
-              disabled={isLoading}
-            >
-              {isLoading
-                ? "Processing..."
-                : step === steps.length - 1
-                ? "Submit Application"
-                : "Next Step"}
-            </Button>
-          </form>
-        </CardContent>
-      </Card>
-    </motion.div>
+              <Button
+                type="submit"
+                className="w-full bg-rich-purple hover:bg-rich-purple/90"
+                disabled={isLoading}
+              >
+                {isLoading
+                  ? "Processing..."
+                  : step === steps.length - 1
+                  ? "Submit Application"
+                  : "Next Step"}
+              </Button>
+            </form>
+          </CardContent>
+        </Card>
+      </motion.div>
+    </>
   );
 };

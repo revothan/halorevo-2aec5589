@@ -27,8 +27,7 @@ const FreeTrial = () => {
       <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center opacity-10" />
       <div className="container mx-auto max-w-6xl relative">
         <FormHeader />
-        <FormProgress steps={steps} currentStep={0} />
-        <FreeTrialForm />
+        <FreeTrialForm steps={steps} />
         <FeaturesGrid />
       </div>
     </div>
