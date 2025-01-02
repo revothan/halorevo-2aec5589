@@ -88,7 +88,9 @@ const FreeTrial = () => {
       }
 
       setIsLoading(true);
-      const { error } = await supabase.auth.signUp({
+
+      // Sign up the user
+      const { error: signUpError, data: signUpData } = await supabase.auth.signUp({
         email: data.email,
         password: data.password,
         options: {
@@ -100,14 +102,14 @@ const FreeTrial = () => {
         },
       });
 
-      if (error) throw error;
+      if (signUpError) throw signUpError;
 
       toast({
         title: "Success! 🎉",
-        description:
-          "We'll be in touch soon to start your website redesign journey!",
+        description: "Your account has been created. Please check your email to verify your account.",
       });
 
+      // Redirect to home page
       navigate("/");
     } catch (error: any) {
       toast({
