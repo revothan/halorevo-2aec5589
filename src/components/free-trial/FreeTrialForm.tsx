@@ -52,6 +52,7 @@ export const FreeTrialForm = ({ steps }: FreeTrialFormProps) => {
     try {
       if (step < steps.length - 1) {
         let fieldsToValidate: (keyof FreeTrialFormData)[] = [];
+        
         switch (step) {
           case 0:
             fieldsToValidate = ["email", "password", "confirmPassword"];
@@ -64,9 +65,11 @@ export const FreeTrialForm = ({ steps }: FreeTrialFormProps) => {
             break;
         }
 
-        const result = await form.trigger(fieldsToValidate);
-        if (result) {
-          setStep(step + 1);
+        const isValid = await form.trigger(fieldsToValidate);
+        
+        if (isValid) {
+          setStep((prev) => prev + 1);
+          return;
         }
         return;
       }
