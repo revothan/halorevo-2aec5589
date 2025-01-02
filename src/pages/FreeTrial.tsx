@@ -1,17 +1,28 @@
 import React from "react";
-import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-import { Rocket, ArrowRight, Globe, Building2, Sparkles } from "lucide-react";
+import { Globe, Building2, Sparkles } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { StepOne } from "@/components/free-trial/StepOne";
 import { StepTwo } from "@/components/free-trial/StepTwo";
 import { StepThree } from "@/components/free-trial/StepThree";
-import { freeTrialSchema, type FreeTrialFormData } from "@/lib/validations/free-trial";
+import { FormProgress } from "@/components/free-trial/FormProgress";
+import { FormHeader } from "@/components/free-trial/FormHeader";
+import {
+  freeTrialSchema,
+  type FreeTrialFormData,
+} from "@/lib/validations/free-trial";
+import { motion } from "framer-motion";
 
 const steps = [
   {
@@ -33,9 +44,10 @@ const steps = [
 
 const FreeTrial = () => {
   const [step, setStep] = React.useState(0);
+  const [isLoading, setIsLoading] = React.useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
-  
+
   const form = useForm<FreeTrialFormData>({
     resolver: zodResolver(freeTrialSchema),
     defaultValues: {
@@ -54,23 +66,46 @@ const FreeTrial = () => {
   const onSubmit = async (data: FreeTrialFormData) => {
     try {
       if (step < steps.length - 1) {
-        const result = await form.trigger(Object.keys(form.getValues()) as Array<keyof FreeTrialFormData>);
+        // Validate current step fields
+        let fieldsToValidate: (keyof FreeTrialFormData)[] = [];
+        switch (step) {
+          case 0:
+            fieldsToValidate = ["email", "password", "confirmPassword"];
+            break;
+          case 1:
+            fieldsToValidate = ["currentWebsite"];
+            break;
+          case 2:
+            fieldsToValidate = ["businessName", "industry"];
+            break;
+        }
+
+        const result = await form.trigger(fieldsToValidate);
         if (result) {
           setStep(step + 1);
         }
         return;
       }
 
+      setIsLoading(true);
       const { error } = await supabase.auth.signUp({
         email: data.email,
         password: data.password,
+        options: {
+          data: {
+            business_name: data.businessName,
+            industry: data.industry,
+            current_website: data.currentWebsite,
+          },
+        },
       });
 
       if (error) throw error;
 
       toast({
         title: "Success! 🎉",
-        description: "We'll be in touch soon to start your website redesign journey!",
+        description:
+          "We'll be in touch soon to start your website redesign journey!",
       });
 
       navigate("/");
@@ -80,61 +115,19 @@ const FreeTrial = () => {
         title: "Error",
         description: error.message,
       });
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  // ... keep existing code (JSX for the form layout, including the header and features grid)
-
   return (
     <div className="min-h-screen bg-gradient-to-b from-rich-black to-rich-gray relative p-4">
-      {/* Background Pattern */}
       <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center opacity-10" />
 
       <div className="container mx-auto max-w-6xl relative">
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-12 pt-8"
-        >
-          <div className="inline-flex items-center gap-2 bg-rich-purple/10 px-4 py-2 rounded-full mb-4">
-            <Rocket className="w-4 h-4 text-rich-purple" />
-            <span className="text-sm font-mono text-rich-purple">
-              Limited Time Offer: Free Website Redesign
-            </span>
-          </div>
-          <h1 className="text-4xl md:text-6xl font-bold mb-4">
-            Transform Your <span className="text-gradient">Digital Presence</span>
-          </h1>
-          <p className="text-xl text-rich-gold/80 max-w-2xl mx-auto">
-            Get a professional website redesign that converts visitors into customers.
-            Start your journey today!
-          </p>
-        </motion.div>
+        <FormHeader />
+        <FormProgress steps={steps} currentStep={step} />
 
-        {/* Steps Progress */}
-        <div className="flex justify-center mb-8">
-          {steps.map((s, i) => (
-            <div key={s.id} className="flex items-center">
-              <div
-                className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                  i <= step ? "bg-rich-purple text-white" : "bg-rich-gray/30 text-rich-gold/50"
-                }`}
-              >
-                {i + 1}
-              </div>
-              {i < steps.length - 1 && (
-                <div
-                  className={`w-16 h-0.5 ${
-                    i < step ? "bg-rich-purple" : "bg-rich-gray/30"
-                  }`}
-                />
-              )}
-            </div>
-          ))}
-        </div>
-
-        {/* Form Card */}
         <motion.div
           key={step}
           initial={{ opacity: 0, x: 20 }}
@@ -156,14 +149,14 @@ const FreeTrial = () => {
                 <Button
                   type="submit"
                   className="w-full bg-rich-purple hover:bg-rich-purple/90"
+                  disabled={isLoading}
                 >
-                  {step === steps.length - 1 ? (
+                  {isLoading ? (
+                    "Processing..."
+                  ) : step === steps.length - 1 ? (
                     "Submit Application"
                   ) : (
-                    <>
-                      Next Step
-                      <ArrowRight className="ml-2 w-4 h-4" />
-                    </>
+                    "Next Step"
                   )}
                 </Button>
               </form>
