@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -17,7 +17,10 @@ import { StepOne } from "./StepOne";
 import { StepTwo } from "./StepTwo";
 import { StepThree } from "./StepThree";
 import { FormProgress } from "./FormProgress";
-import { freeTrialSchema, type FreeTrialFormData } from "@/lib/validations/free-trial";
+import {
+  freeTrialSchema,
+  type FreeTrialFormData,
+} from "@/lib/validations/free-trial";
 
 interface FreeTrialFormProps {
   steps: {
@@ -48,34 +51,21 @@ export const FreeTrialForm = ({ steps }: FreeTrialFormProps) => {
     },
   });
 
-  const onSubmit = async (data: FreeTrialFormData) => {
+  const handleNextStep = () => {
+    if (step < steps.length - 1) {
+      setStep(step + 1);
+    }
+  };
+
+  const handlePrevStep = () => {
+    if (step > 0) {
+      setStep(step - 1);
+    }
+  };
+
+  const handleFinalSubmit = async (data: FreeTrialFormData) => {
     try {
-      if (step < steps.length - 1) {
-        let fieldsToValidate: (keyof FreeTrialFormData)[] = [];
-        
-        switch (step) {
-          case 0:
-            fieldsToValidate = ["email", "password", "confirmPassword"];
-            break;
-          case 1:
-            fieldsToValidate = ["currentWebsite"];
-            break;
-          case 2:
-            fieldsToValidate = ["businessName", "industry"];
-            break;
-        }
-
-        const isValid = await form.trigger(fieldsToValidate);
-        
-        if (isValid) {
-          setStep((prev) => prev + 1);
-          return;
-        }
-        return;
-      }
-
       setIsLoading(true);
-
       const { error: signUpError } = await supabase.auth.signUp({
         email: data.email,
         password: data.password,
@@ -92,7 +82,8 @@ export const FreeTrialForm = ({ steps }: FreeTrialFormProps) => {
 
       toast({
         title: "Success! 🎉",
-        description: "Your account has been created. Please check your email to verify your account.",
+        description:
+          "Your account has been created. Please check your email to verify your account.",
       });
 
       navigate("/");
@@ -107,42 +98,74 @@ export const FreeTrialForm = ({ steps }: FreeTrialFormProps) => {
     }
   };
 
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const data = form.getValues();
+    console.log("Current step:", step);
+    console.log("Form data:", data);
+
+    if (step === steps.length - 1) {
+      // On final step
+      await handleFinalSubmit(data);
+    } else {
+      // Not on final step, just proceed
+      handleNextStep();
+    }
+  };
+
   return (
     <>
       <FormProgress steps={steps} currentStep={step} />
-      <motion.div
-        key={step}
-        initial={{ opacity: 0, x: 20 }}
-        animate={{ opacity: 1, x: 0 }}
-        exit={{ opacity: 0, x: -20 }}
-        className="max-w-xl mx-auto"
-      >
-        <Card className="glass-card border-rich-purple/20">
-          <CardHeader>
-            <CardTitle>{steps[step].title}</CardTitle>
-            <CardDescription>{steps[step].description}</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-              {step === 0 && <StepOne form={form} />}
-              {step === 1 && <StepTwo form={form} />}
-              {step === 2 && <StepThree form={form} />}
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={step}
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -20 }}
+          transition={{ duration: 0.2 }}
+          className="max-w-xl mx-auto"
+        >
+          <Card className="glass-card border-rich-purple/20">
+            <CardHeader>
+              <CardTitle>{steps[step].title}</CardTitle>
+              <CardDescription>{steps[step].description}</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <form onSubmit={handleSubmit} className="space-y-6">
+                {step === 0 && <StepOne form={form} />}
+                {step === 1 && <StepTwo form={form} />}
+                {step === 2 && <StepThree form={form} />}
 
-              <Button
-                type="submit"
-                className="w-full bg-rich-purple hover:bg-rich-purple/90"
-                disabled={isLoading}
-              >
-                {isLoading
-                  ? "Processing..."
-                  : step === steps.length - 1
-                  ? "Submit Application"
-                  : "Next Step"}
-              </Button>
-            </form>
-          </CardContent>
-        </Card>
-      </motion.div>
+                <div className="flex gap-4">
+                  {step > 0 && (
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={handlePrevStep}
+                      className="flex-1"
+                    >
+                      Back
+                    </Button>
+                  )}
+                  <Button
+                    type="submit"
+                    className={`flex-1 bg-rich-purple hover:bg-rich-purple/90 ${step === 0 ? "w-full" : ""}`}
+                    disabled={isLoading}
+                  >
+                    {isLoading
+                      ? "Processing..."
+                      : step === steps.length - 1
+                        ? "Submit Application"
+                        : "Next Step"}
+                  </Button>
+                </div>
+              </form>
+            </CardContent>
+          </Card>
+        </motion.div>
+      </AnimatePresence>
     </>
   );
 };
+

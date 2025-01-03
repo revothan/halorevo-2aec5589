@@ -31,11 +31,7 @@ export const StepOne = ({ form }: StepOneProps) => {
       </div>
       <div>
         <Label htmlFor="password">Password</Label>
-        <Input
-          id="password"
-          type="password"
-          {...form.register("password")}
-        />
+        <Input id="password" type="password" {...form.register("password")} />
         {form.formState.errors.password && (
           <p className="text-red-500 text-sm mt-1">
             {form.formState.errors.password.message}
@@ -58,3 +54,4 @@ export const StepOne = ({ form }: StepOneProps) => {
     </motion.div>
   );
 };
+
