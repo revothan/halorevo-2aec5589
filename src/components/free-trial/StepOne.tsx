@@ -9,6 +9,14 @@ interface StepOneProps {
 }
 
 export const StepOne = ({ form }: StepOneProps) => {
+  const {
+    register,
+    formState: { errors },
+    watch,
+  } = form;
+
+  const password = watch("password");
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -21,21 +29,22 @@ export const StepOne = ({ form }: StepOneProps) => {
           id="email"
           type="email"
           placeholder="your@email.com"
-          {...form.register("email")}
+          {...register("email")}
         />
-        {form.formState.errors.email && (
-          <p className="text-red-500 text-sm mt-1">
-            {form.formState.errors.email.message}
-          </p>
+        {errors.email && (
+          <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
         )}
       </div>
       <div>
         <Label htmlFor="password">Password</Label>
-        <Input id="password" type="password" {...form.register("password")} />
-        {form.formState.errors.password && (
-          <p className="text-red-500 text-sm mt-1">
-            {form.formState.errors.password.message}
-          </p>
+        <Input
+          id="password"
+          type="password"
+          placeholder="Min. 6 characters"
+          {...register("password")}
+        />
+        {errors.password && (
+          <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>
         )}
       </div>
       <div>
@@ -43,15 +52,21 @@ export const StepOne = ({ form }: StepOneProps) => {
         <Input
           id="confirmPassword"
           type="password"
-          {...form.register("confirmPassword")}
+          placeholder="Re-enter your password"
+          {...register("confirmPassword", {
+            validate: (value) =>
+              !password ||
+              !value ||
+              value === password ||
+              "Passwords don't match",
+          })}
         />
-        {form.formState.errors.confirmPassword && (
+        {errors.confirmPassword && (
           <p className="text-red-500 text-sm mt-1">
-            {form.formState.errors.confirmPassword.message}
+            {errors.confirmPassword.message}
           </p>
         )}
       </div>
     </motion.div>
   );
 };
-
