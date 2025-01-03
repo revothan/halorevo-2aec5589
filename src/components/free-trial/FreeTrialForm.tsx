@@ -66,19 +66,49 @@ export const FreeTrialForm = ({ steps }: FreeTrialFormProps) => {
   const handleFinalSubmit = async (data: FreeTrialFormData) => {
     try {
       setIsLoading(true);
-      const { error: signUpError } = await supabase.auth.signUp({
-        email: data.email,
-        password: data.password,
-        options: {
-          data: {
+      console.log("Starting final submit with data:", data);
+
+      // First create the user account
+      const { data: userData, error: signUpError } = await supabase.auth.signUp(
+        {
+          email: data.email,
+          password: data.password,
+          options: {
+            data: {
+              business_name: data.businessName,
+              industry: data.industry,
+              current_website: data.currentWebsite,
+            },
+          },
+        },
+      );
+
+      if (signUpError) throw signUpError;
+
+      console.log("User created successfully:", userData);
+
+      // Then save the trial request
+      const { error: trialRequestError } = await supabase
+        .from("trial_requests")
+        .insert([
+          {
+            user_id: userData.user?.id,
+            email: data.email,
             business_name: data.businessName,
             industry: data.industry,
             current_website: data.currentWebsite,
+            current_likes: data.currentLikes,
+            improvements: data.improvements,
+            goals: data.goals,
+            status: "pending",
           },
-        },
-      });
+        ]);
 
-      if (signUpError) throw signUpError;
+      if (trialRequestError) {
+        console.error("Error saving trial request:", trialRequestError);
+        throw trialRequestError;
+      }
+      console.log("Trial request saved successfully");
 
       toast({
         title: "Success! 🎉",
