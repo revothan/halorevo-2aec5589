@@ -45,9 +45,10 @@ export const FreeTrialForm = ({ steps }: FreeTrialFormProps) => {
       currentWebsite: "",
       currentLikes: "",
       improvements: "",
-      businessName: "",
-      industry: "",
-      goals: "",
+      selectedPlan: undefined,
+      meetingType: undefined,
+      meetingDate: undefined,
+      meetingTime: undefined,
     },
     mode: "onChange",
   });
@@ -59,10 +60,31 @@ export const FreeTrialForm = ({ steps }: FreeTrialFormProps) => {
       case 1:
         return ["currentWebsite", "currentLikes", "improvements"];
       case 2:
-        return ["businessName", "industry", "goals"];
+        return ["selectedPlan", "meetingType", "meetingDate", "meetingTime"];
       default:
         return [];
     }
+  };
+
+  const validateStep = async (stepIndex: number) => {
+    const fields = getStepFields(stepIndex);
+    const isFieldsValid = await form.trigger(fields);
+
+    if (!isFieldsValid) return false;
+
+    // Additional validation for step 0 (password matching)
+    if (stepIndex === 0) {
+      const values = form.getValues();
+      if (values.password !== values.confirmPassword) {
+        form.setError("confirmPassword", {
+          type: "manual",
+          message: "Passwords don't match",
+        });
+        return false;
+      }
+    }
+
+    return true;
   };
 
   const handleNextStep = () => {
@@ -82,14 +104,14 @@ export const FreeTrialForm = ({ steps }: FreeTrialFormProps) => {
       setIsLoading(true);
       console.log("Starting final submit with data:", data);
 
+      // First create the user account
       const { data: userData, error: signUpError } = await supabase.auth.signUp(
         {
           email: data.email,
           password: data.password,
           options: {
             data: {
-              business_name: data.businessName,
-              industry: data.industry,
+              email: data.email,
               current_website: data.currentWebsite,
             },
           },
@@ -98,36 +120,47 @@ export const FreeTrialForm = ({ steps }: FreeTrialFormProps) => {
 
       if (signUpError) throw signUpError;
 
+      // Create a full meeting datetime by combining date and time
+      const meetingDateTime = new Date(data.meetingDate!);
+      const [hours] = data.meetingTime!.split(":");
+      meetingDateTime.setHours(parseInt(hours), 0, 0, 0);
+
       const { error: trialRequestError } = await supabase
         .from("trial_requests")
         .insert([
           {
             user_id: userData.user?.id,
             email: data.email,
-            business_name: data.businessName,
-            industry: data.industry,
-            current_website: data.currentWebsite,
-            current_likes: data.currentLikes,
-            improvements: data.improvements,
-            goals: data.goals,
+            current_website: data.currentWebsite || null,
+            current_likes: data.currentLikes || null,
+            improvements: data.improvements || null,
+            selected_plan: data.selectedPlan,
+            meeting_type: data.meetingType,
+            meeting_date: meetingDateTime.toISOString(),
+            meeting_time: data.meetingTime,
             status: "pending",
           },
         ]);
 
-      if (trialRequestError) throw trialRequestError;
+      if (trialRequestError) {
+        console.error("Trial request error:", trialRequestError);
+        throw trialRequestError;
+      }
 
       toast({
         title: "Success! 🎉",
         description:
-          "Your account has been created. Please check your email to verify your account.",
+          "Your consultation has been scheduled. Please check your email to verify your account.",
       });
 
+      // After successful submission, redirect to home
       navigate("/");
     } catch (error: any) {
+      console.error("Submission error:", error);
       toast({
         variant: "destructive",
         title: "Error",
-        description: error.message,
+        description: error.message || "Something went wrong. Please try again.",
       });
     } finally {
       setIsLoading(false);
@@ -137,21 +170,33 @@ export const FreeTrialForm = ({ steps }: FreeTrialFormProps) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const currentStepFields = getStepFields(step);
-    const isStepValid = await form.trigger(currentStepFields);
+    try {
+      const isStepValid = await validateStep(step);
+      if (!isStepValid) {
+        return;
+      }
 
-    if (!isStepValid) {
-      return;
-    }
+      const data = form.getValues();
+      console.log("Current step:", step);
+      console.log("Form data:", data);
 
-    const data = form.getValues();
-    console.log("Current step:", step);
-    console.log("Form data:", data);
-
-    if (step === steps.length - 1) {
-      await handleFinalSubmit(data);
-    } else {
-      handleNextStep();
+      if (step === steps.length - 1) {
+        // Validate entire form before final submission
+        const isValid = await form.trigger();
+        if (!isValid) {
+          return;
+        }
+        await handleFinalSubmit(data);
+      } else {
+        handleNextStep();
+      }
+    } catch (error) {
+      console.error("Form submission error:", error);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Something went wrong. Please try again.",
+      });
     }
   };
 
@@ -199,7 +244,7 @@ export const FreeTrialForm = ({ steps }: FreeTrialFormProps) => {
                     {isLoading
                       ? "Processing..."
                       : step === steps.length - 1
-                        ? "Submit Application"
+                        ? "Schedule Consultation"
                         : "Next Step"}
                   </Button>
                 </div>

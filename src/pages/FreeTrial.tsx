@@ -16,8 +16,9 @@ const steps = [
   },
   {
     id: "business",
-    title: "Business Information",
-    description: "Help us understand your business better",
+    title: "Website Redesign Presentation",
+    description:
+      "Presentation on strategy and updates for your website redesign",
   },
 ];
 
@@ -35,3 +36,4 @@ const FreeTrial = () => {
 };
 
 export default FreeTrial;
+
