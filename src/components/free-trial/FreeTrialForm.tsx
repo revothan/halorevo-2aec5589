@@ -49,7 +49,21 @@ export const FreeTrialForm = ({ steps }: FreeTrialFormProps) => {
       industry: "",
       goals: "",
     },
+    mode: "onChange",
   });
+
+  const getStepFields = (stepIndex: number) => {
+    switch (stepIndex) {
+      case 0:
+        return ["email", "password", "confirmPassword"];
+      case 1:
+        return ["currentWebsite", "currentLikes", "improvements"];
+      case 2:
+        return ["businessName", "industry", "goals"];
+      default:
+        return [];
+    }
+  };
 
   const handleNextStep = () => {
     if (step < steps.length - 1) {
@@ -68,7 +82,6 @@ export const FreeTrialForm = ({ steps }: FreeTrialFormProps) => {
       setIsLoading(true);
       console.log("Starting final submit with data:", data);
 
-      // First create the user account
       const { data: userData, error: signUpError } = await supabase.auth.signUp(
         {
           email: data.email,
@@ -85,9 +98,6 @@ export const FreeTrialForm = ({ steps }: FreeTrialFormProps) => {
 
       if (signUpError) throw signUpError;
 
-      console.log("User created successfully:", userData);
-
-      // Then save the trial request
       const { error: trialRequestError } = await supabase
         .from("trial_requests")
         .insert([
@@ -104,11 +114,7 @@ export const FreeTrialForm = ({ steps }: FreeTrialFormProps) => {
           },
         ]);
 
-      if (trialRequestError) {
-        console.error("Error saving trial request:", trialRequestError);
-        throw trialRequestError;
-      }
-      console.log("Trial request saved successfully");
+      if (trialRequestError) throw trialRequestError;
 
       toast({
         title: "Success! 🎉",
@@ -131,15 +137,20 @@ export const FreeTrialForm = ({ steps }: FreeTrialFormProps) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    const currentStepFields = getStepFields(step);
+    const isStepValid = await form.trigger(currentStepFields);
+
+    if (!isStepValid) {
+      return;
+    }
+
     const data = form.getValues();
     console.log("Current step:", step);
     console.log("Form data:", data);
 
     if (step === steps.length - 1) {
-      // On final step
       await handleFinalSubmit(data);
     } else {
-      // Not on final step, just proceed
       handleNextStep();
     }
   };
@@ -180,7 +191,9 @@ export const FreeTrialForm = ({ steps }: FreeTrialFormProps) => {
                   )}
                   <Button
                     type="submit"
-                    className={`flex-1 bg-rich-purple hover:bg-rich-purple/90 ${step === 0 ? "w-full" : ""}`}
+                    className={`flex-1 bg-rich-purple hover:bg-rich-purple/90 ${
+                      step === 0 ? "w-full" : ""
+                    }`}
                     disabled={isLoading}
                   >
                     {isLoading
@@ -198,4 +211,3 @@ export const FreeTrialForm = ({ steps }: FreeTrialFormProps) => {
     </>
   );
 };
-
