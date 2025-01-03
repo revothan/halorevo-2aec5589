@@ -15,7 +15,8 @@ const BlogPost = lazy(() => import("./pages/BlogPost"));
 const Login = lazy(() => import("./pages/Login"));
 const AdminBlogEditor = lazy(() => import("./pages/AdminBlogEditor"));
 const BugReport = lazy(() => import("./pages/BugReport"));
-const FreeTrial = lazy(() => import("./pages/FreeTrial")); // Add new route
+const FreeTrial = lazy(() => import("./pages/FreeTrial"));
+const FreeTrialLanding = lazy(() => import("./pages/FreeTrialLanding"));
 
 const LoadingSpinner = () => (
   <div className="min-h-screen flex items-center justify-center">
@@ -47,9 +48,13 @@ const App = () => {
                   <Route path="/blog/:id" element={<BlogPost />} />
                   <Route path="/login" element={<Login />} />
                   <Route path="/admin/blog/new" element={<AdminBlogEditor />} />
-                  <Route path="/admin/blog/edit/:id" element={<AdminBlogEditor />} />
+                  <Route
+                    path="/admin/blog/edit/:id"
+                    element={<AdminBlogEditor />}
+                  />
                   <Route path="/bug-report" element={<BugReport />} />
-                  <Route path="/free-trial" element={<FreeTrial />} />
+                  <Route path="/free-trial" element={<FreeTrialLanding />} />
+                  <Route path="/free-trial/form" element={<FreeTrial />} />
                 </Routes>
               </Suspense>
               <Toaster />
