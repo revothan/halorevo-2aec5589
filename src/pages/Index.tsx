@@ -37,9 +37,6 @@ const Index = () => {
             <HowItWorks />
           </Suspense>
           <Suspense fallback={<LoadingSpinner />}>
-            <PricingSection />
-          </Suspense>
-          <Suspense fallback={<LoadingSpinner />}>
             <QnASection />
           </Suspense>
           <Suspense fallback={<LoadingSpinner />}>
@@ -55,3 +52,4 @@ const Index = () => {
 };
 
 export default Index;
+
