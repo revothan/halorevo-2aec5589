@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import {
@@ -15,16 +15,43 @@ import {
 
 const BeforeAfterSlider = () => {
   const [sliderPosition, setSliderPosition] = useState(50);
+  const [isDragging, setIsDragging] = useState(false);
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
 
-  const handleMouseMove = (e) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = e.clientX - rect.left;
+  // Detect touch device on first interaction
+  const handleTouchStart = useCallback(() => {
+    setIsTouchDevice(true);
+    setIsDragging(true);
+  }, []);
+
+  const handleTouchEnd = useCallback(() => {
+    setIsDragging(false);
+  }, []);
+
+  const handleInteraction = useCallback((e: React.MouseEvent | React.TouchEvent) => {
+    const rect = (e.currentTarget as HTMLDivElement).getBoundingClientRect();
+    const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
+    const x = clientX - rect.left;
     const newPosition = (x / rect.width) * 100;
     setSliderPosition(Math.min(Math.max(newPosition, 0), 100));
-  };
+  }, []);
+
+  // Handle mouse move without requiring drag on desktop
+  const handleMouseMove = useCallback((e: React.MouseEvent) => {
+    if (!isTouchDevice) {
+      handleInteraction(e);
+    }
+  }, [handleInteraction, isTouchDevice]);
+
+  // Handle touch move only when dragging
+  const handleTouchMove = useCallback((e: React.TouchEvent) => {
+    if (isDragging) {
+      handleInteraction(e);
+    }
+  }, [isDragging, handleInteraction]);
 
   return (
-    <div className="relative w-full max-w-screen-2xl mx-auto aspect-video bg-gray-800">
+    <div className="relative w-full max-w-screen-2xl mx-auto aspect-video bg-gray-800 touch-none">
       {/* Before Image */}
       <div className="absolute inset-0 bg-gray-800">
         <div className="w-full h-full flex items-center justify-center">
@@ -32,6 +59,7 @@ const BeforeAfterSlider = () => {
             src="https://shvnmdhamqajanusqfax.supabase.co/storage/v1/object/public/images/1.png"
             alt="Before"
             className="w-full h-full object-cover"
+            draggable="false"
           />
         </div>
       </div>
@@ -46,6 +74,7 @@ const BeforeAfterSlider = () => {
             src="https://shvnmdhamqajanusqfax.supabase.co/storage/v1/object/public/images/2.png"
             alt="After"
             className="w-full h-full object-cover"
+            draggable="false"
           />
         </div>
       </div>
@@ -54,12 +83,16 @@ const BeforeAfterSlider = () => {
       <div
         className="absolute inset-0 cursor-ew-resize"
         onMouseMove={handleMouseMove}
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+        onTouchCancel={handleTouchEnd}
+        onTouchMove={handleTouchMove}
       >
         <div
-          className="absolute top-0 bottom-0 w-1 bg-white"
+          className="absolute top-0 bottom-0 w-1 bg-white transition-transform duration-75"
           style={{ left: `${sliderPosition}%` }}
         >
-          <div className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-8 h-8 bg-white rounded-full flex items-center justify-center">
+          <div className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-lg">
             ⇄
           </div>
         </div>
