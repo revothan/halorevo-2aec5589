@@ -137,6 +137,54 @@ export type Database = {
         }
         Relationships: []
       }
+      trial_requests: {
+        Row: {
+          created_at: string | null
+          current_likes: string | null
+          current_website: string | null
+          email: string
+          id: string
+          improvements: string | null
+          meeting_date: string
+          meeting_time: string
+          meeting_type: string
+          selected_plan: string
+          status: string | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          current_likes?: string | null
+          current_website?: string | null
+          email: string
+          id?: string
+          improvements?: string | null
+          meeting_date: string
+          meeting_time: string
+          meeting_type: string
+          selected_plan: string
+          status?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          current_likes?: string | null
+          current_website?: string | null
+          email?: string
+          id?: string
+          improvements?: string | null
+          meeting_date?: string
+          meeting_time?: string
+          meeting_type?: string
+          selected_plan?: string
+          status?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
