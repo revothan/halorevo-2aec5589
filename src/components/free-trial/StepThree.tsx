@@ -113,7 +113,7 @@ export const StepThree = ({ form }: StepThreeProps) => {
                 </li>
                 <li className="flex items-start gap-2">
                   <Check className="h-4 w-4 text-green-500 mt-1 flex-shrink-0" />
-                  <span>One design revision per month</span>
+                  <span>Up to 5 pages</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <Check className="h-4 w-4 text-green-500 mt-1 flex-shrink-0" />
@@ -125,11 +125,13 @@ export const StepThree = ({ form }: StepThreeProps) => {
                 </li>
                 <li className="flex items-start gap-2">
                   <Check className="h-4 w-4 text-green-500 mt-1 flex-shrink-0" />
-                  <span>Content management system setup</span>
+                  <span>
+                    Monthly maintenance (updates, bug fixes, and backups)
+                  </span>
                 </li>
                 <li className="flex items-start gap-2">
                   <Check className="h-4 w-4 text-green-500 mt-1 flex-shrink-0" />
-                  <span>48-hour support response time</span>
+                  <span>24-hour support response time</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <Check className="h-4 w-4 text-green-500 mt-1 flex-shrink-0" />
@@ -157,7 +159,7 @@ export const StepThree = ({ form }: StepThreeProps) => {
               <div className="relative">
                 <h4 className="font-semibold text-xl">Professional</h4>
                 <p className="text-2xl font-bold mt-2">
-                  $1,200<span className="text-sm font-normal">/month</span>
+                  $1,275<span className="text-sm font-normal">/month</span>
                 </p>
               </div>
               {selectedPlan === "professional" && (
@@ -172,11 +174,11 @@ export const StepThree = ({ form }: StepThreeProps) => {
               <ul className="space-y-3">
                 <li className="flex items-start gap-2">
                   <Check className="h-4 w-4 text-green-500 mt-1 flex-shrink-0" />
-                  <span>Priority design revisions (up to 3 per month)</span>
+                  <span>Up to 30 pages.</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <Check className="h-4 w-4 text-green-500 mt-1 flex-shrink-0" />
-                  <span>Advanced SEO optimization & strategy</span>
+                  <span>Weekly maintenance and monitoring.</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <Check className="h-4 w-4 text-green-500 mt-1 flex-shrink-0" />
@@ -188,7 +190,7 @@ export const StepThree = ({ form }: StepThreeProps) => {
                 </li>
                 <li className="flex items-start gap-2">
                   <Check className="h-4 w-4 text-green-500 mt-1 flex-shrink-0" />
-                  <span>24-hour support response time</span>
+                  <span>1-hour support response time</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <Check className="h-4 w-4 text-green-500 mt-1 flex-shrink-0" />
@@ -196,11 +198,11 @@ export const StepThree = ({ form }: StepThreeProps) => {
                 </li>
                 <li className="flex items-start gap-2">
                   <Check className="h-4 w-4 text-green-500 mt-1 flex-shrink-0" />
-                  <span>Social media integration</span>
+                  <span>Priority support (email and live chat 24/7).</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <Check className="h-4 w-4 text-green-500 mt-1 flex-shrink-0" />
-                  <span>Marketing automation setup</span>
+                  <span>Automation setup</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <Check className="h-4 w-4 text-green-500 mt-1 flex-shrink-0" />
@@ -306,4 +308,3 @@ export const StepThree = ({ form }: StepThreeProps) => {
     </motion.div>
   );
 };
-
