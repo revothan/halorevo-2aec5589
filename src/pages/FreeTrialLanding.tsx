@@ -16,6 +16,17 @@ import {
 const BeforeAfterSlider = () => {
   const [sliderPosition, setSliderPosition] = useState(50);
   const [isDragging, setIsDragging] = useState(false);
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
+
+  // Detect touch device on first interaction
+  const handleTouchStart = useCallback(() => {
+    setIsTouchDevice(true);
+    setIsDragging(true);
+  }, []);
+
+  const handleTouchEnd = useCallback(() => {
+    setIsDragging(false);
+  }, []);
 
   const handleInteraction = useCallback((e: React.MouseEvent | React.TouchEvent) => {
     const rect = (e.currentTarget as HTMLDivElement).getBoundingClientRect();
@@ -25,13 +36,19 @@ const BeforeAfterSlider = () => {
     setSliderPosition(Math.min(Math.max(newPosition, 0), 100));
   }, []);
 
-  const handleTouchStart = useCallback(() => {
-    setIsDragging(true);
-  }, []);
+  // Handle mouse move without requiring drag on desktop
+  const handleMouseMove = useCallback((e: React.MouseEvent) => {
+    if (!isTouchDevice) {
+      handleInteraction(e);
+    }
+  }, [handleInteraction, isTouchDevice]);
 
-  const handleTouchEnd = useCallback(() => {
-    setIsDragging(false);
-  }, []);
+  // Handle touch move only when dragging
+  const handleTouchMove = useCallback((e: React.TouchEvent) => {
+    if (isDragging) {
+      handleInteraction(e);
+    }
+  }, [isDragging, handleInteraction]);
 
   return (
     <div className="relative w-full max-w-screen-2xl mx-auto aspect-video bg-gray-800 touch-none">
@@ -65,14 +82,11 @@ const BeforeAfterSlider = () => {
       {/* Slider */}
       <div
         className="absolute inset-0 cursor-ew-resize"
-        onMouseDown={handleTouchStart}
-        onMouseUp={handleTouchEnd}
-        onMouseLeave={handleTouchEnd}
-        onMouseMove={(e) => isDragging && handleInteraction(e)}
+        onMouseMove={handleMouseMove}
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
         onTouchCancel={handleTouchEnd}
-        onTouchMove={(e) => isDragging && handleInteraction(e)}
+        onTouchMove={handleTouchMove}
       >
         <div
           className="absolute top-0 bottom-0 w-1 bg-white transition-transform duration-75"
