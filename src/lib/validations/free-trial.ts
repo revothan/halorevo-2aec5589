@@ -54,3 +54,5 @@ export const freeTrialSchema = z
     path: ["confirmPassword"],
   });
 
+// Export the type inferred from the schema
+export type FreeTrialFormData = z.infer<typeof freeTrialSchema>;
