@@ -3,10 +3,7 @@ import { motion } from "framer-motion";
 import {
   ShoppingCart,
   Check,
-  Clock,
   Mail,
-  Users,
-  BarChart,
   Globe,
   ArrowRight,
 } from "lucide-react";
@@ -19,9 +16,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 import Navbar from "@/components/Navbar";
 
 const Services = () => {
+  const { toast } = useToast();
   const features = {
     basic: [
       "Unlimited Requests (One at a time)",
@@ -40,6 +40,26 @@ const Services = () => {
       "Monthly Performance Analytics",
       "Quarterly Website Health Check",
     ],
+  };
+
+  const handleCheckout = async (priceId: string, mode: 'payment' | 'subscription') => {
+    try {
+      const { data, error } = await supabase.functions.invoke('create-checkout', {
+        body: { priceId, mode },
+      });
+
+      if (error) throw error;
+      if (data?.url) {
+        window.location.href = data.url;
+      }
+    } catch (error) {
+      console.error('Checkout error:', error);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Unable to process checkout. Please try again.",
+      });
+    }
   };
 
   return (
@@ -100,7 +120,7 @@ const Services = () => {
               <CardFooter>
                 <Button
                   className="w-full md:w-auto bg-rich-purple hover:bg-rich-purple/80"
-                  onClick={() => window.location.href = "/contact"}
+                  onClick={() => handleCheckout('YOUR_WEBSITE_REDESIGN_PRICE_ID', 'payment')}
                 >
                   <ShoppingCart className="mr-2" />
                   Purchase Now
@@ -140,7 +160,7 @@ const Services = () => {
               <CardFooter>
                 <Button
                   className="w-full bg-rich-blue hover:bg-rich-blue/80"
-                  onClick={() => window.location.href = "/contact"}
+                  onClick={() => handleCheckout('YOUR_BASIC_PLAN_PRICE_ID', 'subscription')}
                 >
                   Get Started
                   <ArrowRight className="ml-2" />
@@ -175,7 +195,7 @@ const Services = () => {
               <CardFooter>
                 <Button
                   className="w-full bg-rich-green hover:bg-rich-green/80"
-                  onClick={() => window.location.href = "/contact"}
+                  onClick={() => handleCheckout('YOUR_PRO_PLAN_PRICE_ID', 'subscription')}
                 >
                   Get Started
                   <ArrowRight className="ml-2" />
