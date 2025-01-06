@@ -30,6 +30,8 @@ interface FreeTrialFormProps {
   }[];
 }
 
+type FieldName = keyof FreeTrialFormData;
+
 export const FreeTrialForm = ({ steps }: FreeTrialFormProps) => {
   const [step, setStep] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
@@ -53,7 +55,7 @@ export const FreeTrialForm = ({ steps }: FreeTrialFormProps) => {
     mode: "onChange",
   });
 
-  const getStepFields = (stepIndex: number) => {
+  const getStepFields = (stepIndex: number): FieldName[] => {
     switch (stepIndex) {
       case 0:
         return ["email", "password", "confirmPassword"];
