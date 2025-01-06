@@ -19,7 +19,7 @@ export const freeTrialSchema = z
         },
         {
           message: "Please enter a valid URL or leave it empty",
-        },
+        }
       )
       .optional(),
     currentLikes: z.string().optional(),
@@ -43,7 +43,7 @@ export const freeTrialSchema = z
         },
         {
           message: "Meeting must be scheduled at least 2 days from today",
-        },
+        }
       ),
     meetingTime: z.string({
       required_error: "Please select a meeting time",
@@ -54,3 +54,4 @@ export const freeTrialSchema = z
     path: ["confirmPassword"],
   });
 
+export type FreeTrialFormData = z.infer<typeof freeTrialSchema>;
