@@ -17,6 +17,8 @@ const AdminBlogEditor = lazy(() => import("./pages/AdminBlogEditor"));
 const BugReport = lazy(() => import("./pages/BugReport"));
 const FreeTrial = lazy(() => import("./pages/FreeTrial"));
 const FreeTrialLanding = lazy(() => import("./pages/FreeTrialLanding"));
+const AffiliateSignup = lazy(() => import("./pages/AffiliateSignup"));
+const AffiliateDashboard = lazy(() => import("./pages/AffiliateDashboard"));
 
 const LoadingSpinner = () => (
   <div className="min-h-screen flex items-center justify-center">
@@ -55,6 +57,8 @@ const App = () => {
                   <Route path="/bug-report" element={<BugReport />} />
                   <Route path="/free-trial" element={<FreeTrialLanding />} />
                   <Route path="/free-trial/form" element={<FreeTrial />} />
+                  <Route path="/affiliate/signup" element={<AffiliateSignup />} />
+                  <Route path="/affiliate/dashboard" element={<AffiliateDashboard />} />
                 </Routes>
               </Suspense>
               <Toaster />
