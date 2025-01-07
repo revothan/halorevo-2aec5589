@@ -51,27 +51,40 @@ export const CustomerFormDialog = ({
     try {
       // First verify referral code if provided
       if (data.referralCode) {
+        console.log("Checking referral code:", data.referralCode);
+
+        // Use the service role client for affiliate profiles query
         const { data: affiliateData, error: affiliateError } = await supabase
           .from("affiliate_profiles")
-          .select("id, status")
+          .select("id, status, referral_code")
           .eq("referral_code", data.referralCode)
-          .single();
+          .eq("status", "approved")
+          .limit(1);
 
-        if (affiliateError || !affiliateData) {
+        console.log("Affiliate query result:", {
+          affiliateData,
+          affiliateError,
+        });
+
+        // Handle query errors
+        if (affiliateError) {
+          console.error("Error checking referral code:", affiliateError);
           toast({
-            title: "Invalid referral code",
-            description: "Please check your referral code or leave it empty",
+            title: "Error verifying referral code",
+            description: "Please try again or continue without a referral code",
             variant: "destructive",
           });
           setIsLoading(false);
           return;
         }
 
-        // Check if affiliate is approved
-        if (affiliateData.status !== "approved") {
+        // Handle no results or inactive referral code
+        if (!affiliateData?.length) {
+          console.log("No valid referral code found");
           toast({
             title: "Invalid referral code",
-            description: "This referral code is not active",
+            description:
+              "Please check your referral code or continue without one",
             variant: "destructive",
           });
           setIsLoading(false);
@@ -80,17 +93,25 @@ export const CustomerFormDialog = ({
       }
 
       // Create the user account
-      const { error: signUpError } = await supabase.auth.signUp({
-        email: data.email,
-        password: data.password,
-        options: {
-          data: {
-            name: data.name,
+      const { data: authData, error: signUpError } = await supabase.auth.signUp(
+        {
+          email: data.email,
+          password: data.password,
+          options: {
+            data: {
+              name: data.name,
+              referral_code: data.referralCode || null,
+            },
           },
         },
-      });
+      );
 
-      if (signUpError) throw signUpError;
+      if (signUpError) {
+        console.error("Signup error:", signUpError);
+        throw signUpError;
+      }
+
+      console.log("Account created successfully:", authData);
 
       toast({
         title: "Account created successfully!",
@@ -101,9 +122,10 @@ export const CustomerFormDialog = ({
       onSuccess(data);
       reset();
     } catch (error: any) {
+      console.error("Form submission error:", error);
       toast({
         title: "Error",
-        description: error.message,
+        description: error.message || "An unexpected error occurred",
         variant: "destructive",
       });
     } finally {
@@ -199,4 +221,3 @@ export const CustomerFormDialog = ({
     </Dialog>
   );
 };
-
