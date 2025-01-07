@@ -4,7 +4,12 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2, Mail, User, Key } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -22,7 +27,7 @@ type CustomerFormData = z.infer<typeof customerFormSchema>;
 interface CustomerFormDialogProps {
   isOpen: boolean;
   onClose: () => void;
-  onSuccess: () => void;
+  onSuccess: (data: CustomerFormData) => void; // Updated to pass form data
 }
 
 export const CustomerFormDialog = ({
@@ -48,7 +53,7 @@ export const CustomerFormDialog = ({
       if (data.referralCode) {
         const { data: affiliateData, error: affiliateError } = await supabase
           .from("affiliate_profiles")
-          .select("id")
+          .select("id, status")
           .eq("referral_code", data.referralCode)
           .single();
 
@@ -56,6 +61,17 @@ export const CustomerFormDialog = ({
           toast({
             title: "Invalid referral code",
             description: "Please check your referral code or leave it empty",
+            variant: "destructive",
+          });
+          setIsLoading(false);
+          return;
+        }
+
+        // Check if affiliate is approved
+        if (affiliateData.status !== "approved") {
+          toast({
+            title: "Invalid referral code",
+            description: "This referral code is not active",
             variant: "destructive",
           });
           setIsLoading(false);
@@ -81,8 +97,9 @@ export const CustomerFormDialog = ({
         description: "You can now proceed with your purchase.",
       });
 
+      // Pass the form data back to parent component
+      onSuccess(data);
       reset();
-      onSuccess();
     } catch (error: any) {
       toast({
         title: "Error",
@@ -143,7 +160,9 @@ export const CustomerFormDialog = ({
               {...register("password")}
             />
             {errors.password && (
-              <p className="text-sm text-destructive">{errors.password.message}</p>
+              <p className="text-sm text-destructive">
+                {errors.password.message}
+              </p>
             )}
           </div>
 
@@ -180,3 +199,4 @@ export const CustomerFormDialog = ({
     </Dialog>
   );
 };
+
