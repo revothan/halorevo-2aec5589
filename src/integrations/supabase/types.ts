@@ -14,9 +14,12 @@ export type Database = {
           affiliate_id: string
           amount: number
           commission_amount: number
+          commission_rate_snapshot: number | null
           created_at: string
           customer_email: string
           id: string
+          order_id: string | null
+          payment_status: string | null
           status: string
           updated_at: string
         }
@@ -24,9 +27,12 @@ export type Database = {
           affiliate_id: string
           amount: number
           commission_amount: number
+          commission_rate_snapshot?: number | null
           created_at?: string
           customer_email: string
           id?: string
+          order_id?: string | null
+          payment_status?: string | null
           status?: string
           updated_at?: string
         }
@@ -34,9 +40,12 @@ export type Database = {
           affiliate_id?: string
           amount?: number
           commission_amount?: number
+          commission_rate_snapshot?: number | null
           created_at?: string
           customer_email?: string
           id?: string
+          order_id?: string | null
+          payment_status?: string | null
           status?: string
           updated_at?: string
         }
@@ -48,33 +57,46 @@ export type Database = {
             referencedRelation: "affiliate_profiles"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "affiliate_orders_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
         ]
       }
       affiliate_profiles: {
         Row: {
           approved_at: string | null
+          commission_rate: number | null
           created_at: string
           id: string
           referral_code: string
           status: string
+          total_earnings: number | null
           updated_at: string
           user_id: string
         }
         Insert: {
           approved_at?: string | null
+          commission_rate?: number | null
           created_at?: string
           id?: string
           referral_code: string
           status?: string
+          total_earnings?: number | null
           updated_at?: string
           user_id: string
         }
         Update: {
           approved_at?: string | null
+          commission_rate?: number | null
           created_at?: string
           id?: string
           referral_code?: string
           status?: string
+          total_earnings?: number | null
           updated_at?: string
           user_id?: string
         }
@@ -141,6 +163,102 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      customers: {
+        Row: {
+          company: string | null
+          created_at: string
+          email: string | null
+          id: string
+          name: string | null
+          phone: string | null
+          stripe_customer_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          company?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          name?: string | null
+          phone?: string | null
+          stripe_customer_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          company?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          name?: string | null
+          phone?: string | null
+          stripe_customer_id?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      orders: {
+        Row: {
+          affiliate_id: string | null
+          amount: number | null
+          created_at: string
+          currency: string | null
+          customer_id: string | null
+          id: string
+          metadata: Json | null
+          mode: string | null
+          price_id: string
+          status: string | null
+          stripe_payment_intent_id: string | null
+          stripe_session_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          affiliate_id?: string | null
+          amount?: number | null
+          created_at?: string
+          currency?: string | null
+          customer_id?: string | null
+          id?: string
+          metadata?: Json | null
+          mode?: string | null
+          price_id: string
+          status?: string | null
+          stripe_payment_intent_id?: string | null
+          stripe_session_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          affiliate_id?: string | null
+          amount?: number | null
+          created_at?: string
+          currency?: string | null
+          customer_id?: string | null
+          id?: string
+          metadata?: Json | null
+          mode?: string | null
+          price_id?: string
+          status?: string | null
+          stripe_payment_intent_id?: string | null
+          stripe_session_id?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "orders_affiliate_id_fkey"
+            columns: ["affiliate_id"]
+            isOneToOne: false
+            referencedRelation: "affiliate_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "orders_customer_id_fkey"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "customers"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       posts: {
         Row: {

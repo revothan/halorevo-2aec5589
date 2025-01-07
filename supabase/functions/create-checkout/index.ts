@@ -39,8 +39,6 @@ serve(async (req) => {
     let affiliateProfile = null;
     if (referralCode) {
       console.log("Checking referral code:", referralCode);
-
-      // First, check if the code exists at all
       const { data: affiliate, error: affiliateError } = await supabase
         .from("affiliate_profiles")
         .select("*")
@@ -49,58 +47,80 @@ serve(async (req) => {
 
       if (affiliateError) {
         console.log("Error checking referral code:", affiliateError);
-        if (affiliateError.code === "PGRST116") {
-          return new Response(
-            JSON.stringify({
-              error:
-                "Invalid referral code. Please check your referral code or leave it empty",
-            }),
-            {
-              headers: { ...corsHeaders, "Content-Type": "application/json" },
-              status: 400,
-            },
-          );
-        }
-        throw affiliateError;
+        throw new Error("Invalid referral code");
       }
 
-      // If code exists, check if it's approved
-      if (!affiliate) {
-        return new Response(
-          JSON.stringify({
-            error:
-              "Invalid referral code. Please check your referral code or leave it empty",
-          }),
-          {
-            headers: { ...corsHeaders, "Content-Type": "application/json" },
-            status: 400,
-          },
-        );
-      }
-
-      if (affiliate.status !== "approved") {
-        console.log("Referral code found but not approved:", affiliate);
-        return new Response(
-          JSON.stringify({
-            error:
-              "This referral code is not active. Please check your referral code or leave it empty",
-          }),
-          {
-            headers: { ...corsHeaders, "Content-Type": "application/json" },
-            status: 400,
-          },
-        );
+      if (!affiliate || affiliate.status !== "approved") {
+        throw new Error("Invalid or inactive referral code");
       }
 
       console.log("Valid affiliate found:", affiliate);
       affiliateProfile = affiliate;
     }
 
-    // Rest of your existing code for customer creation and checkout...
-    // [Previous customer and checkout handling code remains the same]
+    // Create or retrieve Stripe customer
+    let stripeCustomer;
+    try {
+      const { data: existingCustomers } = await stripe.customers.search({
+        query: `email:'${customerData.email}'`,
+      });
+
+      if (existingCustomers && existingCustomers.length > 0) {
+        stripeCustomer = existingCustomers[0];
+      } else {
+        stripeCustomer = await stripe.customers.create({
+          email: customerData.email,
+          name: customerData.name,
+        });
+      }
+    } catch (error) {
+      console.error("Error with Stripe customer:", error);
+      throw error;
+    }
+
+    // Create or update customer in our database
+    const { data: customer, error: customerError } = await supabase
+      .from("customers")
+      .upsert(
+        {
+          stripe_customer_id: stripeCustomer.id,
+          email: customerData.email,
+          name: customerData.name,
+        },
+        { onConflict: "stripe_customer_id" }
+      )
+      .select()
+      .single();
+
+    if (customerError) {
+      console.error("Error creating/updating customer:", customerError);
+      throw customerError;
+    }
+
+    // Create order record
+    const { data: order, error: orderError } = await supabase
+      .from("orders")
+      .insert({
+        customer_id: customer.id,
+        price_id: priceId,
+        mode: mode,
+        status: "pending",
+        affiliate_id: affiliateProfile?.id || null,
+        metadata: {
+          referral_code: referralCode || null,
+        },
+      })
+      .select()
+      .single();
+
+    if (orderError) {
+      console.error("Error creating order:", orderError);
+      throw orderError;
+    }
 
     console.log("Creating checkout session...");
     const session = await stripe.checkout.sessions.create({
+      customer: stripeCustomer.id,
       line_items: [
         {
           price: priceId,
@@ -108,15 +128,26 @@ serve(async (req) => {
         },
       ],
       mode: mode || "subscription",
-      success_url: `${req.headers.get("origin")}/success`,
+      success_url: `${req.headers.get("origin")}/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${req.headers.get("origin")}/services`,
-      ...(stripeCustomer && { customer: stripeCustomer.id }),
       allow_promotion_codes: true,
       billing_address_collection: "required",
       metadata: {
+        order_id: order.id,
         referral_code: referralCode || "",
       },
     });
+
+    // Update order with session ID
+    const { error: updateError } = await supabase
+      .from("orders")
+      .update({ stripe_session_id: session.id })
+      .eq("id", order.id);
+
+    if (updateError) {
+      console.error("Error updating order with session ID:", updateError);
+      throw updateError;
+    }
 
     return new Response(JSON.stringify({ url: session.url }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
@@ -130,4 +161,3 @@ serve(async (req) => {
     });
   }
 });
-
