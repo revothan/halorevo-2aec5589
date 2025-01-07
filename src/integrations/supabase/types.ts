@@ -548,3 +548,24 @@ export type SupabaseResponse<T> = {
   data: T | null;
   error: Error | null;
 };
+
+export interface FeatureProps {
+  icon: React.ReactNode;
+  title: string;
+  description: React.ReactNode;
+}
+
+export interface FAQItemProps {
+  question: string;
+  answer: string;
+}
+
+export interface CustomerData {
+  name: string;
+  email: string;
+  referralCode?: string;
+}
+
+export interface ServicePageProps {
+  onCheckout: (priceId: string, mode: string) => Promise<void>;
+}
