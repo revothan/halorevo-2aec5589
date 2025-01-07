@@ -35,6 +35,14 @@ serve(async (req) => {
     const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") || "";
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
+    // Get price information from Stripe
+    const price = await stripe.prices.retrieve(priceId);
+    console.log("Retrieved price information:", price);
+
+    if (!price) {
+      throw new Error("Price not found");
+    }
+
     // Validate referral code if provided
     let affiliateProfile = null;
     if (referralCode) {
@@ -97,7 +105,7 @@ serve(async (req) => {
       throw customerError;
     }
 
-    // Create order record
+    // Create order record with price information
     const { data: order, error: orderError } = await supabase
       .from("orders")
       .insert({
@@ -106,6 +114,8 @@ serve(async (req) => {
         mode: mode,
         status: "pending",
         affiliate_id: affiliateProfile?.id || null,
+        amount: price.unit_amount ? price.unit_amount / 100 : null, // Convert from cents to dollars
+        currency: price.currency,
         metadata: {
           referral_code: referralCode || null,
         },
