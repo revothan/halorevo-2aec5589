@@ -51,6 +51,7 @@ serve(async (req) => {
         .from("affiliate_profiles")
         .select("*")
         .eq("referral_code", referralCode)
+        .eq("status", "approved") // Add this line to explicitly check for approved status
         .single();
 
       if (affiliateError) {
@@ -58,7 +59,7 @@ serve(async (req) => {
         throw new Error("Invalid referral code");
       }
 
-      if (!affiliate || affiliate.status !== "approved") {
+      if (!affiliate) {
         throw new Error("Invalid or inactive referral code");
       }
 
