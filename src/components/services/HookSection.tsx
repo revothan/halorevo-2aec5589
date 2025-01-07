@@ -109,7 +109,7 @@ export const HookSection = () => {
               whileTap={{ scale: 0.95 }}
               className="px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg text-white font-semibold text-lg shadow-lg hover:shadow-xl transition-shadow"
             >
-              Get Started
+              See Plans
             </motion.button>
           </motion.div>
         </motion.div>

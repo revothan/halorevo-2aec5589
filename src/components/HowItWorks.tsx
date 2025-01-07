@@ -338,7 +338,10 @@ const HowItWorks = () => {
           transition={{ duration: 0.6, delay: 0.4 }}
           className="text-center mt-20"
         >
-          <Button className="bg-rich-gold hover:bg-rich-gold/90 text-rich-black px-8 py-6 rounded-lg font-medium inline-flex items-center gap-2">
+          <Button /// <reference path="" />
+            onClick={() => (window.location.href = "/services")}
+            className="bg-rich-gold hover:bg-rich-gold/90 text-rich-black px-8 py-6 rounded-lg font-medium inline-flex items-center gap-2"
+          >
             <MessageSquare className="w-4 h-4" />
             Start Your Project
           </Button>
