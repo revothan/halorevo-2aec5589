@@ -24,21 +24,13 @@ const Navbar = () => {
                 Blog
               </Button>
             </Link>
-            <Link to="/affiliate/dashboard">
-              <Button
-                variant="ghost"
-                className="text-rich-gold/70 hover:text-rich-gold hover:bg-rich-gray/50"
-              >
-                Affiliate
-              </Button>
-            </Link>
             {session && (
-              <Link to="/bug-report">
+              <Link to="/dashboard">
                 <Button
                   variant="ghost"
                   className="text-rich-gold/70 hover:text-rich-gold hover:bg-rich-gray/50"
                 >
-                  Report Bug
+                  Dashboard
                 </Button>
               </Link>
             )}
@@ -63,21 +55,13 @@ const Navbar = () => {
                 Home
               </Button>
             </Link>
-            <Link to="/affiliate/dashboard">
-              <Button
-                variant="ghost"
-                className="text-rich-gold/70 hover:text-rich-gold hover:bg-rich-gray/50"
-              >
-                Affiliate
-              </Button>
-            </Link>
             {session && (
-              <Link to="/bug-report">
+              <Link to="/dashboard">
                 <Button
                   variant="ghost"
                   className="text-rich-gold/70 hover:text-rich-gold hover:bg-rich-gray/50"
                 >
-                  Report Bug
+                  Dashboard
                 </Button>
               </Link>
             )}
@@ -110,3 +94,4 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
