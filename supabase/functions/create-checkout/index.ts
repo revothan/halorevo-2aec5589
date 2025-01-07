@@ -47,12 +47,26 @@ serve(async (req) => {
     let affiliateProfile = null;
     if (referralCode) {
       console.log("Checking referral code:", referralCode);
+      
+      // First, let's get all affiliate profiles to debug
+      const { data: allProfiles, error: allProfilesError } = await supabase
+        .from("affiliate_profiles")
+        .select("*");
+      
+      console.log("All affiliate profiles:", allProfiles);
+      
+      if (allProfilesError) {
+        console.error("Error fetching all profiles:", allProfilesError);
+      }
+
       const { data: affiliate, error: affiliateError } = await supabase
         .from("affiliate_profiles")
         .select("*")
         .eq("referral_code", referralCode)
-        .eq("status", "approved") // Add this line to explicitly check for approved status
+        .eq("status", "approved")
         .single();
+
+      console.log("Affiliate query result:", { affiliate, affiliateError });
 
       if (affiliateError) {
         console.log("Error checking referral code:", affiliateError);
@@ -60,6 +74,7 @@ serve(async (req) => {
       }
 
       if (!affiliate) {
+        console.log("No affiliate found or not approved");
         throw new Error("Invalid or inactive referral code");
       }
 
@@ -76,11 +91,13 @@ serve(async (req) => {
 
       if (existingCustomers && existingCustomers.length > 0) {
         stripeCustomer = existingCustomers[0];
+        console.log("Found existing Stripe customer:", stripeCustomer);
       } else {
         stripeCustomer = await stripe.customers.create({
           email: customerData.email,
           name: customerData.name,
         });
+        console.log("Created new Stripe customer:", stripeCustomer);
       }
     } catch (error) {
       console.error("Error with Stripe customer:", error);
@@ -106,6 +123,8 @@ serve(async (req) => {
       throw customerError;
     }
 
+    console.log("Customer record created/updated:", customer);
+
     // Create order record with price information
     const { data: order, error: orderError } = await supabase
       .from("orders")
@@ -128,6 +147,8 @@ serve(async (req) => {
       console.error("Error creating order:", orderError);
       throw orderError;
     }
+
+    console.log("Order record created:", order);
 
     console.log("Creating checkout session...");
     const session = await stripe.checkout.sessions.create({
@@ -159,6 +180,8 @@ serve(async (req) => {
       console.error("Error updating order with session ID:", updateError);
       throw updateError;
     }
+
+    console.log("Checkout session created:", session.id);
 
     return new Response(JSON.stringify({ url: session.url }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
