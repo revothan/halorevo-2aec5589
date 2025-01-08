@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import { Hero } from "@/components/Hero";
 import { Loader2 } from "lucide-react";
+import { StorySection } from "@/components/services/StorySection";
 
 const PorfolioSection = lazy(() => import("@/components/PortfolioSection"));
 const HowItWorks = lazy(() => import("@/components/HowItWorks"));
@@ -31,7 +32,7 @@ const Index = () => {
         <div>
           <Hero />
           <Suspense fallback={<LoadingSpinner />}>
-            <PorfolioSection />
+            <StorySection />
           </Suspense>
           <Suspense fallback={<LoadingSpinner />}>
             <HowItWorks />
@@ -52,4 +53,3 @@ const Index = () => {
 };
 
 export default Index;
-

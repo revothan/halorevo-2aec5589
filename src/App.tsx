@@ -20,6 +20,7 @@ const FreeTrialLanding = lazy(() => import("./pages/FreeTrialLanding"));
 const AffiliateSignup = lazy(() => import("./pages/AffiliateSignup"));
 const AffiliateDashboard = lazy(() => import("./pages/AffiliateDashboard"));
 const Services = lazy(() => import("./pages/Services"));
+const Success = lazy(() => import("./pages/Success"));
 
 const LoadingSpinner = () => (
   <div className="min-h-screen flex items-center justify-center">
@@ -67,6 +68,7 @@ const App = () => {
                     element={<AffiliateDashboard />}
                   />
                   <Route path="/services" element={<Services />} />
+                  <Route path="/success" element={<Success />} />
                 </Routes>
               </Suspense>
               <Toaster />
