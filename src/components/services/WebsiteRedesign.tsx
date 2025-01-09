@@ -8,6 +8,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
+import { CustomerData } from "@/types";
 
 interface WebsiteRedesignProps {
   onCheckout: (
@@ -17,12 +20,44 @@ interface WebsiteRedesignProps {
 }
 
 export const WebsiteRedesign = ({ onCheckout }: WebsiteRedesignProps) => {
+  const toast = useToast();
+
   const PricingFeature = ({ text }: { text: string }) => (
     <div className="flex items-center gap-2 text-gray-300">
       <Check className="w-4 h-4 text-rich-purple" />
       <span>{text}</span>
     </div>
   );
+
+  const handleCheckout = async (formData: CustomerData) => {
+    try {
+      const { data, error } = await supabase.functions.invoke(
+        "create-checkout",
+        {
+          body: {
+            priceId: "price_1QePkqAoXQ4jQHytmXhhPjJq", // One-time website development
+            mode: "payment",
+            customerData: {
+              name: formData.name,
+              email: formData.email,
+            },
+            referralCode: formData.referralCode || null,
+          },
+        },
+      );
+
+      if (error) throw error;
+      if (data?.url) window.location.href = data.url;
+    } catch (error: any) {
+      console.error("Checkout error:", error);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description:
+          error.message || "Unable to process checkout. Please try again.",
+      });
+    }
+  };
 
   return (
     <section className="py-16 px-4 md:px-8 bg-rich-gray/20">
@@ -81,9 +116,7 @@ export const WebsiteRedesign = ({ onCheckout }: WebsiteRedesignProps) => {
             <Button
               size="lg"
               className="w-full bg-rich-purple hover:bg-rich-purple/80 text-lg py-6"
-              onClick={() =>
-                onCheckout("price_1QePtyAoXQ4jQHytu7dUPRTD", "payment")
-              }
+              onClick={() => handleCheckout({ name: "", email: "", referralCode: null })}
             >
               <ShoppingCart className="mr-2" />
               Get Started Now - $2,000
@@ -97,4 +130,3 @@ export const WebsiteRedesign = ({ onCheckout }: WebsiteRedesignProps) => {
     </section>
   );
 };
-

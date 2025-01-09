@@ -84,6 +84,66 @@ export const ServicePlans = ({ onCheckout }: ServicePlansProps) => {
     </div>
   );
 
+  const handleBasicPlanCheckout = async () => {
+    try {
+      const { data, error } = await supabase.functions.invoke(
+        "create-checkout",
+        {
+          body: {
+            priceId: "price_1QePpLAoXQ4jQHytMv0c2i4F", // Basic subscription
+            mode: "subscription",
+            customerData: {
+              name: customerData.name,
+              email: customerData.email,
+            },
+            referralCode: customerData.referralCode || null,
+          },
+        },
+      );
+
+      if (error) throw error;
+      if (data?.url) window.location.href = data.url;
+    } catch (error: any) {
+      console.error("Checkout error:", error);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description:
+          error.message || "Unable to process checkout. Please try again.",
+      });
+    }
+  };
+
+  const handleProPlanCheckout = async () => {
+    try {
+      const { data, error } = await supabase.functions.invoke(
+        "create-checkout",
+        {
+          body: {
+            priceId: "price_1QePplAoXQ4jQHyteyxHfl1b", // Pro subscription
+            mode: "subscription",
+            customerData: {
+              name: customerData.name,
+              email: customerData.email,
+            },
+            referralCode: customerData.referralCode || null,
+          },
+        },
+      );
+
+      if (error) throw error;
+      if (data?.url) window.location.href = data.url;
+    } catch (error: any) {
+      console.error("Checkout error:", error);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description:
+          error.message || "Unable to process checkout. Please try again.",
+      });
+    }
+  };
+
   return (
     <section className="py-16 px-4 md:px-8">
       <div className="max-w-6xl mx-auto">
@@ -155,9 +215,7 @@ export const ServicePlans = ({ onCheckout }: ServicePlansProps) => {
               <Button
                 size="lg"
                 className="w-full bg-rich-blue hover:bg-rich-blue/80 py-6"
-                onClick={() =>
-                  onCheckout("price_1QePyPAoXQ4jQHytQrweTFLM", "subscription")
-                }
+                onClick={handleBasicPlanCheckout}
               >
                 Get Started with Basic
                 <ArrowRight className="ml-2" />
@@ -223,9 +281,7 @@ export const ServicePlans = ({ onCheckout }: ServicePlansProps) => {
               <Button
                 size="lg"
                 className="w-full bg-rich-green hover:bg-rich-green/80 py-6"
-                onClick={() =>
-                  onCheckout("price_1QePylAoXQ4jQHytr58VwyHS", "subscription")
-                }
+                onClick={handleProPlanCheckout}
               >
                 Get Started with Pro
                 <ArrowRight className="ml-2" />
@@ -243,4 +299,3 @@ export const ServicePlans = ({ onCheckout }: ServicePlansProps) => {
     </section>
   );
 };
-
