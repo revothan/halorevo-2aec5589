@@ -20,7 +20,7 @@ interface WebsiteRedesignProps {
 }
 
 export const WebsiteRedesign = ({ onCheckout }: WebsiteRedesignProps) => {
-  const toast = useToast();
+  const { toast } = useToast();
 
   const PricingFeature = ({ text }: { text: string }) => (
     <div className="flex items-center gap-2 text-gray-300">
@@ -51,10 +51,10 @@ export const WebsiteRedesign = ({ onCheckout }: WebsiteRedesignProps) => {
     } catch (error: any) {
       console.error("Checkout error:", error);
       toast({
-        variant: "destructive",
         title: "Error",
         description:
           error.message || "Unable to process checkout. Please try again.",
+        variant: "destructive",
       });
     }
   };

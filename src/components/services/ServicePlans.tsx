@@ -18,6 +18,9 @@ import {
   CardDescription,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
+import { CustomerData } from "@/types";
 
 interface ServicePlansProps {
   onCheckout: (
@@ -27,6 +30,8 @@ interface ServicePlansProps {
 }
 
 export const ServicePlans = ({ onCheckout }: ServicePlansProps) => {
+  const { toast } = useToast();
+  
   const features = {
     basic: [
       {
@@ -84,7 +89,7 @@ export const ServicePlans = ({ onCheckout }: ServicePlansProps) => {
     </div>
   );
 
-  const handleBasicPlanCheckout = async () => {
+  const handleBasicPlanCheckout = async (customerData: CustomerData) => {
     try {
       const { data, error } = await supabase.functions.invoke(
         "create-checkout",
@@ -114,7 +119,7 @@ export const ServicePlans = ({ onCheckout }: ServicePlansProps) => {
     }
   };
 
-  const handleProPlanCheckout = async () => {
+  const handleProPlanCheckout = async (customerData: CustomerData) => {
     try {
       const { data, error } = await supabase.functions.invoke(
         "create-checkout",
