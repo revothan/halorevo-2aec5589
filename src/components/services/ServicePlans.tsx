@@ -18,20 +18,23 @@ import {
   CardDescription,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { CustomerData } from "@/types";
+import { CustomerFormDialog } from "./CustomerFormDialog";
 
 interface ServicePlansProps {
-  onCheckout: (
-    priceId: string,
-    mode: "payment" | "subscription",
-  ) => Promise<void>;
+  onCheckout: (priceId: string, mode: "payment" | "subscription") => Promise<void>;
 }
 
 export const ServicePlans = ({ onCheckout }: ServicePlansProps) => {
   const { toast } = useToast();
-  
+  const [showCustomerForm, setShowCustomerForm] = useState(false);
+  const [pendingCheckout, setPendingCheckout] = useState<{
+    handler: (data: CustomerData) => Promise<void>;
+  } | null>(null);
+
   const features = {
     basic: [
       {
@@ -91,20 +94,17 @@ export const ServicePlans = ({ onCheckout }: ServicePlansProps) => {
 
   const handleBasicPlanCheckout = async (customerData: CustomerData) => {
     try {
-      const { data, error } = await supabase.functions.invoke(
-        "create-checkout",
-        {
-          body: {
-            priceId: "price_1QePpLAoXQ4jQHytMv0c2i4F", // Basic subscription
-            mode: "subscription",
-            customerData: {
-              name: customerData.name,
-              email: customerData.email,
-            },
-            referralCode: customerData.referralCode || null,
+      const { data, error } = await supabase.functions.invoke("create-checkout", {
+        body: {
+          priceId: "price_1QePpLAoXQ4jQHytMv0c2i4F", // Basic subscription
+          mode: "subscription",
+          customerData: {
+            name: customerData.name,
+            email: customerData.email,
           },
+          referralCode: customerData.referralCode || null,
         },
-      );
+      });
 
       if (error) throw error;
       if (data?.url) window.location.href = data.url;
@@ -121,20 +121,17 @@ export const ServicePlans = ({ onCheckout }: ServicePlansProps) => {
 
   const handleProPlanCheckout = async (customerData: CustomerData) => {
     try {
-      const { data, error } = await supabase.functions.invoke(
-        "create-checkout",
-        {
-          body: {
-            priceId: "price_1QePplAoXQ4jQHyteyxHfl1b", // Pro subscription
-            mode: "subscription",
-            customerData: {
-              name: customerData.name,
-              email: customerData.email,
-            },
-            referralCode: customerData.referralCode || null,
+      const { data, error } = await supabase.functions.invoke("create-checkout", {
+        body: {
+          priceId: "price_1QePplAoXQ4jQHyteyxHfl1b", // Pro subscription
+          mode: "subscription",
+          customerData: {
+            name: customerData.name,
+            email: customerData.email,
           },
+          referralCode: customerData.referralCode || null,
         },
-      );
+      });
 
       if (error) throw error;
       if (data?.url) window.location.href = data.url;
@@ -147,6 +144,19 @@ export const ServicePlans = ({ onCheckout }: ServicePlansProps) => {
           error.message || "Unable to process checkout. Please try again.",
       });
     }
+  };
+
+  const handleCustomerFormSuccess = (formData: CustomerData) => {
+    if (pendingCheckout) {
+      pendingCheckout.handler(formData);
+    }
+    setShowCustomerForm(false);
+    setPendingCheckout(null);
+  };
+
+  const initiateCheckout = (handler: (data: CustomerData) => Promise<void>) => {
+    setPendingCheckout({ handler });
+    setShowCustomerForm(true);
   };
 
   return (
@@ -220,11 +230,7 @@ export const ServicePlans = ({ onCheckout }: ServicePlansProps) => {
               <Button
                 size="lg"
                 className="w-full bg-rich-blue hover:bg-rich-blue/80 py-6"
-                onClick={() => handleBasicPlanCheckout({
-                  name: "",
-                  email: "",
-                  referralCode: null
-                })}
+                onClick={() => initiateCheckout(handleBasicPlanCheckout)}
               >
                 Get Started with Basic
                 <ArrowRight className="ml-2" />
@@ -290,11 +296,7 @@ export const ServicePlans = ({ onCheckout }: ServicePlansProps) => {
               <Button
                 size="lg"
                 className="w-full bg-rich-green hover:bg-rich-green/80 py-6"
-                onClick={() => handleProPlanCheckout({
-                  name: "",
-                  email: "",
-                  referralCode: null
-                })}
+                onClick={() => initiateCheckout(handleProPlanCheckout)}
               >
                 Get Started with Pro
                 <ArrowRight className="ml-2" />
@@ -309,6 +311,15 @@ export const ServicePlans = ({ onCheckout }: ServicePlansProps) => {
           </p>
         </div>
       </div>
+
+      <CustomerFormDialog
+        isOpen={showCustomerForm}
+        onClose={() => {
+          setShowCustomerForm(false);
+          setPendingCheckout(null);
+        }}
+        onSuccess={handleCustomerFormSuccess}
+      />
     </section>
   );
 };
