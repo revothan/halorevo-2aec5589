@@ -76,7 +76,7 @@ const AboutUs = () => {
               <img
                 src="https://ucarecdn.com/77c3b2c2-98f4-4b50-a36d-2b0a4e930635/-/preview/1000x565/"
                 alt="HaloRevo Team"
-                className="w-full h-full object-cover"
+                className="w-full h-full object-contain"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-rich-black/80 via-transparent to-transparent" />
             </div>
