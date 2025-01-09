@@ -25,12 +25,12 @@ const Navbar = () => {
               </Button>
             </Link>
             {session && (
-              <Link to="/bug-report">
+              <Link to="/dashboard">
                 <Button
                   variant="ghost"
                   className="text-rich-gold/70 hover:text-rich-gold hover:bg-rich-gray/50"
                 >
-                  Report Bug
+                  Dashboard
                 </Button>
               </Link>
             )}
@@ -56,12 +56,12 @@ const Navbar = () => {
               </Button>
             </Link>
             {session && (
-              <Link to="/bug-report">
+              <Link to="/dashboard">
                 <Button
                   variant="ghost"
                   className="text-rich-gold/70 hover:text-rich-gold hover:bg-rich-gray/50"
                 >
-                  Report Bug
+                  Dashboard
                 </Button>
               </Link>
             )}
@@ -94,3 +94,4 @@ const Navbar = () => {
 };
 
 export default Navbar;
+

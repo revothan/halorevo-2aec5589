@@ -13,15 +13,15 @@ interface HeroProps {
 
 export const Hero = ({ showContent = true }: HeroProps) => {
   const navigate = useNavigate();
-  
+
   const features = [
     { icon: Code, text: "Custom Web Development" },
     { icon: Workflow, text: "Business Automation" },
     { icon: Sparkles, text: "Digital Innovation" },
   ];
 
-  const handleFreeTrialClick = () => {
-    navigate('/free-trial');
+  const handleServicesClick = () => {
+    navigate("/services");
   };
 
   return (
@@ -59,10 +59,10 @@ export const Hero = ({ showContent = true }: HeroProps) => {
 
                 <div className="flex flex-col sm:flex-row gap-4">
                   <Button
-                    onClick={handleFreeTrialClick}
+                    onClick={handleServicesClick}
                     className="bg-rich-purple hover:bg-rich-purple/90 text-white px-8 py-6 rounded-lg font-medium inline-flex items-center gap-2 relative z-20"
                   >
-                    Get Your Free Website Redesign
+                    Let's Get Started!
                     <ArrowRight className="w-4 h-4" />
                   </Button>
                   <Button
@@ -97,7 +97,11 @@ export const Hero = ({ showContent = true }: HeroProps) => {
           >
             <div className="absolute -inset-4 bg-gradient-to-r from-rich-blue to-rich-gold opacity-10 blur-xl rounded-xl pointer-events-none" />
             <div className="relative">
-              <Suspense fallback={<div className="h-96 animate-pulse bg-rich-gray/20 rounded-xl" />}>
+              <Suspense
+                fallback={
+                  <div className="h-96 animate-pulse bg-rich-gray/20 rounded-xl" />
+                }
+              >
                 <Portfolio3DCarousel />
               </Suspense>
             </div>

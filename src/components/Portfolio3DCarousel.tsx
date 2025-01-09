@@ -1,6 +1,7 @@
 import React, { useState, useEffect, memo } from "react";
 import { motion } from "framer-motion";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
 interface PortfolioItem {
   id: number;
@@ -9,66 +10,112 @@ interface PortfolioItem {
   category: string;
 }
 
-const PortfolioCarouselItem = memo(({ item, position }: { item: PortfolioItem; position: any }) => (
-  <motion.div
-    className="absolute w-full h-full"
-    initial={false}
-    animate={position}
-    transition={{
-      type: "spring",
-      stiffness: 100,
-      damping: 20,
-    }}
-  >
-    <div className="relative w-full h-full group">
-      <div className="absolute inset-0 bg-gradient-to-b from-rich-black/20 to-rich-black/80 rounded-xl" />
-      <img
-        src={item.image}
-        alt={item.title}
-        className="w-full h-full object-cover rounded-xl"
-        loading="lazy"
-        decoding="async"
-      />
-      <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
-        <h3 className="text-lg font-bold">{item.title}</h3>
-        <p className="text-sm text-rich-gold">{item.category}</p>
+const PortfolioCarouselItem = memo(
+  ({ item, position }: { item: PortfolioItem; position: any }) => (
+    <motion.div
+      className="absolute w-full h-full"
+      initial={false}
+      animate={position}
+      transition={{
+        type: "spring",
+        stiffness: 100,
+        damping: 20,
+      }}
+    >
+      <div className="relative w-full h-full group">
+        <div className="absolute inset-0 bg-gradient-to-b from-rich-black/20 to-rich-black/80 rounded-xl" />
+        <img
+          src={item.image}
+          alt={item.title}
+          className="w-full h-full object-cover rounded-xl"
+          loading="lazy"
+          decoding="async"
+          onError={(e) => {
+            console.error(`Error loading image for ${item.title}`);
+            // Set a fallback image or handle the error as needed
+            e.currentTarget.src = "/api/placeholder/800/600";
+          }}
+        />
+        <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
+          <h3 className="text-lg font-bold">{item.title}</h3>
+          <p className="text-sm text-rich-gold">{item.category}</p>
+        </div>
       </div>
-    </div>
-  </motion.div>
-));
+    </motion.div>
+  ),
+);
 
 PortfolioCarouselItem.displayName = "PortfolioCarouselItem";
 
 const Portfolio3DCarousel = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
-
-  const portfolioItems: PortfolioItem[] = [
-    {
-      id: 1,
-      title: "E-commerce Platform",
-      image:
-        "https://iuzxsfayrskqvsajweib.supabase.co/storage/v1/object/public/images_promo/E-commerce.gif",
-      category: "Web Development",
-    },
-    {
-      id: 2,
-      title: "Business Dashboard",
-      image:
-        "https://iuzxsfayrskqvsajweib.supabase.co/storage/v1/object/public/images_promo/Analytics.gif",
-      category: "Analytics",
-    },
-    {
-      id: 3,
-      title: "AI Integration",
-      image:
-        "https://iuzxsfayrskqvsajweib.supabase.co/storage/v1/object/public/images_promo/AI%20chatbot.gif",
-      category: "AI Solutions",
-    },
-  ];
+  const [portfolioItems, setPortfolioItems] = useState<PortfolioItem[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (isAutoPlaying) {
+    const fetchPortfolioItems = async () => {
+      try {
+        setIsLoading(true);
+        setError(null);
+
+        // Define your portfolio items with correct bucket and path references
+        const portfolioData = [
+          {
+            id: 1,
+            title: "Product Management",
+            path: "ecommerce.gif",
+            category: "Product Management",
+          },
+          {
+            id: 2,
+            title: "Business Dashboard",
+            path: "analytics.gif",
+            category: "Analytics",
+          },
+          {
+            id: 3,
+            title: "E-commerce Store",
+            path: "addproduct.gif",
+            category: "E-commerce Store",
+          },
+        ];
+
+        // Get public URLs for all images
+        const itemsWithUrls = await Promise.all(
+          portfolioData.map(async (item) => {
+            // Get public URL from Supabase storage
+            const { data: publicUrlData } = supabase.storage
+              .from("images")
+              .getPublicUrl(item.path);
+
+            if (!publicUrlData.publicUrl) {
+              console.warn(`No public URL found for ${item.path}`);
+              throw new Error(`Failed to get public URL for ${item.path}`);
+            }
+
+            return {
+              ...item,
+              image: publicUrlData.publicUrl,
+            };
+          }),
+        );
+
+        setPortfolioItems(itemsWithUrls);
+      } catch (err) {
+        console.error("Error fetching portfolio items:", err);
+        setError("Failed to load portfolio items");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchPortfolioItems();
+  }, []);
+
+  useEffect(() => {
+    if (isAutoPlaying && portfolioItems.length > 0) {
       const timer = setInterval(() => {
         setCurrentIndex((prev) => (prev + 1) % portfolioItems.length);
       }, 3000);
@@ -103,9 +150,33 @@ const Portfolio3DCarousel = () => {
   const handlePrev = () => {
     setIsAutoPlaying(false);
     setCurrentIndex(
-      (prev) => (prev - 1 + portfolioItems.length) % portfolioItems.length
+      (prev) => (prev - 1 + portfolioItems.length) % portfolioItems.length,
     );
   };
+
+  if (isLoading) {
+    return (
+      <div className="w-full h-96 flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-rich-gold" />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="w-full h-96 flex items-center justify-center text-rich-gold">
+        {error}
+      </div>
+    );
+  }
+
+  if (portfolioItems.length === 0) {
+    return (
+      <div className="w-full h-96 flex items-center justify-center text-rich-gold">
+        No portfolio items available
+      </div>
+    );
+  }
 
   return (
     <div className="relative w-full h-96 perspective-1000">
@@ -136,3 +207,4 @@ const Portfolio3DCarousel = () => {
 };
 
 export default memo(Portfolio3DCarousel);
+
