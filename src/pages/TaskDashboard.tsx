@@ -63,8 +63,16 @@ const TaskDashboard = () => {
           .order("created_at", { ascending: false });
 
         if (error) throw error;
-        setTasks(data || []);
-        setFilteredTasks(data || []);
+        
+        // Type cast the data to ensure it matches the Task interface
+        const typedTasks = (data || []).map(task => ({
+          ...task,
+          status: task.status as "pending" | "in_progress" | "completed",
+          priority: task.priority as "low" | "medium" | "high"
+        }));
+        
+        setTasks(typedTasks);
+        setFilteredTasks(typedTasks);
       } catch (error) {
         console.error("Error fetching tasks:", error);
       } finally {

@@ -220,7 +220,11 @@ export const ServicePlans = ({ onCheckout }: ServicePlansProps) => {
               <Button
                 size="lg"
                 className="w-full bg-rich-blue hover:bg-rich-blue/80 py-6"
-                onClick={handleBasicPlanCheckout}
+                onClick={() => handleBasicPlanCheckout({
+                  name: "",
+                  email: "",
+                  referralCode: null
+                })}
               >
                 Get Started with Basic
                 <ArrowRight className="ml-2" />
@@ -286,7 +290,11 @@ export const ServicePlans = ({ onCheckout }: ServicePlansProps) => {
               <Button
                 size="lg"
                 className="w-full bg-rich-green hover:bg-rich-green/80 py-6"
-                onClick={handleProPlanCheckout}
+                onClick={() => handleProPlanCheckout({
+                  name: "",
+                  email: "",
+                  referralCode: null
+                })}
               >
                 Get Started with Pro
                 <ArrowRight className="ml-2" />

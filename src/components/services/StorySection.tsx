@@ -29,32 +29,12 @@ export const StorySection: React.FC = () => {
             <Feature
               icon={<InfinityIcon className="w-6 h-6 text-blue-400" />}
               title="Two Flexible Options"
-              description={
-                <span>
-                  <span className="font-semibold text-blue-400">
-                    One-Time Development:
-                  </span>{" "}
-                  Perfect for new websites
-                  <br />
-                  <span className="font-semibold text-purple-400">
-                    Unlimited Subscription:
-                  </span>{" "}
-                  Ongoing development & updates
-                </span>
-              }
+              description="One-Time Development: Perfect for new websites. Unlimited Subscription: Ongoing development & updates"
             />
             <Feature
               icon={<Zap className="w-6 h-6 text-purple-400" />}
               title="Lightning Fast Turnaround"
-              description={
-                <span>
-                  <span className="text-blue-400">Basic Plan:</span> Average
-                  24-hour turnaround
-                  <br />
-                  <span className="text-purple-400">Pro Plan:</span> Priority
-                  5-hour turnaround
-                </span>
-              }
+              description="Basic Plan: Average 24-hour turnaround. Pro Plan: Priority 5-hour turnaround"
             />
             <Feature
               icon={<LayoutDashboard className="w-6 h-6 text-green-400" />}

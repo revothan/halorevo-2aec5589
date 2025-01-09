@@ -62,8 +62,8 @@ const NewTaskForm = ({ onTaskAdded }: NewTaskFormProps) => {
       const newTask = {
         title: data.title,
         description: data.description,
-        priority: data.priority,
-        status: "pending",
+        priority: data.priority as "low" | "medium" | "high",
+        status: "pending" as "pending" | "in_progress" | "completed",
         user_id: session?.user?.id,
       };
 
@@ -81,7 +81,7 @@ const NewTaskForm = ({ onTaskAdded }: NewTaskFormProps) => {
       });
 
       form.reset();
-      onTaskAdded(createdTask);
+      onTaskAdded(createdTask as Task);
       dialogClose.current?.click();
     } catch (error) {
       console.error("Error creating task:", error);
