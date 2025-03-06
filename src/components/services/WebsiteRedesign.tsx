@@ -1,3 +1,4 @@
+
 import { Globe, ShoppingCart, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -67,47 +68,47 @@ export const WebsiteRedesign = ({ onCheckout }: WebsiteRedesignProps) => {
             <div className="flex items-center justify-between">
               <CardTitle className="text-2xl md:text-3xl text-rich-purple flex items-center gap-2">
                 <Globe className="w-6 h-6" />
-                One-Time Website Development
+                Pengembangan Website Sekali Bayar
               </CardTitle>
             </div>
             <CardDescription className="text-rich-gold/80 text-lg">
-              Get a professional, high-converting website built from scratch
+              Dapatkan website profesional yang mengonversi dibangun dari awal
             </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="mb-6">
               <div className="text-4xl font-bold text-rich-gold">
-                $2,000
+                Rp 31.000.000
                 <span className="text-lg text-rich-gold/60 ml-2">
-                  one-time payment
+                  sekali bayar
                 </span>
               </div>
               <p className="text-gray-400 mt-2">
-                Everything you need to launch your professional website
+                Semua yang Anda butuhkan untuk meluncurkan website profesional Anda
               </p>
             </div>
 
             <div className="grid gap-4">
               <h3 className="text-xl font-semibold text-rich-purple">
-                What's Included:
+                Yang Termasuk:
               </h3>
               <div className="grid gap-3">
-                <PricingFeature text="Custom design tailored to your brand identity" />
-                <PricingFeature text="Unlimited pages (Home, About, Services, Contact, Custom)" />
-                <PricingFeature text="5 Features Included (Form Submissions, Dashboard, etc.)" />
-                <PricingFeature text="Mobile-responsive layout that works on all devices" />
-                <PricingFeature text="Basic SEO setup and optimization" />
-                <PricingFeature text="Contact form and email integration" />
-                <PricingFeature text="Unlimited revisions included" />
+                <PricingFeature text="Desain kustom yang disesuaikan dengan identitas merek Anda" />
+                <PricingFeature text="Halaman tanpa batas (Beranda, Tentang Kami, Layanan, Kontak, Kustom)" />
+                <PricingFeature text="5 Fitur Termasuk (Formulir Pengajuan, Dasbor, dll.)" />
+                <PricingFeature text="Tata letak responsif untuk seluler yang berfungsi di semua perangkat" />
+                <PricingFeature text="Pengaturan dan optimasi SEO dasar" />
+                <PricingFeature text="Formulir kontak dan integrasi email" />
+                <PricingFeature text="Revisi tanpa batas termasuk" />
               </div>
 
               <div className="mt-4 p-4 bg-rich-purple/10 rounded-lg">
                 <h4 className="text-rich-purple font-semibold mb-2">
-                  Delivery Timeline
+                  Jadwal Pengiriman
                 </h4>
                 <p className="text-gray-300">
-                  Your website will be ready within 2 weeks after receiving your
-                  content and brand assets
+                  Website Anda akan siap dalam waktu 2 minggu setelah menerima konten 
+                  dan aset merek Anda
                 </p>
               </div>
             </div>
@@ -119,10 +120,10 @@ export const WebsiteRedesign = ({ onCheckout }: WebsiteRedesignProps) => {
               onClick={() => handleCheckout({ name: "", email: "", referralCode: null })}
             >
               <ShoppingCart className="mr-2" />
-              Get Started Now - $2,000
+              Mulai Sekarang - Rp 31.000.000
             </Button>
             <p className="text-center text-sm text-gray-400">
-              Need more pages or custom features? Contact us for a custom quote
+              Butuh lebih banyak halaman atau fitur kustom? Hubungi kami untuk penawaran kustom
             </p>
           </CardFooter>
         </Card>

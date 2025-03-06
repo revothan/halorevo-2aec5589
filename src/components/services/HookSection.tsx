@@ -1,3 +1,4 @@
+
 import React from "react";
 import { motion } from "framer-motion";
 
@@ -83,7 +84,7 @@ export const HookSection = () => {
             animate={{ scale: 1 }}
             transition={{ type: "spring", stiffness: 200, damping: 15 }}
           >
-            Transform Your Website Into a Growth Engine
+            Ubah Website Anda Menjadi Mesin Pertumbuhan
           </motion.h1>
 
           <motion.p
@@ -92,8 +93,8 @@ export const HookSection = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
           >
-            Choose between a one-time website development or unlock unlimited
-            updates with our revolutionary subscription model.
+            Pilih antara pengembangan website sekali bayar atau dapatkan pembaruan tanpa batas
+            dengan model langganan revolusioner kami.
           </motion.p>
 
           {/* Call to action buttons */}
@@ -109,7 +110,7 @@ export const HookSection = () => {
               whileTap={{ scale: 0.95 }}
               className="px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg text-white font-semibold text-lg shadow-lg hover:shadow-xl transition-shadow"
             >
-              See Plans
+              Lihat Paket
             </motion.button>
           </motion.div>
         </motion.div>

@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -40,7 +41,7 @@ export const TypingAnimation = ({ texts, className = "" }: TypingAnimationProps)
             className="inline-block mr-2"
           >
             {word}
-            {index === currentWords.length - 1 && currentTextIndex === 0 && "🇨🇦"}
+            {index === currentWords.length - 1 && currentTextIndex === 0 && "🇮🇩"}
           </motion.span>
         ))}
       </AnimatePresence>

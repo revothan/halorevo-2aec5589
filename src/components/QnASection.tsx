@@ -1,3 +1,4 @@
+
 import React, { useState, useCallback } from "react";
 import { motion } from "framer-motion";
 import CategorySection from "./qna/CategorySection";
@@ -15,11 +16,11 @@ const QnASection = () => {
       <div className="container mx-auto px-4 relative z-10">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold mb-6">
-            Common <span className="text-rich-gold">Questions</span>
+            Pertanyaan <span className="text-rich-gold">Umum</span>
           </h2>
           <p className="text-gray-400 max-w-2xl mx-auto">
-            Find answers to frequently asked questions about our services,
-            process, and technical details.
+            Temukan jawaban untuk pertanyaan yang sering diajukan tentang layanan,
+            proses, dan detail teknis kami.
           </p>
         </div>
 

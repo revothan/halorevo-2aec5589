@@ -1,3 +1,4 @@
+
 import { motion } from "framer-motion";
 import { FAQItemProps } from "@/types";
 
@@ -15,20 +16,20 @@ export const FAQSection: React.FC = () => (
   <div className="py-16 px-4 bg-rich-gray/10">
     <div className="max-w-4xl mx-auto">
       <h2 className="text-3xl font-bold mb-8 text-center text-white">
-        Frequently Asked Questions
+        Pertanyaan yang Sering Diajukan
       </h2>
       <div className="space-y-6">
         <FAQItem
-          question="What's the difference between one-time and subscription plans?"
-          answer="One-time development is perfect if you need a new website built from scratch. Our subscription plans (Basic & Pro) offer unlimited ongoing development, perfect for businesses that need regular updates and continuous improvements."
+          question="Apa perbedaan antara paket sekali bayar dan paket berlangganan?"
+          answer="Pengembangan sekali bayar sangat cocok jika Anda membutuhkan website baru yang dibangun dari awal. Paket berlangganan kami (Dasar & Pro) menawarkan pengembangan berkelanjutan tanpa batas, sempurna untuk bisnis yang membutuhkan pembaruan rutin dan peningkatan berkelanjutan."
         />
         <FAQItem
-          question="What's included in a website redesign request?"
-          answer="Each request can include layout changes, content updates, new features, or style modifications. We handle everything from simple text updates to complete page redesigns."
+          question="Apa yang termasuk dalam permintaan redesain website?"
+          answer="Setiap permintaan dapat mencakup perubahan tata letak, pembaruan konten, fitur baru, atau modifikasi gaya. Kami menangani semuanya mulai dari pembaruan teks sederhana hingga redesain halaman lengkap."
         />
         <FAQItem
-          question="Can I cancel my subscription anytime?"
-          answer="Yes, you can cancel your subscription at any time with no questions asked. You'll continue to have access until the end of your billing period."
+          question="Bisakah saya membatalkan langganan kapan saja?"
+          answer="Ya, Anda dapat membatalkan langganan kapan saja tanpa pertanyaan. Anda akan terus memiliki akses hingga akhir periode penagihan Anda."
         />
       </div>
     </div>

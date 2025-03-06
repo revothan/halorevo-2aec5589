@@ -1,61 +1,62 @@
+
 export const faqs = [
   {
-    category: "Services",
+    category: "Layanan",
     questions: [
       {
-        question: "What types of projects do you handle?",
+        question: "Jenis proyek apa yang Anda tangani?",
         answer:
-          "We specialize in web development, business automation, and digital solutions. Our services include custom website development, e-commerce solutions, business process automation, and digital transformation consulting.",
+          "Kami mengkhususkan diri dalam pengembangan web, otomatisasi bisnis, dan solusi digital. Layanan kami meliputi pengembangan website kustom, solusi e-commerce, otomatisasi proses bisnis, dan konsultasi transformasi digital.",
       },
       {
-        question: "How does your monthly subscription work?",
+        question: "Bagaimana cara kerja langganan bulanan Anda?",
         answer:
-          "Our monthly subscription provides you with dedicated development services. You can submit requests one at a time (Standard) or two in parallel (Pro), and we'll work on them with quick turnaround times. You can pause or cancel anytime.",
+          "Langganan bulanan kami menyediakan layanan pengembangan khusus. Anda dapat mengirimkan permintaan satu per satu (Standar) atau dua secara paralel (Pro), dan kami akan mengerjakannya dengan waktu penyelesaian yang cepat. Anda dapat menjeda atau membatalkan kapan saja.",
       },
       {
-        question: "What's included in the setup fee?",
+        question: "Apa yang termasuk dalam biaya pengaturan?",
         answer:
-          "The setup fee covers initial onboarding, project planning, setting up development environments, creating necessary accounts, and establishing communication channels. This ensures a smooth start to our partnership.",
+          "Biaya pengaturan mencakup onboarding awal, perencanaan proyek, pengaturan lingkungan pengembangan, pembuatan akun yang diperlukan, dan pembentukan saluran komunikasi. Ini memastikan kelancaran awal kemitraan kita.",
       },
     ],
   },
   {
-    category: "Process",
+    category: "Proses",
     questions: [
       {
-        question: "How long does each project take?",
+        question: "Berapa lama setiap proyek dikerjakan?",
         answer:
-          "Turnaround times vary by plan - Standard plan offers 48-hour turnaround, while Pro plan ensures 24-hour turnaround. Complex projects might require multiple requests, but we'll always communicate timelines clearly.",
+          "Waktu penyelesaian bervariasi menurut paket - paket Standar menawarkan penyelesaian 48 jam, sementara paket Pro memastikan penyelesaian 24 jam. Proyek kompleks mungkin memerlukan beberapa permintaan, tetapi kami akan selalu mengomunikasikan jadwal dengan jelas.",
       },
       {
-        question: "What if I need revisions?",
+        question: "Bagaimana jika saya membutuhkan revisi?",
         answer:
-          "We offer unlimited revisions to ensure your complete satisfaction. Our goal is to deliver exactly what you envision, and we'll work with you until we get it right.",
+          "Kami menawarkan revisi tanpa batas untuk memastikan kepuasan Anda sepenuhnya. Tujuan kami adalah memberikan persis apa yang Anda bayangkan, dan kami akan bekerja dengan Anda sampai kita mendapatkannya dengan benar.",
       },
       {
-        question: "Can I pause my subscription?",
+        question: "Bisakah saya menjeda langganan saya?",
         answer:
-          "Yes! You can pause your subscription at any time and resume when you're ready. We understand that business needs can fluctuate, and we want to provide flexibility.",
+          "Ya! Anda dapat menjeda langganan kapan saja dan melanjutkannya saat Anda siap. Kami memahami bahwa kebutuhan bisnis dapat berfluktuasi, dan kami ingin memberikan fleksibilitas.",
       },
     ],
   },
   {
-    category: "Technical",
+    category: "Teknis",
     questions: [
       {
-        question: "What technologies do you work with?",
+        question: "Teknologi apa yang Anda gunakan?",
         answer:
-          "We work with modern web technologies including React, Next.js, Node.js, Python, and various databases. We also integrate with popular services and APIs based on your needs.",
+          "Kami bekerja dengan teknologi web modern termasuk React, Next.js, Node.js, Python, dan berbagai database. Kami juga berintegrasi dengan layanan dan API populer berdasarkan kebutuhan Anda.",
       },
       {
-        question: "Do I get access to the source code?",
+        question: "Apakah saya mendapatkan akses ke kode sumber?",
         answer:
-          "Yes, you receive full access to all source code we develop for your projects. This includes documentation and deployment instructions.",
+          "Ya, Anda menerima akses penuh ke semua kode sumber yang kami kembangkan untuk proyek Anda. Ini termasuk dokumentasi dan instruksi penerapan.",
       },
       {
-        question: "How do you handle hosting and deployment?",
+        question: "Bagaimana Anda menangani hosting dan deployment?",
         answer:
-          "We can deploy to your preferred hosting platform or recommend solutions based on your needs. We commonly work with AWS, Vercel, Netlify, and other modern hosting providers.",
+          "Kami dapat men-deploy ke platform hosting pilihan Anda atau merekomendasikan solusi berdasarkan kebutuhan Anda. Kami biasanya bekerja dengan AWS, Vercel, Netlify, dan penyedia hosting modern lainnya.",
       },
     ],
   },

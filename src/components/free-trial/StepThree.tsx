@@ -1,3 +1,4 @@
+
 import { UseFormReturn } from "react-hook-form";
 import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
@@ -61,16 +62,16 @@ export const StepThree = ({ form }: StepThreeProps) => {
       <Alert>
         <AlertCircle className="h-4 w-4" />
         <AlertDescription>
-          This is a free consultation. No payment is required now - you'll only
-          be charged if you decide to proceed with our services after reviewing
-          the website redesign.
+          Ini adalah konsultasi gratis. Tidak ada pembayaran yang diperlukan sekarang - Anda hanya
+          akan dikenakan biaya jika Anda memutuskan untuk melanjutkan dengan layanan kami setelah meninjau
+          redesain website.
         </AlertDescription>
       </Alert>
 
       {/* Plans Selection */}
       <div className="space-y-4">
         <div className="flex items-center justify-between">
-          <h3 className="font-semibold text-lg">Choose Your Preferred Plan</h3>
+          <h3 className="font-semibold text-lg">Pilih Paket yang Anda Inginkan</h3>
           {errors.selectedPlan && (
             <p className="text-red-500 text-sm">
               {errors.selectedPlan.message}
@@ -91,9 +92,9 @@ export const StepThree = ({ form }: StepThreeProps) => {
           >
             <div className="flex justify-between items-start">
               <div>
-                <h4 className="font-semibold text-xl">Basic</h4>
+                <h4 className="font-semibold text-xl">Dasar</h4>
                 <p className="text-2xl font-bold mt-2">
-                  $750<span className="text-sm font-normal">/month</span>
+                  Rp 11.500.000<span className="text-sm font-normal">/bulan</span>
                 </p>
               </div>
               {selectedPlan === "starter" && (
@@ -101,45 +102,44 @@ export const StepThree = ({ form }: StepThreeProps) => {
               )}
             </div>
             <p className="text-sm text-muted-foreground mt-2">
-              Perfect for small businesses looking to establish their online
-              presence
+              Sempurna untuk bisnis kecil yang ingin membangun kehadiran online mereka
             </p>
             <div className="mt-6">
-              <p className="font-medium mb-3">What's included:</p>
+              <p className="font-medium mb-3">Yang termasuk:</p>
               <ul className="space-y-3">
                 <li className="flex items-start gap-2">
                   <Check className="h-4 w-4 text-green-500 mt-1 flex-shrink-0" />
-                  <span>Custom responsive website design</span>
+                  <span>Desain website responsif kustom</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <Check className="h-4 w-4 text-green-500 mt-1 flex-shrink-0" />
-                  <span>Up to 5 pages</span>
+                  <span>Hingga 5 halaman</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <Check className="h-4 w-4 text-green-500 mt-1 flex-shrink-0" />
-                  <span>Basic SEO optimization setup</span>
+                  <span>Pengaturan optimasi SEO dasar</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <Check className="h-4 w-4 text-green-500 mt-1 flex-shrink-0" />
-                  <span>Mobile-first approach</span>
+                  <span>Pendekatan mobile-first</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <Check className="h-4 w-4 text-green-500 mt-1 flex-shrink-0" />
                   <span>
-                    Monthly maintenance (updates, bug fixes, and backups)
+                    Pemeliharaan bulanan (pembaruan, perbaikan bug, dan backup)
                   </span>
                 </li>
                 <li className="flex items-start gap-2">
                   <Check className="h-4 w-4 text-green-500 mt-1 flex-shrink-0" />
-                  <span>24-hour support response time</span>
+                  <span>Waktu respons dukungan 24 jam</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <Check className="h-4 w-4 text-green-500 mt-1 flex-shrink-0" />
-                  <span>Monthly performance report</span>
+                  <span>Laporan kinerja bulanan</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <Check className="h-4 w-4 text-green-500 mt-1 flex-shrink-0" />
-                  <span>Cancel anytime, no contracts</span>
+                  <span>Batalkan kapan saja, tanpa kontrak</span>
                 </li>
               </ul>
             </div>
@@ -157,9 +157,9 @@ export const StepThree = ({ form }: StepThreeProps) => {
           >
             <div className="flex justify-between items-start">
               <div className="relative">
-                <h4 className="font-semibold text-xl">Professional</h4>
+                <h4 className="font-semibold text-xl">Profesional</h4>
                 <p className="text-2xl font-bold mt-2">
-                  $1,275<span className="text-sm font-normal">/month</span>
+                  Rp 19.500.000<span className="text-sm font-normal">/bulan</span>
                 </p>
               </div>
               {selectedPlan === "professional" && (
@@ -167,46 +167,46 @@ export const StepThree = ({ form }: StepThreeProps) => {
               )}
             </div>
             <p className="text-sm text-muted-foreground mt-2">
-              For growing businesses that need a powerful online presence
+              Untuk bisnis berkembang yang membutuhkan kehadiran online yang kuat
             </p>
             <div className="mt-6">
-              <p className="font-medium mb-3">Everything in Basic, plus:</p>
+              <p className="font-medium mb-3">Semua fitur Dasar, plus:</p>
               <ul className="space-y-3">
                 <li className="flex items-start gap-2">
                   <Check className="h-4 w-4 text-green-500 mt-1 flex-shrink-0" />
-                  <span>Up to 30 pages.</span>
+                  <span>Hingga 30 halaman.</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <Check className="h-4 w-4 text-green-500 mt-1 flex-shrink-0" />
-                  <span>Weekly maintenance and monitoring.</span>
+                  <span>Pemeliharaan dan pemantauan mingguan.</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <Check className="h-4 w-4 text-green-500 mt-1 flex-shrink-0" />
-                  <span>E-commerce functionality setup</span>
+                  <span>Pengaturan fungsionalitas e-commerce</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <Check className="h-4 w-4 text-green-500 mt-1 flex-shrink-0" />
-                  <span>Custom animations and interactions</span>
+                  <span>Animasi dan interaksi kustom</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <Check className="h-4 w-4 text-green-500 mt-1 flex-shrink-0" />
-                  <span>1-hour support response time</span>
+                  <span>Waktu respons dukungan 1 jam</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <Check className="h-4 w-4 text-green-500 mt-1 flex-shrink-0" />
-                  <span>Weekly performance analytics</span>
+                  <span>Analitik kinerja mingguan</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <Check className="h-4 w-4 text-green-500 mt-1 flex-shrink-0" />
-                  <span>Priority support (email and live chat 24/7).</span>
+                  <span>Dukungan prioritas (email dan live chat 24/7).</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <Check className="h-4 w-4 text-green-500 mt-1 flex-shrink-0" />
-                  <span>Automation setup</span>
+                  <span>Pengaturan otomatisasi</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <Check className="h-4 w-4 text-green-500 mt-1 flex-shrink-0" />
-                  <span>Priority access to new features</span>
+                  <span>Akses prioritas ke fitur baru</span>
                 </li>
               </ul>
             </div>
@@ -217,12 +217,12 @@ export const StepThree = ({ form }: StepThreeProps) => {
       {/* Meeting Schedule */}
       <div className="space-y-6">
         <h3 className="font-semibold text-lg">
-          Schedule Your Free Consultation
+          Jadwalkan Konsultasi Gratis Anda
         </h3>
 
         {/* Meeting Type Selection */}
         <div className="space-y-3">
-          <Label>Meeting Type</Label>
+          <Label>Jenis Pertemuan</Label>
           <RadioGroup
             defaultValue={meetingType}
             onValueChange={(value) =>
@@ -232,11 +232,11 @@ export const StepThree = ({ form }: StepThreeProps) => {
           >
             <div className="flex items-center space-x-2">
               <RadioGroupItem value="online" id="online" />
-              <Label htmlFor="online">Online Meeting (Zoom)</Label>
+              <Label htmlFor="online">Pertemuan Online (Zoom)</Label>
             </div>
             <div className="flex items-center space-x-2">
               <RadioGroupItem value="onsite" id="onsite" />
-              <Label htmlFor="onsite">Onsite at Breka Hastings</Label>
+              <Label htmlFor="onsite">Tatap Muka di Kantor Jakarta</Label>
             </div>
           </RadioGroup>
           {errors.meetingType && (
@@ -248,7 +248,7 @@ export const StepThree = ({ form }: StepThreeProps) => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {/* Date Selection */}
           <div className="space-y-3">
-            <Label>Date</Label>
+            <Label>Tanggal</Label>
             <Popover>
               <PopoverTrigger asChild>
                 <Button
@@ -259,7 +259,7 @@ export const StepThree = ({ form }: StepThreeProps) => {
                   )}
                 >
                   <CalendarIcon className="mr-2 h-4 w-4" />
-                  {selectedDate ? format(selectedDate, "PPP") : "Select date"}
+                  {selectedDate ? format(selectedDate, "PPP") : "Pilih tanggal"}
                 </Button>
               </PopoverTrigger>
               <PopoverContent className="w-auto p-0" align="start">
@@ -281,13 +281,13 @@ export const StepThree = ({ form }: StepThreeProps) => {
 
           {/* Time Selection */}
           <div className="space-y-3">
-            <Label>Time</Label>
+            <Label>Waktu</Label>
             <Select
               value={selectedTime}
               onValueChange={(value) => setValue("meetingTime", value)}
             >
               <SelectTrigger>
-                <SelectValue placeholder="Select time" />
+                <SelectValue placeholder="Pilih waktu" />
               </SelectTrigger>
               <SelectContent>
                 {availableTimes.map((time) => (

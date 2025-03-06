@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Link } from "react-router-dom";
 import { Facebook, Instagram, Mail, MapPin } from "lucide-react";
@@ -6,10 +7,10 @@ const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   const navigation = [
-    { name: "Home", href: "/" },
+    { name: "Beranda", href: "/" },
     { name: "Blog", href: "/blog" },
-    { name: "Services", href: "/services" },
-    { name: "Free Trial", href: "/free-trial" },
+    { name: "Layanan", href: "/services" },
+    { name: "Uji Coba Gratis", href: "/free-trial" },
   ];
 
   const social = [
@@ -34,15 +35,15 @@ const Footer = () => {
               <div>
                 <h2 className="text-2xl font-bold text-white mb-2">HaloRevo</h2>
                 <p className="text-gray-400">
-                  Transforming businesses through innovative digital solutions
-                  and automation.
+                  Mentransformasi bisnis melalui solusi digital inovatif
+                  dan otomatisasi.
                 </p>
               </div>
 
               <div className="space-y-4">
                 <div className="flex items-center gap-3 text-gray-400">
                   <MapPin className="w-5 h-5 text-rich-gold" />
-                  <span>Vancouver, BC, Canada</span>
+                  <span>Indonesia</span>
                 </div>
                 <div className="flex items-center gap-3 text-gray-400">
                   <Mail className="w-5 h-5 text-rich-gold" />
@@ -74,7 +75,7 @@ const Footer = () => {
             {/* Navigation Links */}
             <div>
               <h3 className="text-lg font-semibold text-white mb-6">
-                Quick Links
+                Tautan Cepat
               </h3>
               <nav className="grid grid-cols-2 gap-4">
                 {navigation.map((item) => (
@@ -95,7 +96,7 @@ const Footer = () => {
         <div className="border-t border-white/10">
           <div className="container mx-auto px-4 py-6">
             <p className="text-center text-gray-400 text-sm">
-              © {currentYear} HaloRevo. All rights reserved.
+              © {currentYear} HaloRevo. Semua hak dilindungi.
             </p>
           </div>
         </div>
