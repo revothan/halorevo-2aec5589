@@ -1,4 +1,3 @@
-
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Globe, Rocket, Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
@@ -7,18 +6,18 @@ export const FeaturesGrid = () => {
   const features = [
     {
       icon: Globe,
-      title: "Desain Profesional",
-      description: "Dapatkan website modern, responsif yang terlihat bagus di semua perangkat",
+      title: "Professional Design",
+      description: "Get a modern, responsive website that looks great on all devices",
     },
     {
       icon: Rocket,
-      title: "Dioptimalkan Performa",
-      description: "Kecepatan pemuatan super cepat dan pengalaman pengguna optimal",
+      title: "Performance Optimized",
+      description: "Lightning-fast loading speeds and optimal user experience",
     },
     {
       icon: Sparkles,
-      title: "Fokus Konversi",
-      description: "Elemen desain strategis yang mengubah pengunjung menjadi pelanggan",
+      title: "Conversion Focused",
+      description: "Strategic design elements that turn visitors into customers",
     },
   ];
 

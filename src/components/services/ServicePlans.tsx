@@ -39,45 +39,45 @@ export const ServicePlans = ({ onCheckout }: ServicePlansProps) => {
     basic: [
       {
         icon: <Clock className="w-5 h-5" />,
-        title: "Pengiriman 24 Jam",
-        description: "Rata-rata penyelesaian permintaan dalam 1 hari",
+        title: "24-Hour Delivery",
+        description: "Average 1-day turnaround for your requests",
       },
       {
         icon: <Wrench className="w-5 h-5" />,
-        title: "Pengembangan Tanpa Batas",
-        description: "Ajukan permintaan tanpa batas, satu per satu",
+        title: "Unlimited Development",
+        description: "Submit unlimited requests, one at a time",
       },
       {
         icon: <Globe className="w-5 h-5" />,
-        title: "Akses Dashboard",
-        description: "Pantau semua permintaan Anda di satu tempat",
+        title: "Dashboard Access",
+        description: "Track all your requests in one place",
       },
       {
         icon: <HeartHandshake className="w-5 h-5" />,
-        title: "Dukungan Prioritas",
-        description: "Dapatkan bantuan via email dalam 24 jam",
+        title: "Priority Support",
+        description: "Get help via email within 24 hours",
       },
     ],
     pro: [
       {
         icon: <Zap className="w-5 h-5" />,
-        title: "Penyelesaian 5 Jam",
-        description: "Pengiriman super cepat untuk pembaruan mendesak",
+        title: "5-Hour Turnaround",
+        description: "Lightning fast delivery for urgent updates",
       },
       {
         icon: <Wrench className="w-5 h-5" />,
-        title: "Kapasitas Ganda",
-        description: "Kerjakan dua permintaan secara bersamaan",
+        title: "Double Capacity",
+        description: "Work on two requests simultaneously",
       },
       {
         icon: <Star className="w-5 h-5" />,
-        title: "Fitur Premium",
-        description: "Hosting, domain, dan manajer khusus tersedia",
+        title: "Premium Features",
+        description: "Hosting, domain, and dedicated manager included",
       },
       {
         icon: <Globe className="w-5 h-5" />,
-        title: "Dukungan Ditingkatkan",
-        description: "Akses Discord langsung dan pertemuan mingguan",
+        title: "Enhanced Support",
+        description: "Direct Discord access and weekly meetings",
       },
     ],
   };
@@ -164,11 +164,11 @@ export const ServicePlans = ({ onCheckout }: ServicePlansProps) => {
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold text-white mb-4">
-            Paket Pengembangan Tanpa Batas
+            Unlimited Development Plans
           </h2>
           <p className="text-gray-400 max-w-2xl mx-auto">
-            Pilih paket yang sempurna untuk kebutuhan bisnis Anda. Semua paket mencakup
-            permintaan pengembangan tanpa batas dan komitmen kami terhadap kualitas.
+            Choose the perfect plan for your business needs. All plans include
+            unlimited development requests and our commitment to quality.
           </p>
         </div>
 
@@ -180,22 +180,22 @@ export const ServicePlans = ({ onCheckout }: ServicePlansProps) => {
               <div className="flex justify-between items-start mb-4">
                 <div>
                   <CardTitle className="text-2xl text-rich-blue mb-2">
-                    Paket Dasar
+                    Basic Plan
                   </CardTitle>
                   <CardDescription className="text-gray-400">
-                    Sempurna untuk bisnis yang sedang berkembang
+                    Perfect for growing businesses
                   </CardDescription>
                 </div>
                 <Badge
                   variant="secondary"
                   className="bg-rich-blue/10 text-rich-blue"
                 >
-                  Paling Populer
+                  Most Popular
                 </Badge>
               </div>
               <div className="text-3xl font-bold text-rich-gold">
-                Rp 21.000.000
-                <span className="text-lg text-rich-gold/60 ml-2">/bulan</span>
+                $1,350
+                <span className="text-lg text-rich-gold/60 ml-2">/month</span>
               </div>
             </CardHeader>
             <CardContent>
@@ -206,14 +206,14 @@ export const ServicePlans = ({ onCheckout }: ServicePlansProps) => {
               </div>
               <div className="mt-6 p-4 bg-rich-blue/5 rounded-lg">
                 <h4 className="text-rich-blue font-semibold mb-2">
-                  Juga Termasuk:
+                  Also Included:
                 </h4>
                 <ul className="space-y-2">
                   {[
-                    "Revisi tanpa batas",
-                    "Optimasi SEO",
-                    "Pemantauan kinerja",
-                    "Pembaruan keamanan dasar",
+                    "Unlimited revisions",
+                    "SEO optimizations",
+                    "Performance monitoring",
+                    "Basic security updates",
                   ].map((feature, index) => (
                     <li
                       key={index}
@@ -232,7 +232,7 @@ export const ServicePlans = ({ onCheckout }: ServicePlansProps) => {
                 className="w-full bg-rich-blue hover:bg-rich-blue/80 py-6"
                 onClick={() => initiateCheckout(handleBasicPlanCheckout)}
               >
-                Mulai dengan Paket Dasar
+                Get Started with Basic
                 <ArrowRight className="ml-2" />
               </Button>
             </CardFooter>
@@ -245,22 +245,22 @@ export const ServicePlans = ({ onCheckout }: ServicePlansProps) => {
               <div className="flex justify-between items-start mb-4">
                 <div>
                   <CardTitle className="text-2xl text-rich-green mb-2">
-                    Paket Pro
+                    Pro Plan
                   </CardTitle>
                   <CardDescription className="text-gray-400">
-                    Untuk bisnis yang membutuhkan kecepatan
+                    For businesses that need speed
                   </CardDescription>
                 </div>
                 <Badge
                   variant="secondary"
                   className="bg-rich-green/10 text-rich-green"
                 >
-                  Pengiriman Tercepat
+                  Fastest Delivery
                 </Badge>
               </div>
               <div className="text-3xl font-bold text-rich-gold">
-                Rp 31.000.000
-                <span className="text-lg text-rich-gold/60 ml-2">/bulan</span>
+                $2,000
+                <span className="text-lg text-rich-gold/60 ml-2">/month</span>
               </div>
             </CardHeader>
             <CardContent>
@@ -271,15 +271,15 @@ export const ServicePlans = ({ onCheckout }: ServicePlansProps) => {
               </div>
               <div className="mt-6 p-4 bg-rich-green/5 rounded-lg">
                 <h4 className="text-rich-green font-semibold mb-2">
-                  Manfaat Pro:
+                  Pro Benefits:
                 </h4>
                 <ul className="space-y-2">
                   {[
-                    "Pemeriksaan kesehatan website triwulanan",
-                    "Analitik kinerja bulanan",
-                    "Hosting premium termasuk",
-                    "Pendaftaran domain 1 tahun",
-                    "Paket keamanan tingkat lanjut",
+                    "Quarterly website health checks",
+                    "Monthly performance analytics",
+                    "Premium hosting included",
+                    "1-year domain registration",
+                    "Advanced security suite",
                   ].map((feature, index) => (
                     <li
                       key={index}
@@ -298,7 +298,7 @@ export const ServicePlans = ({ onCheckout }: ServicePlansProps) => {
                 className="w-full bg-rich-green hover:bg-rich-green/80 py-6"
                 onClick={() => initiateCheckout(handleProPlanCheckout)}
               >
-                Mulai dengan Paket Pro
+                Get Started with Pro
                 <ArrowRight className="ml-2" />
               </Button>
             </CardFooter>
@@ -307,7 +307,7 @@ export const ServicePlans = ({ onCheckout }: ServicePlansProps) => {
 
         <div className="mt-8 text-center text-gray-400">
           <p>
-            Semua paket termasuk jaminan uang kembali 14 hari. Tanpa pertanyaan.
+            All plans include a 14-day money-back guarantee. No questions asked.
           </p>
         </div>
       </div>

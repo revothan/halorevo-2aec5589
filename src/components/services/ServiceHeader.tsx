@@ -1,4 +1,3 @@
-
 import { motion } from "framer-motion";
 
 export const ServiceHeader = () => {
@@ -10,7 +9,7 @@ export const ServiceHeader = () => {
           animate={{ opacity: 1, y: 0 }}
           className="text-4xl md:text-5xl font-bold mb-6 text-rich-gold"
         >
-          Layanan Kami
+          Our Services
         </motion.h1>
         <motion.p
           initial={{ opacity: 0, y: 20 }}
@@ -18,10 +17,11 @@ export const ServiceHeader = () => {
           transition={{ delay: 0.1 }}
           className="text-lg text-rich-gold/80"
         >
-          Transformasi kehadiran web Anda dengan layanan profesional dan 
-          terjangkau kami.
+          Transforming your web presence with our professional and affordable
+          services.
         </motion.p>
       </div>
     </section>
   );
 };
+

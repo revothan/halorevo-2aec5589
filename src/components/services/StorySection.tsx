@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Infinity as InfinityIcon, Zap, LayoutDashboard } from "lucide-react";
 import { Feature } from "./Feature";
@@ -19,7 +18,7 @@ export const StorySection: React.FC = () => {
               {dashboardImageUrl && (
                 <img
                   src={dashboardImageUrl}
-                  alt="Pratinjau Dashboard"
+                  alt="Dashboard Preview"
                   className="rounded-lg shadow-2xl"
                 />
               )}
@@ -29,18 +28,18 @@ export const StorySection: React.FC = () => {
           <div className="space-y-6">
             <Feature
               icon={<InfinityIcon className="w-6 h-6 text-blue-400" />}
-              title="Dua Opsi Fleksibel"
-              description="Pengembangan Sekali Bayar: Sempurna untuk website baru. Langganan Tanpa Batas: Pengembangan & pembaruan berkelanjutan"
+              title="Two Flexible Options"
+              description="One-Time Development: Perfect for new websites. Unlimited Subscription: Ongoing development & updates"
             />
             <Feature
               icon={<Zap className="w-6 h-6 text-purple-400" />}
-              title="Waktu Penyelesaian Super Cepat"
-              description="Paket Dasar: Rata-rata penyelesaian 24 jam. Paket Pro: Prioritas penyelesaian 5 jam"
+              title="Lightning Fast Turnaround"
+              description="Basic Plan: Average 24-hour turnaround. Pro Plan: Priority 5-hour turnaround"
             />
             <Feature
               icon={<LayoutDashboard className="w-6 h-6 text-green-400" />}
-              title="Dashboard Intuitif"
-              description="Lacak semua permintaan Anda, berkomunikasi dengan pengembang dan desainer, dan kelola langganan Anda di satu tempat."
+              title="Intuitive Dashboard"
+              description="Track all your requests, communicate with developers and designers, and manage your subscription in one place."
             />
           </div>
         </div>
