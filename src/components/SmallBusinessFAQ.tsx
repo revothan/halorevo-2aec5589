@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+
+import React, { useState, ReactNode } from "react";
 import { motion } from "framer-motion";
 import { ChevronDown, HelpCircle } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -31,6 +32,31 @@ const FAQItem: React.FC<FAQItemProps> = ({ question, answer, isOpen, onToggle })
       </div>
     </div>
   );
+};
+
+// Helper function to safely extract text from React nodes for schema.org
+const extractTextFromReactNode = (node: ReactNode): string => {
+  if (typeof node === 'string') {
+    return node;
+  }
+  
+  if (typeof node === 'number') {
+    return node.toString();
+  }
+  
+  if (Array.isArray(node)) {
+    return node.map(extractTextFromReactNode).join(' ');
+  }
+  
+  if (React.isValidElement(node)) {
+    // Handle React elements by extracting from their children
+    const { children } = node.props;
+    if (children) {
+      return extractTextFromReactNode(children);
+    }
+  }
+  
+  return '';
 };
 
 const SmallBusinessFAQ = () => {
@@ -222,10 +248,7 @@ const SmallBusinessFAQ = () => {
                 "@type": "Answer",
                 "text": typeof faq.answer === 'string' 
                   ? faq.answer 
-                  : React.Children.toArray(faq.answer.props.children)
-                      .filter(child => typeof child === 'string' || (child.props && child.props.children))
-                      .map(child => typeof child === 'string' ? child : child.props.children)
-                      .join(' ')
+                  : extractTextFromReactNode(faq.answer)
               }
             }))
           })

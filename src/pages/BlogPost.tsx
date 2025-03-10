@@ -106,10 +106,10 @@ const BlogPost = () => {
         }
       }
 
-      // If no ID or ID lookup failed, try using the slug ID from the URL path
+      // If no ID or ID lookup failed, try using the slug
       if (sanitizedSlug) {
         try {
-          // First, search by ID using the slug text as a possible ID
+          // First, try a direct lookup by numeric ID if slug could be an ID
           if (!isNaN(Number(sanitizedSlug))) {
             const { data, error } = await supabase
               .from("posts")
@@ -135,24 +135,24 @@ const BlogPost = () => {
             }
           }
 
-          // If that fails and slug is too long (causing 400 error), try a simpler approach
-          // First, get all published posts with minimal data
+          // Alternative approach to avoid 400 errors with long slugs:
+          // Fetch minimal data for all published posts
           const { data: allPosts, error: listError } = await supabase
             .from("posts")
-            .select("id, slug, title")
+            .select("id, slug")
             .eq("published", true);
 
           if (listError) {
             console.error("Error fetching posts list:", listError);
             fetchError = listError;
           } else if (allPosts && allPosts.length > 0) {
-            // Find a post that matches the sanitized slug (case insensitive)
+            // Find post with matching slug (case insensitive)
             const matchedPost = allPosts.find(p => 
               p.slug && sanitizeSlug(p.slug) === sanitizedSlug
             );
 
             if (matchedPost) {
-              // If we found a match, fetch the full post data by ID
+              // If found, fetch full post data by ID
               const { data: fullPost, error: fullPostError } = await supabase
                 .from("posts")
                 .select(
@@ -218,7 +218,7 @@ const BlogPost = () => {
       description: post.excerpt,
       mainEntityOfPage: {
         "@type": "WebPage",
-        "@id": `https://halorevo.com/blog/${post.slug ? sanitizeSlug(post.slug) : post.id}`,
+        "@id": `https://halorevo.com/blog/${post.id}`,
       },
       keywords: [
         "small business website",
@@ -250,14 +250,14 @@ const BlogPost = () => {
       <div className="min-h-screen bg-rich-black p-4 md:p-8">
         <Navbar />
         <div className="max-w-4xl mx-auto text-center py-20">
-          <h1 className="text-2xl text-rich-gold mb-4">Artikel Tidak Ditemukan</h1>
+          <h1 className="text-2xl text-rich-gold mb-4">Article Not Found</h1>
           <p className="text-rich-gold/70 mb-8">
-            Artikel yang Anda cari tidak ada atau telah dipindahkan.
+            The article you're looking for doesn't exist or has been moved.
           </p>
           <Link to="/blog">
             <Button variant="secondary">
               <ChevronLeft className="w-4 h-4 mr-2" />
-              Kembali ke Blog
+              Back to Blog
             </Button>
           </Link>
         </div>
@@ -280,11 +280,11 @@ const BlogPost = () => {
 
       {/* SEO Metadata */}
       <Helmet>
-        <title>{post.title} | HaloRevo - Pengembangan Web untuk Bisnis Kecil</title>
+        <title>{post.title} | HaloRevo - Web Development for Small Businesses</title>
         <meta name="description" content={post.excerpt} />
         <meta
           name="keywords"
-          content={`website bisnis kecil, pengembangan web indonesia, ${post.categories?.name}`}
+          content={`small business website, web development indonesia, ${post.categories?.name}`}
         />
         <meta property="og:title" content={post.title} />
         <meta property="og:description" content={post.excerpt} />
@@ -292,12 +292,12 @@ const BlogPost = () => {
         <meta property="og:type" content="article" />
         <meta
           property="og:url"
-          content={`https://halorevo.com/blog/${post.slug ? sanitizeSlug(post.slug) : post.id}`}
+          content={`https://halorevo.com/blog/${post.id}`}
         />
         <meta name="twitter:card" content="summary_large_image" />
         <link
           rel="canonical"
-          href={`https://halorevo.com/blog/${post.slug ? sanitizeSlug(post.slug) : post.id}`}
+          href={`https://halorevo.com/blog/${post.id}`}
         />
         <script type="application/ld+json">{renderStructuredData()}</script>
       </Helmet>
@@ -307,12 +307,12 @@ const BlogPost = () => {
           <Link to="/blog">
             <Button variant="ghost" className="text-rich-gold">
               <ChevronLeft className="w-4 h-4 mr-2" />
-              Kembali ke Blog
+              Back to Blog
             </Button>
           </Link>
           {profile?.is_admin && (
             <Link to={`/admin/blog/edit/${post.id}`}>
-              <Button variant="secondary">Edit Artikel</Button>
+              <Button variant="secondary">Edit Article</Button>
             </Link>
           )}
         </div>
@@ -349,7 +349,7 @@ const BlogPost = () => {
             <div className="flex flex-wrap gap-4 text-rich-gold/70 mb-6">
               <div className="flex items-center">
                 <User className="w-4 h-4 mr-2" />
-                {post.author?.name || "Tim HaloRevo"}
+                {post.author?.name || "HaloRevo Team"}
               </div>
               <div className="flex items-center">
                 <CalendarDays className="w-4 h-4 mr-2" />
@@ -357,7 +357,7 @@ const BlogPost = () => {
               </div>
               <div className="flex items-center">
                 <Clock className="w-4 h-4 mr-2" />
-                {readingTime} menit bacaan
+                {readingTime} minute read
               </div>
             </div>
 
@@ -371,7 +371,7 @@ const BlogPost = () => {
 
           {/* Table of Contents - Auto-generated from H2s in content */}
           <div className="bg-rich-gray/20 p-4 rounded-lg mb-8">
-            <h2 className="text-lg font-semibold mb-2">Daftar Isi</h2>
+            <h2 className="text-lg font-semibold mb-2">Table of Contents</h2>
             <div className="space-y-1">
               {post.content
                 .split("\n")
@@ -429,15 +429,15 @@ const BlogPost = () => {
           {/* Call To Action */}
           <div className="mt-12 p-6 bg-rich-purple/10 rounded-lg border border-rich-purple/20">
             <h3 className="text-xl font-semibold mb-2">
-              Butuh bantuan dengan website bisnis kecil Anda?
+              Need help with your small business website?
             </h3>
             <p className="mb-4 text-rich-gold/80">
-              Tim ahli pengembangan web kami di Indonesia mengkhususkan diri dalam
-              membuat website profesional untuk bisnis kecil. Jadwalkan konsultasi gratis hari ini!
+              Our expert web development team in Indonesia specializes in creating 
+              professional websites for small businesses. Schedule a free consultation today!
             </p>
             <Link to="/free-trial">
               <Button className="bg-rich-purple hover:bg-rich-purple/90">
-                Pesan Konsultasi Gratis Anda
+                Book Your Free Consultation
               </Button>
             </Link>
           </div>

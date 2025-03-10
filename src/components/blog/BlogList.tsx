@@ -144,7 +144,7 @@ export function BlogList() {
   if (error) {
     return (
       <div className="text-center py-12">
-        <p className="text-red-500">Gagal memuat artikel blog</p>
+        <p className="text-red-500">Failed to load blog articles</p>
       </div>
     );
   }
@@ -156,7 +156,7 @@ export function BlogList() {
     return format(date, "MMMM d, yyyy");
   };
 
-  // Helper to get the post URL (using ID directly instead of slug for reliability)
+  // Always use post ID for URLs instead of slugs to avoid 400 errors with long slugs
   const getPostUrl = (post: Post) => {
     return `/blog/${post.id}`;
   };
@@ -164,13 +164,13 @@ export function BlogList() {
   // No results message
   const renderNoResults = () => (
     <div className="text-center py-16 bg-rich-gray/20 rounded-lg">
-      <h3 className="text-xl font-semibold mb-2">Tidak ada artikel ditemukan</h3>
+      <h3 className="text-xl font-semibold mb-2">No articles found</h3>
       <p className="text-rich-gold/70 mb-4">
         {searchQuery
-          ? `Tidak ada artikel yang cocok dengan pencarian Anda untuk "${searchQuery}"`
+          ? `No articles match your search for "${searchQuery}"`
           : categoryFilter !== "all"
-            ? "Belum ada artikel dalam kategori ini"
-            : "Kami belum mempublikasikan artikel apapun"}
+            ? "No articles in this category yet"
+            : "We haven't published any articles yet"}
       </p>
       <Button
         variant="outline"
@@ -179,7 +179,7 @@ export function BlogList() {
           setCategoryFilter("all");
         }}
       >
-        Hapus filter
+        Clear filters
       </Button>
     </div>
   );
@@ -188,22 +188,22 @@ export function BlogList() {
     <div className="space-y-8">
       {/* SEO Metadata */}
       <Helmet>
-        <title>Tips & Sumber Daya Website Bisnis Kecil | Blog HaloRevo</title>
+        <title>Small Business Website Tips & Resources | HaloRevo Blog</title>
         <meta
           name="description"
-          content="Jelajahi saran ahli, tips, dan strategi untuk membuat website bisnis kecil yang efektif. Pelajari bagaimana bisnis Indonesia sukses online."
+          content="Explore expert advice, tips, and strategies for effective small business websites. Learn how Indonesian businesses succeed online."
         />
         <meta
           name="keywords"
-          content="tips website bisnis kecil, blog pengembangan web indonesia, website bisnis kecil indonesia, desain web bisnis kecil"
+          content="small business website tips, indonesia web development blog, small business website indonesia, small business web design"
         />
         <meta
           property="og:title"
-          content="Tips & Sumber Daya Website Bisnis Kecil | Blog HaloRevo"
+          content="Small Business Website Tips & Resources | HaloRevo Blog"
         />
         <meta
           property="og:description"
-          content="Saran ahli untuk website bisnis kecil dan strategi sukses online"
+          content="Expert advice for small business websites and strategies for online success"
         />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://halorevo.com/blog" />
@@ -216,7 +216,7 @@ export function BlogList() {
           <Link to="/admin/blog/new">
             <Button variant="secondary" className="group">
               <Plus className="w-4 h-4 mr-2" />
-              Artikel Baru
+              New Article
             </Button>
           </Link>
         </div>
@@ -227,7 +227,7 @@ export function BlogList() {
         <div className="relative flex-1">
           <Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input
-            placeholder="Cari artikel..."
+            placeholder="Search articles..."
             className="pl-10"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
@@ -235,10 +235,10 @@ export function BlogList() {
         </div>
         <Select value={categoryFilter} onValueChange={setCategoryFilter}>
           <SelectTrigger className="w-full sm:w-[200px]">
-            <SelectValue placeholder="Semua Kategori" />
+            <SelectValue placeholder="All Categories" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">Semua Kategori</SelectItem>
+            <SelectItem value="all">All Categories</SelectItem>
             {categories?.map((category) => (
               <SelectItem key={category.id} value={category.id}>
                 {category.name}
@@ -251,7 +251,7 @@ export function BlogList() {
       {/* Featured Article */}
       {posts?.length > 0 && (
         <div className="mb-12">
-          <h2 className="text-2xl font-bold mb-6">Artikel Pilihan</h2>
+          <h2 className="text-2xl font-bold mb-6">Featured Article</h2>
           <Link to={getPostUrl(posts[0])}>
             <Card className="overflow-hidden hover:shadow-lg transition-shadow duration-300 bg-rich-gray/20 border-rich-gray/30">
               <div className="grid md:grid-cols-2 gap-6">
@@ -264,7 +264,7 @@ export function BlogList() {
                     />
                   ) : (
                     <div className="bg-rich-purple/20 w-full h-full flex items-center justify-center">
-                      <span className="text-rich-purple">Blog HaloRevo</span>
+                      <span className="text-rich-purple">HaloRevo Blog</span>
                     </div>
                   )}
                 </div>
@@ -286,7 +286,7 @@ export function BlogList() {
                     {formatPostDate(posts[0])}
                   </div>
                   <Button className="bg-rich-purple hover:bg-rich-purple/90 group">
-                    Baca Artikel Lengkap
+                    Read Full Article
                     <ChevronRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
                   </Button>
                 </div>
@@ -299,7 +299,7 @@ export function BlogList() {
       {/* Main Blog Grid */}
       {posts?.length > 0 ? (
         <>
-          <h2 className="text-2xl font-bold mb-6">Artikel Terbaru</h2>
+          <h2 className="text-2xl font-bold mb-6">Latest Articles</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {posts.slice(1).map((post) => (
               <Card
@@ -339,7 +339,7 @@ export function BlogList() {
                 <CardFooter className="mt-auto pt-4">
                   <Link to={getPostUrl(post)} className="w-full">
                     <Button variant="secondary" className="w-full group">
-                      Baca Selengkapnya
+                      Read More
                       <ChevronRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
                     </Button>
                   </Link>
@@ -355,15 +355,15 @@ export function BlogList() {
       {/* Small Business Call-to-Action */}
       <div className="mt-16 p-6 bg-rich-purple/10 rounded-lg border border-rich-purple/20 text-center">
         <h3 className="text-2xl font-semibold mb-2">
-          Butuh bantuan dengan website bisnis kecil Anda?
+          Need help with your small business website?
         </h3>
         <p className="mb-6 text-rich-gold/80 max-w-2xl mx-auto">
-          Tim kami di Indonesia mengkhususkan diri dalam membuat website profesional 
-          dan terjangkau untuk bisnis kecil. Jadwalkan konsultasi gratis hari ini!
+          Our team in Indonesia specializes in creating professional and affordable 
+          websites for small businesses. Schedule a free consultation today!
         </p>
         <Link to="/free-trial">
           <Button className="bg-rich-purple hover:bg-rich-purple/90 px-8 py-3">
-            Pesan Konsultasi Gratis Anda
+            Book Your Free Consultation
           </Button>
         </Link>
       </div>
@@ -374,9 +374,9 @@ export function BlogList() {
           {JSON.stringify({
             "@context": "https://schema.org",
             "@type": "Blog",
-            headline: "Tips & Sumber Daya Website Bisnis Kecil | Blog HaloRevo",
+            headline: "Small Business Website Tips & Resources | HaloRevo Blog",
             description:
-              "Saran ahli untuk website bisnis kecil dan strategi sukses online",
+              "Expert advice for small business websites and strategies for online success",
             url: "https://halorevo.com/blog",
             publisher: {
               "@type": "Organization",
@@ -394,8 +394,8 @@ export function BlogList() {
               image: post.featured_image,
               description: post.excerpt,
               keywords: [
-                "website bisnis kecil",
-                "pengembangan website bisnis kecil indonesia",
+                "small business website",
+                "indonesia small business web development",
                 post.categories?.name,
               ].filter(Boolean),
             })),
