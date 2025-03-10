@@ -1,3 +1,4 @@
+
 import { useParams, Link, useLocation } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -75,35 +76,7 @@ const BlogPost = () => {
 
       // Try to find by ID if we have a numeric ID
       if (id) {
-        const { data, error } = await supabase
-          .from("posts")
-          .select(
-            `
-            *,
-            categories:category_id (
-              name
-            ),
-            author:author_id (
-              name,
-              title,
-              avatar_url
-            )
-          `,
-          )
-          .eq("id", id)
-          .single();
-
-        if (!error) {
-          result = data;
-          return result; // Return early if found by ID
-        }
-        fetchError = error;
-      }
-
-      // If no ID or ID lookup failed, try using the sanitized slug with a pattern match
-      if (sanitizedSlug) {
         try {
-          // First try exact match
           const { data, error } = await supabase
             .from("posts")
             .select(
@@ -119,41 +92,94 @@ const BlogPost = () => {
               )
             `,
             )
-            .eq("slug", sanitizedSlug)
+            .eq("id", id)
             .single();
 
           if (!error && data) {
             result = data;
-            return result;
+            return result; // Return early if found by ID
           }
-
-          // If exact match fails, try ilike match
-          const { data: ilikeData, error: ilikeError } = await supabase
-            .from("posts")
-            .select(
-              `
-              *,
-              categories:category_id (
-                name
-              ),
-              author:author_id (
-                name,
-                title,
-                avatar_url
-              )
-            `,
-            )
-            .ilike("slug", `%${sanitizedSlug}%`)
-            .limit(1);
-
-          if (!ilikeError && ilikeData && ilikeData.length > 0) {
-            result = ilikeData[0];
-            return result;
-          }
-
-          fetchError = ilikeError || error;
+          fetchError = error;
         } catch (e) {
-          console.error("Error fetching post by slug:", e);
+          console.error("Error fetching post by ID:", e);
+          fetchError = e;
+        }
+      }
+
+      // If no ID or ID lookup failed, try using the slug ID from the URL path
+      if (sanitizedSlug) {
+        try {
+          // First, search by ID using the slug text as a possible ID
+          if (!isNaN(Number(sanitizedSlug))) {
+            const { data, error } = await supabase
+              .from("posts")
+              .select(
+                `
+                *,
+                categories:category_id (
+                  name
+                ),
+                author:author_id (
+                  name,
+                  title,
+                  avatar_url
+                )
+              `,
+              )
+              .eq("id", sanitizedSlug)
+              .single();
+
+            if (!error && data) {
+              result = data;
+              return result;
+            }
+          }
+
+          // If that fails and slug is too long (causing 400 error), try a simpler approach
+          // First, get all published posts with minimal data
+          const { data: allPosts, error: listError } = await supabase
+            .from("posts")
+            .select("id, slug, title")
+            .eq("published", true);
+
+          if (listError) {
+            console.error("Error fetching posts list:", listError);
+            fetchError = listError;
+          } else if (allPosts && allPosts.length > 0) {
+            // Find a post that matches the sanitized slug (case insensitive)
+            const matchedPost = allPosts.find(p => 
+              p.slug && sanitizeSlug(p.slug) === sanitizedSlug
+            );
+
+            if (matchedPost) {
+              // If we found a match, fetch the full post data by ID
+              const { data: fullPost, error: fullPostError } = await supabase
+                .from("posts")
+                .select(
+                  `
+                  *,
+                  categories:category_id (
+                    name
+                  ),
+                  author:author_id (
+                    name,
+                    title,
+                    avatar_url
+                  )
+                `,
+                )
+                .eq("id", matchedPost.id)
+                .single();
+
+              if (!fullPostError && fullPost) {
+                result = fullPost;
+                return result;
+              }
+              fetchError = fullPostError;
+            }
+          }
+        } catch (e) {
+          console.error("Error in fallback post lookup:", e);
           fetchError = e;
         }
       }
@@ -196,8 +222,8 @@ const BlogPost = () => {
       },
       keywords: [
         "small business website",
-        "vancouver web development",
-        "canada small business website",
+        "indonesia web development",
+        "indonesia small business website",
         post.categories?.name,
       ].filter(Boolean),
     };
@@ -224,14 +250,14 @@ const BlogPost = () => {
       <div className="min-h-screen bg-rich-black p-4 md:p-8">
         <Navbar />
         <div className="max-w-4xl mx-auto text-center py-20">
-          <h1 className="text-2xl text-rich-gold mb-4">Article Not Found</h1>
+          <h1 className="text-2xl text-rich-gold mb-4">Artikel Tidak Ditemukan</h1>
           <p className="text-rich-gold/70 mb-8">
-            The article you're looking for doesn't exist or has been moved.
+            Artikel yang Anda cari tidak ada atau telah dipindahkan.
           </p>
           <Link to="/blog">
             <Button variant="secondary">
               <ChevronLeft className="w-4 h-4 mr-2" />
-              Back to Blog
+              Kembali ke Blog
             </Button>
           </Link>
         </div>
@@ -254,11 +280,11 @@ const BlogPost = () => {
 
       {/* SEO Metadata */}
       <Helmet>
-        <title>{post.title} | HaloRevo - Small Business Web Development</title>
+        <title>{post.title} | HaloRevo - Pengembangan Web untuk Bisnis Kecil</title>
         <meta name="description" content={post.excerpt} />
         <meta
           name="keywords"
-          content={`small business website, vancouver web development, ${post.categories?.name}`}
+          content={`website bisnis kecil, pengembangan web indonesia, ${post.categories?.name}`}
         />
         <meta property="og:title" content={post.title} />
         <meta property="og:description" content={post.excerpt} />
@@ -281,12 +307,12 @@ const BlogPost = () => {
           <Link to="/blog">
             <Button variant="ghost" className="text-rich-gold">
               <ChevronLeft className="w-4 h-4 mr-2" />
-              Back to Blog
+              Kembali ke Blog
             </Button>
           </Link>
           {profile?.is_admin && (
             <Link to={`/admin/blog/edit/${post.id}`}>
-              <Button variant="secondary">Edit Article</Button>
+              <Button variant="secondary">Edit Artikel</Button>
             </Link>
           )}
         </div>
@@ -323,7 +349,7 @@ const BlogPost = () => {
             <div className="flex flex-wrap gap-4 text-rich-gold/70 mb-6">
               <div className="flex items-center">
                 <User className="w-4 h-4 mr-2" />
-                {post.author?.name || "HaloRevo Team"}
+                {post.author?.name || "Tim HaloRevo"}
               </div>
               <div className="flex items-center">
                 <CalendarDays className="w-4 h-4 mr-2" />
@@ -331,7 +357,7 @@ const BlogPost = () => {
               </div>
               <div className="flex items-center">
                 <Clock className="w-4 h-4 mr-2" />
-                {readingTime} min read
+                {readingTime} menit bacaan
               </div>
             </div>
 
@@ -345,7 +371,7 @@ const BlogPost = () => {
 
           {/* Table of Contents - Auto-generated from H2s in content */}
           <div className="bg-rich-gray/20 p-4 rounded-lg mb-8">
-            <h2 className="text-lg font-semibold mb-2">Table of Contents</h2>
+            <h2 className="text-lg font-semibold mb-2">Daftar Isi</h2>
             <div className="space-y-1">
               {post.content
                 .split("\n")
@@ -403,16 +429,15 @@ const BlogPost = () => {
           {/* Call To Action */}
           <div className="mt-12 p-6 bg-rich-purple/10 rounded-lg border border-rich-purple/20">
             <h3 className="text-xl font-semibold mb-2">
-              Need help with your small business website?
+              Butuh bantuan dengan website bisnis kecil Anda?
             </h3>
             <p className="mb-4 text-rich-gold/80">
-              Our team of Vancouver web development experts specialize in
-              creating professional websites for small businesses across Canada.
-              Schedule a free consultation today!
+              Tim ahli pengembangan web kami di Indonesia mengkhususkan diri dalam
+              membuat website profesional untuk bisnis kecil. Jadwalkan konsultasi gratis hari ini!
             </p>
             <Link to="/free-trial">
               <Button className="bg-rich-purple hover:bg-rich-purple/90">
-                Book Your Free Consultation
+                Pesan Konsultasi Gratis Anda
               </Button>
             </Link>
           </div>
