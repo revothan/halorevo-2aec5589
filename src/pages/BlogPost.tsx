@@ -1,54 +1,26 @@
-
-import { useParams, Link, useLocation } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import {
-  CalendarDays,
-  ChevronLeft,
-  Share2,
-  Clock,
-  Tag,
-  User,
-} from "lucide-react";
+import { CalendarDays, ChevronLeft, Clock, Tag, User } from "lucide-react";
 import { format } from "date-fns";
 import { useSessionContext } from "@supabase/auth-helpers-react";
 import ReactMarkdown from "react-markdown";
 import { Helmet } from "react-helmet";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
-// Utility function to sanitize slugs consistently across the app
-const sanitizeSlug = (slug) => {
-  if (!slug) return "";
-  return slug
-    .toLowerCase()
-    .replace(/[^a-z0-9\s-]/g, "")
-    .replace(/\s+/g, "-");
-};
-
 const BlogPost = () => {
-  const { id: paramId, slug: rawSlug } = useParams();
-  const location = useLocation();
+  const { id } = useParams();
   const { session } = useSessionContext();
-  const [fetchError, setFetchError] = useState(null);
-
-  // Determine if we have a numeric ID or a slug
-  const isNumericId = paramId && !isNaN(Number(paramId));
-  const id = isNumericId ? paramId : null;
-
-  // If we don't have a numeric ID, treat paramId as a slug if rawSlug is not provided
-  const slugToUse = rawSlug || (!isNumericId ? paramId : null);
-
-  // Sanitize the slug properly for URL and display
-  const sanitizedSlug = sanitizeSlug(slugToUse);
 
   // Track page view for analytics
   useEffect(() => {
-    // You could add your analytics tracking here
-    console.log(`Blog view: ${id || sanitizedSlug}`);
-  }, [id, sanitizedSlug]);
+    if (id) {
+      console.log(`Blog view: ${id}`);
+    }
+  }, [id]);
 
   const { data: profile } = useQuery({
     queryKey: ["profile", session?.user?.id],
@@ -69,130 +41,84 @@ const BlogPost = () => {
     isLoading,
     error,
   } = useQuery({
-    queryKey: ["post", id || sanitizedSlug],
+    queryKey: ["post", id],
     queryFn: async () => {
-      let result = null;
-      let fetchError = null;
+      if (!id) throw new Error("Post ID is required");
 
-      // Try to find by ID if we have a numeric ID
-      if (id) {
-        try {
-          const { data, error } = await supabase
-            .from("posts")
-            .select(
-              `
-              *,
-              categories:category_id (
-                name
-              ),
-              author:author_id (
-                name,
-                title,
-                avatar_url
-              )
-            `,
-            )
-            .eq("id", id)
-            .single();
+      try {
+        // Fetch post data first with a simpler query structure
+        const { data, error } = await supabase
+          .from("posts")
+          .select("*")
+          .eq("id", id)
+          .single();
 
-          if (!error && data) {
-            result = data;
-            return result; // Return early if found by ID
-          }
-          fetchError = error;
-        } catch (e) {
-          console.error("Error fetching post by ID:", e);
-          fetchError = e;
+        if (error) {
+          console.error("Supabase error:", error);
+          throw error;
         }
-      }
 
-      // If no ID or ID lookup failed, try using the slug
-      if (sanitizedSlug) {
-        try {
-          // First, try a direct lookup by numeric ID if slug could be an ID
-          if (!isNaN(Number(sanitizedSlug))) {
-            const { data, error } = await supabase
-              .from("posts")
-              .select(
-                `
-                *,
-                categories:category_id (
-                  name
-                ),
-                author:author_id (
-                  name,
-                  title,
-                  avatar_url
-                )
-              `,
-              )
-              .eq("id", sanitizedSlug)
-              .single();
+        // If category_id exists, fetch category data separately
+        let categoryData = null;
+        if (data.category_id) {
+          try {
+            const { data: catData, error: catError } = await supabase
+              .from("categories")
+              .select("name")
+              .eq("id", data.category_id)
+              .maybeSingle(); // Use maybeSingle to handle missing categories without error
 
-            if (!error && data) {
-              result = data;
-              return result;
+            if (catError) {
+              console.error("Error fetching category:", catError);
+              // Continue without throwing an error so the rest of the page can load
+            } else {
+              categoryData = catData;
             }
+          } catch (categoryErr) {
+            console.error("Exception in category fetch:", categoryErr);
+            // Continue without throwing so the page can still render
           }
-
-          // Alternative approach to avoid 400 errors with long slugs:
-          // Fetch minimal data for all published posts
-          const { data: allPosts, error: listError } = await supabase
-            .from("posts")
-            .select("id, slug")
-            .eq("published", true);
-
-          if (listError) {
-            console.error("Error fetching posts list:", listError);
-            fetchError = listError;
-          } else if (allPosts && allPosts.length > 0) {
-            // Find post with matching slug (case insensitive)
-            const matchedPost = allPosts.find(p => 
-              p.slug && sanitizeSlug(p.slug) === sanitizedSlug
-            );
-
-            if (matchedPost) {
-              // If found, fetch full post data by ID
-              const { data: fullPost, error: fullPostError } = await supabase
-                .from("posts")
-                .select(
-                  `
-                  *,
-                  categories:category_id (
-                    name
-                  ),
-                  author:author_id (
-                    name,
-                    title,
-                    avatar_url
-                  )
-                `,
-                )
-                .eq("id", matchedPost.id)
-                .single();
-
-              if (!fullPostError && fullPost) {
-                result = fullPost;
-                return result;
-              }
-              fetchError = fullPostError;
-            }
-          }
-        } catch (e) {
-          console.error("Error in fallback post lookup:", e);
-          fetchError = e;
         }
-      }
 
-      if (!result && fetchError) {
-        setFetchError(fetchError);
-        throw fetchError;
-      }
+        // If author_id exists, fetch author data separately
+        let authorData = null;
+        if (data.author_id) {
+          try {
+            // Check if the problem is with the query structure
+            const { data: authData, error: authError } = await supabase
+              .from("profiles")
+              .select("name, title, avatar_url")
+              .eq("id", data.author_id)
+              .maybeSingle(); // Use maybeSingle to handle missing profiles without error
 
-      return result;
+            if (authError) {
+              console.error("Error fetching author profile:", authError);
+              // Continue without throwing an error so the rest of the page can load
+            } else {
+              authorData = authData;
+            }
+          } catch (profileErr) {
+            console.error("Exception in profile fetch:", profileErr);
+            // Continue without throwing so the page can still render
+          }
+        }
+
+        // Combine the data
+        return {
+          ...data,
+          categories: categoryData,
+          author: authorData,
+        };
+      } catch (err) {
+        console.error("Error in post query:", err);
+        throw err;
+      }
     },
+    enabled: !!id, // Only run the query if we have an ID
+    retry: 1, // Limit retries on failure
   });
 
+  // Rest of the component remains the same
   const renderStructuredData = () => {
     if (!post) return null;
 
@@ -218,12 +144,12 @@ const BlogPost = () => {
       description: post.excerpt,
       mainEntityOfPage: {
         "@type": "WebPage",
-        "@id": `https://halorevo.com/blog/${post.id}`,
+        "@id": `https://halorevo.com/blog/posts/${post.id}`,
       },
       keywords: [
         "small business website",
-        "indonesia web development",
-        "indonesia small business website",
+        "canada web development",
+        "canada small business website",
         post.categories?.name,
       ].filter(Boolean),
     };
@@ -280,11 +206,13 @@ const BlogPost = () => {
 
       {/* SEO Metadata */}
       <Helmet>
-        <title>{post.title} | HaloRevo - Web Development for Small Businesses</title>
+        <title>
+          {post.title} | HaloRevo - Web Development for Small Businesses
+        </title>
         <meta name="description" content={post.excerpt} />
         <meta
           name="keywords"
-          content={`small business website, web development indonesia, ${post.categories?.name}`}
+          content={`small business website, web development canada , ${post.categories?.name}`}
         />
         <meta property="og:title" content={post.title} />
         <meta property="og:description" content={post.excerpt} />
@@ -295,10 +223,7 @@ const BlogPost = () => {
           content={`https://halorevo.com/blog/${post.id}`}
         />
         <meta name="twitter:card" content="summary_large_image" />
-        <link
-          rel="canonical"
-          href={`https://halorevo.com/blog/${post.id}`}
-        />
+        <link rel="canonical" href={`https://halorevo.com/blog/${post.id}`} />
         <script type="application/ld+json">{renderStructuredData()}</script>
       </Helmet>
 
@@ -432,8 +357,9 @@ const BlogPost = () => {
               Need help with your small business website?
             </h3>
             <p className="mb-4 text-rich-gold/80">
-              Our expert web development team in Indonesia specializes in creating 
-              professional websites for small businesses. Schedule a free consultation today!
+              Our expert web development team in Canada specializes in creating
+              professional websites for small businesses. Schedule a free
+              consultation today!
             </p>
             <Link to="/free-trial">
               <Button className="bg-rich-purple hover:bg-rich-purple/90">

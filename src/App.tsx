@@ -14,7 +14,7 @@ const Blog = lazy(() => import("./pages/Blog"));
 const BlogPost = lazy(() => import("./pages/BlogPost"));
 const Login = lazy(() => import("./pages/Login"));
 const AdminBlogEditor = lazy(() => import("./pages/AdminBlogEditor"));
-const TaskDashboard = lazy(() => import("./pages/TaskDashboard.tsx"));
+const TaskDashboard = lazy(() => import("./pages/TaskDashboard"));
 const FreeTrial = lazy(() => import("./pages/FreeTrial"));
 const FreeTrialLanding = lazy(() => import("./pages/FreeTrialLanding"));
 const AffiliateSignup = lazy(() => import("./pages/AffiliateSignup"));
@@ -52,8 +52,7 @@ const App = () => {
 
                   {/* Blog Routes */}
                   <Route path="/blog" element={<Blog />} />
-                  <Route path="/blog/:id" element={<BlogPost />} />
-                  <Route path="/blog/posts/:slug" element={<BlogPost />} />
+                  <Route path="/blog/posts/:id" element={<BlogPost />} />
 
                   {/* Authentication Routes */}
                   <Route path="/login" element={<Login />} />

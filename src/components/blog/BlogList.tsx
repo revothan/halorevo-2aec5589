@@ -1,4 +1,3 @@
-
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import {
@@ -157,8 +156,9 @@ export function BlogList() {
   };
 
   // Always use post ID for URLs instead of slugs to avoid 400 errors with long slugs
+
   const getPostUrl = (post: Post) => {
-    return `/blog/${post.id}`;
+    return `/blog/posts/${post.id}`; // Add '/posts' to the URL path
   };
 
   // No results message
@@ -191,12 +191,13 @@ export function BlogList() {
         <title>Small Business Website Tips & Resources | HaloRevo Blog</title>
         <meta
           name="description"
-          content="Explore expert advice, tips, and strategies for effective small business websites. Learn how Indonesian businesses succeed online."
+          content="Explore expert advice, tips, and strategies for effective small business websites. Learn how Canadian businesses succeed online."
         />
         <meta
           name="keywords"
-          content="small business website tips, indonesia web development blog, small business website indonesia, small business web design"
+          content="small business website tips, vancouver web development blog, small business website canada, small business web design"
         />
+
         <meta
           property="og:title"
           content="Small Business Website Tips & Resources | HaloRevo Blog"
@@ -358,8 +359,9 @@ export function BlogList() {
           Need help with your small business website?
         </h3>
         <p className="mb-6 text-rich-gold/80 max-w-2xl mx-auto">
-          Our team in Indonesia specializes in creating professional and affordable 
-          websites for small businesses. Schedule a free consultation today!
+          Our team in Vancouver specializes in creating professional and
+          affordable websites for small businesses. Schedule a free consultation
+          today!
         </p>
         <Link to="/free-trial">
           <Button className="bg-rich-purple hover:bg-rich-purple/90 px-8 py-3">
@@ -395,7 +397,7 @@ export function BlogList() {
               description: post.excerpt,
               keywords: [
                 "small business website",
-                "indonesia small business web development",
+                "canada small business web development",
                 post.categories?.name,
               ].filter(Boolean),
             })),
