@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { Terminal, ArrowRight, Code, Workflow, Sparkles } from "lucide-react";
 import { TypingAnimation } from "./TypingAnimation";
 import { useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet"; // Add Helmet if not already using it
 
 const Portfolio3DCarousel = lazy(() => import("./Portfolio3DCarousel"));
 
@@ -15,9 +16,9 @@ export const Hero = ({ showContent = true }: HeroProps) => {
   const navigate = useNavigate();
 
   const features = [
-    { icon: Code, text: "Custom Web Development" },
-    { icon: Workflow, text: "Business Automation" },
-    { icon: Sparkles, text: "Digital Innovation" },
+    { icon: Code, text: "Small Business Website Development" },
+    { icon: Workflow, text: "Affordable Web Solutions" },
+    { icon: Sparkles, text: "Free Consultation in Vancouver" },
   ];
 
   const handleServicesClick = () => {
@@ -26,6 +27,17 @@ export const Hero = ({ showContent = true }: HeroProps) => {
 
   return (
     <section className="min-h-screen bg-gradient-to-b from-rich-black to-rich-gray relative">
+      {/* SEO-friendly heading structure */}
+      <Helmet>
+        <title>
+          Best Web Development Agency for Small Business in Vancouver | HaloRevo
+        </title>
+        <meta
+          name="description"
+          content="HaloRevo is Vancouver's top web development agency specializing in creating professional websites for small businesses across Canada."
+        />
+      </Helmet>
+
       {/* Background Grid Pattern */}
       <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center opacity-10 pointer-events-none" />
 
@@ -41,35 +53,39 @@ export const Hero = ({ showContent = true }: HeroProps) => {
             <div className="inline-flex items-center gap-2 bg-rich-blue/10 px-4 py-2 rounded-full">
               <Terminal className="w-4 h-4 text-rich-blue" />
               <span className="text-sm font-mono text-rich-blue">
-                Vancouver's Digital Solutions Expert
+                Vancouver's #1 Small Business Web Development Agency
               </span>
             </div>
 
             {showContent && (
               <>
                 <h1 className="text-5xl lg:text-6xl font-bold leading-tight">
-                  Transform Your <br />
-                  <span className="text-rich-gold">Digital Presence</span>
+                  <span className="text-white">Professional Websites for</span>{" "}
+                  <br />
+                  <span className="text-rich-gold">
+                    Canadian Small Businesses
+                  </span>
                 </h1>
 
-                <p className="text-xl text-gray-300 max-w-lg">
-                  Elevate your business with custom websites and automation
-                  solutions that drive growth and enhance efficiency.
-                </p>
+                <h2 className="text-xl text-gray-300 max-w-lg">
+                  Elevate your small business with custom-built, affordable
+                  websites designed to attract customers and drive growth.
+                </h2>
 
                 <div className="flex flex-col sm:flex-row gap-4">
                   <Button
                     onClick={handleServicesClick}
                     className="bg-rich-purple hover:bg-rich-purple/90 text-white px-8 py-6 rounded-lg font-medium inline-flex items-center gap-2 relative z-20"
                   >
-                    Let's Get Started!
+                    Free Website Consultation
                     <ArrowRight className="w-4 h-4" />
                   </Button>
                   <Button
                     variant="outline"
                     className="border-rich-gold/30 text-rich-gold hover:bg-rich-gold/10 px-8 py-6 rounded-lg"
+                    onClick={() => navigate("/portfolio")}
                   >
-                    View Portfolio
+                    Small Business Portfolio
                   </Button>
                 </div>
 
@@ -106,6 +122,18 @@ export const Hero = ({ showContent = true }: HeroProps) => {
               </Suspense>
             </div>
           </motion.div>
+        </div>
+
+        {/* Small Business Focus Section - Added for SEO */}
+        <div className="mt-16 text-center">
+          <h3 className="text-2xl font-semibold mb-4">
+            Serving Small Businesses Across Canada
+          </h3>
+          <p className="max-w-3xl mx-auto text-gray-400">
+            From local Vancouver shops to online Canadian entrepreneurs, we
+            create websites that help small businesses succeed. Schedule a free
+            meeting to discuss your needs today.
+          </p>
         </div>
       </div>
     </section>

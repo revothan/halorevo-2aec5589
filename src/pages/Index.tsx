@@ -4,6 +4,8 @@ import Navbar from "@/components/Navbar";
 import { Hero } from "@/components/Hero";
 import { Loader2 } from "lucide-react";
 import { StorySection } from "@/components/services/StorySection";
+import SmallBusinessFAQ from "@/components/SmallBusinessFAQ"; // Import the FAQ component
+import { Services } from "@/components/Services"; // Make sure this is imported
 
 const PorfolioSection = lazy(() => import("@/components/PortfolioSection"));
 const HowItWorks = lazy(() => import("@/components/HowItWorks"));
@@ -11,7 +13,6 @@ const QnASection = lazy(() => import("@/components/QnASection"));
 const Footer = lazy(() => import("@/components/Footer"));
 const AboutUs = lazy(() => import("@/components/AboutUs"));
 const PricingSection = lazy(() => import("@/components/Pricing"));
-
 const LoadingSpinner = () => (
   <div className="flex items-center justify-center py-12">
     <Loader2 className="w-8 h-8 animate-spin text-rich-gold" />
@@ -35,7 +36,16 @@ const Index = () => {
             <StorySection />
           </Suspense>
           <Suspense fallback={<LoadingSpinner />}>
+            <Services />
+          </Suspense>
+          <Suspense fallback={<LoadingSpinner />}>
             <HowItWorks />
+          </Suspense>
+          <Suspense fallback={<LoadingSpinner />}>
+            <PorfolioSection />
+          </Suspense>
+          <Suspense fallback={<LoadingSpinner />}>
+            <SmallBusinessFAQ />
           </Suspense>
           <Suspense fallback={<LoadingSpinner />}>
             <AboutUs />

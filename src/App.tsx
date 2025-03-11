@@ -34,6 +34,7 @@ const queryClient = new QueryClient({
     queries: {
       staleTime: 60 * 1000,
       gcTime: 5 * 60 * 1000,
+      retry: 1,
     },
   },
 });
@@ -48,17 +49,30 @@ const App = () => {
               <Suspense fallback={<LoadingSpinner />}>
                 <Routes>
                   <Route path="/" element={<Index />} />
+
+                  {/* Blog Routes */}
                   <Route path="/blog" element={<Blog />} />
                   <Route path="/blog/:id" element={<BlogPost />} />
+                  <Route path="/blog/posts/:slug" element={<BlogPost />} />
+
+                  {/* Authentication Routes */}
                   <Route path="/login" element={<Login />} />
+
+                  {/* Admin Routes */}
                   <Route path="/admin/blog/new" element={<AdminBlogEditor />} />
                   <Route
                     path="/admin/blog/edit/:id"
                     element={<AdminBlogEditor />}
                   />
+
+                  {/* Dashboard Routes */}
                   <Route path="/dashboard" element={<TaskDashboard />} />
+
+                  {/* Free Trial Routes */}
                   <Route path="/free-trial" element={<FreeTrialLanding />} />
                   <Route path="/free-trial/form" element={<FreeTrial />} />
+
+                  {/* Affiliate Routes */}
                   <Route
                     path="/affiliate/signup"
                     element={<AffiliateSignup />}
@@ -67,8 +81,13 @@ const App = () => {
                     path="/affiliate/dashboard"
                     element={<AffiliateDashboard />}
                   />
+
+                  {/* Other Pages */}
                   <Route path="/services" element={<Services />} />
                   <Route path="/success" element={<Success />} />
+
+                  {/* 404 Route - redirects to home page for now */}
+                  <Route path="*" element={<Index />} />
                 </Routes>
               </Suspense>
               <Toaster />
